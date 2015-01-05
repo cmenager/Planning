@@ -6,7 +6,7 @@ $app['db.options'] = array(
     'charset'  => 'utf8',
     'host'     => 'localhost',
     'port'     => '3306',
-    'dbname'   => 'moviesmarket',
+    'dbname'   => 'planning',
     'user'     => 'root',
-    'password' => '',
+    'password' => 'secret',
 );
