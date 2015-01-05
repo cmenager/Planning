@@ -1,8 +1,18 @@
 <?php
+use Symfony\Component\HttpFoundation\Request;
+// Register global error and exception handlers
+use Symfony\Component\Debug\ErrorHandler;
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ErrorHandler::register();
 
+use Symfony\Component\Debug\ExceptionHandler;
+
+$app->register(new Silex\Provider\FormServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider());
+
+ExceptionHandler::register();
+// Register service providers.
+$app->register(new Silex\Provider\DoctrineServiceProvider());
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__ . '/../views',
+));
