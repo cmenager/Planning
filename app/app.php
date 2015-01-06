@@ -17,3 +17,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../views',
 ));
 
+// Register services.
+$app['dao.eleve'] = $app->share(function ($app) {
+    return new Planning\DAO\EleveDAO($app['db']);
+});
