@@ -21,6 +21,22 @@
                         <a class="navbar-brand" href="/">Planning</a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-collapse-target">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown {% if eleveMenu is defined %}active{% endif %}">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown"> Eleves <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/eleves/">Consulter</a></li>
+                                    <li><a href="/eleves/search/">Rechercher</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown {% if profMenu is defined %}active{% endif %}">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown"> Professeurs <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/profs/">Consulter</a></li>
+                                    <li><a href="/profs/search/">Rechercher</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div><!-- /.container -->
             </nav>
