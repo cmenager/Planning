@@ -17,9 +17,12 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider());
 
 // Register services.
 $app['dao.eleve'] = $app->share(function ($app) {
-    return new Planning\DAO\EleveDAO($app['db']);
+    $elevesDAO = new Planning\DAO\EleveDAO($app['db']);
+    return $elevesDAO; 
 });
+
 

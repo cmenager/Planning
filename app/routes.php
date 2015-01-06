@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Planning\Domain\Eleve;
 
 // Home page
 $app->get('/', function () use ($app) {
@@ -13,7 +14,7 @@ $app->get('/eleves/{id}', function($id) use ($app) {
     return $app['twig']->render('eleve.html.twig', array('eleve' => $eleve));
 });
 
-// List of all drugs
+// List of all eleves
 $app->get('/eleves/', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
     return $app['twig']->render('eleves.html.twig', array('eleves' => $eleves));

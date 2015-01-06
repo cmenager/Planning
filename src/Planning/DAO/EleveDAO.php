@@ -4,8 +4,8 @@ namespace Planning\DAO;
 
 use Planning\Domain\Eleve;
 
-class EleveDAO extends DAO 
-{
+class EleveDAO extends DAO {
+    
     
     // <editor-fold defaultstate="collapsed" desc="Trouver un eleve par identifiant : (find($id))"> 
     /**
@@ -26,7 +26,6 @@ class EleveDAO extends DAO
     }
 
 // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="Trouver tous les eleves par identifiant : findAll()"> 
     /**
      * Returns the list of all eleve, sorted by nom.
@@ -47,7 +46,6 @@ class EleveDAO extends DAO
     }
 
 // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="Cree un eleve : buildDomainObject($row) ">
     /**
      * Creates a Eleve instance from a DB query result row.
@@ -62,8 +60,9 @@ class EleveDAO extends DAO
         $eleve->setNom($row['nom']);
         $eleve->setPrenom($row['prenom']);
         $eleve->setTierstemps($row['tiers_temps']);
-      
+
         return $eleve;
     }
+
 // </editor-fold>
 }

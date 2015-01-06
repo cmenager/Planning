@@ -7,6 +7,6 @@ $app['db.options'] = array(
     'host'     => 'localhost',
     'port'     => '3306',
     'dbname'   => 'planning',
-    'user'     => 'root',
+    'user'     => 'planning_user',
     'password' => 'secret',
 );
