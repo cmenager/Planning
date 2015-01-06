@@ -1,0 +1,33 @@
+{% extends "layout.html.twig" %}
+{% set eleveMenu = true %}
+
+{% block title %}Eleves{% endblock %}
+
+{% block content %}
+<h2 class="text-center">{{ block('title') }}</h2>
+{% if eleves %}
+    <div class="table-responsive">
+        <table class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Identifiant</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Tiers Temps</th>
+                    
+                </tr>
+            </thead>
+            {% for eleve in eleves %}
+                <tr>
+                    <td><a href="/eleves/{{ eleve.id }}">{{ eleve.id }}</a></td>
+                    <td>{{ eleve.nom }}</td>
+                    <td>{{ eleve.prenom }}</td>
+                    <td>{{ eleve.tierstemps }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-warning">Aucun eleve trouvé.</div>
+{% endif %}   
+{% endblock %}

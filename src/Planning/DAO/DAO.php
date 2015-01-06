@@ -1,6 +1,6 @@
 <?php
 
-namespace MoviesMarket\DAO;
+namespace Planning\DAO;
 
 use Doctrine\DBAL\Connection;
 

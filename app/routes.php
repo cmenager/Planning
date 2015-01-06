@@ -16,5 +16,5 @@ $app->get('/eleves/{id}', function($id) use ($app) {
 // List of all drugs
 $app->get('/eleves/', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
-    return $app['twig']->render('drugs.html.twig', array('eleves' => $eleves));
+    return $app['twig']->render('eleves.html.twig', array('eleves' => $eleves));
 });

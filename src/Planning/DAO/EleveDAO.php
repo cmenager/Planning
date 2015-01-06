@@ -4,8 +4,9 @@ namespace Planning\DAO;
 
 use Planning\Domain\Eleve;
 
-class EleveDAO extends DAO {
-
+class EleveDAO extends DAO 
+{
+    
     // <editor-fold defaultstate="collapsed" desc="Trouver un eleve par identifiant : (find($id))"> 
     /**
      * Returns the eleve matching a given id.
