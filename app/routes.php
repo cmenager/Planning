@@ -22,13 +22,17 @@ $app->get('/eleves/', function() use ($app) {
 
 // Search form for eleves
 $app->get('/eleves/search/', function() use ($app) {
-    $$classes = $app['dao.classe']->findAll();
+    $classes = $app['dao.classe']->findAll();
     return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes));
 });
 
-// Results page for drugs
+// Results page for eleve
 $app->post('/eleves/results/', function(Request $request) use ($app) {
     $classeId = $request->request->get('classe');
     $eleves = $app['dao.eleve']->findAllByClasse($classeId);
     return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
 });
+
+
+
+
