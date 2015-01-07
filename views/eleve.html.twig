@@ -1,36 +1,42 @@
 {% extends "layout.html.twig" %}
 {% set eleveMenu = true %}
 
-{% block title %}{{ eleve.nom }} {{ eleve.prenom }}{% endblock %}
+    {% block title %}{{ eleve.nom }} {{ eleve.prenom }}{% endblock %}
 
-{% block content %}
-<h2 class="text-center">{{ block('title') }}</h2>
-<div class="well">
-    <form class="form-horizontal" role="form">
-        <div class="form-group">
-            <label class="col-sm-5 control-label">Identifiant</label>
-            <div class="col-sm-7">
-                <p class="form-control-static">{{ eleve.id }}</p>
-            </div>
+    {% block content %}
+        <h2 class="text-center">{{ block('title') }}</h2>
+        <div class="well">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Identifiant</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.id }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Classe</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static">{{ eleve.classe.libelle }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Nom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.nom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Prenom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.prenom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Tiers temps</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.tierstemps }}</p>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label class="col-sm-5 control-label">Nom</label>
-            <div class="col-sm-7">
-                <p class="form-control-static">{{ eleve.nom }}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-5 control-label">Prenom</label>
-            <div class="col-sm-7">
-                <p class="form-control-static">{{ eleve.prenom }}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-5 control-label">Tiers temps</label>
-            <div class="col-sm-7">
-                <p class="form-control-static">{{ eleve.tierstemps }}</p>
-            </div>
-        </div>
-    </form>
-</div>
-{% endblock %}
+    {% endblock %}

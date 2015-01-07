@@ -108,7 +108,7 @@ class StringUtilTest extends \PHPUnit_Framework_TestCase
             array('pianos', 'piano'),
             array('plateaux', 'plateau'),
             array('poppies', 'poppy'),
-            array('prices', array('prex', 'price', 'price')),
+            array('prices', array('prex', 'prix', 'price')),
             array('quizzes', 'quiz'),
             array('radii', 'radius'),
             array('roofs', 'roof'),

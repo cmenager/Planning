@@ -9,9 +9,10 @@
     <div class="table-responsive">
         <table class="table table-hover table-condensed">
             <thead>
-                <tr>                   
+                <tr>                       
                     <th>Nom</th>
                     <th>Prénom</th>
+                    <th>Classe</th>
                     <th>Tiers Temps</th>
                     
                 </tr>
@@ -20,6 +21,7 @@
                 <tr>
                     <td><a href="/eleves/{{ eleve.id }}">{{ eleve.nom }}</a></td>
                     <td>{{ eleve.prenom }}</td>
+                    <td>{{ eleve.classe.libelle }}</td>
                     <td>{{ eleve.tierstemps }}</td>
                 </tr>
             {% endfor %}

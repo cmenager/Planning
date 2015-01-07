@@ -21,8 +21,13 @@ $app->register(new Silex\Provider\ValidatorServiceProvider());
 
 // Register services.
 $app['dao.eleve'] = $app->share(function ($app) {
-    $elevesDAO = new Planning\DAO\EleveDAO($app['db']);
-    return $elevesDAO; 
+    $eleveDAO = new Planning\DAO\EleveDAO($app['db']);
+    $eleveDAO->setClasseDAO($app['dao.classe']);
+    return $eleveDAO;
+});
+
+$app['dao.classe'] = $app->share(function ($app) {
+    return new Planning\DAO\ClasseDAO($app['db']);
 });
 
 

@@ -10,6 +10,13 @@ class Eleve
      * @var integer
      */
     private $id;
+    
+    /**
+     * classe id.
+     *
+     * @var \GSB\Domaine\Classe
+     */
+    private $classe;
 
     /**
      * nom.
@@ -64,6 +71,13 @@ class Eleve
         $this->tierstemps = $tierstemps;
     }
 
+    public function getClasse() {
+        return $this->classe;
+    }
+
+    public function setClasse($classe) {
+        $this->classe = $classe;
+    }
 
 
 }
