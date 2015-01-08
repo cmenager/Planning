@@ -40,5 +40,38 @@ $app['dao.role'] = $app->share(function ($app) {
 
 
 
+$app['dao.langue'] = $app->share(function ($app) {
+    $langueDAO = new Planning\DAO\LangueDAO($app['db']);
+    $langueDAO->setTypeDAO($app['dao.type']);
+    return $langueDAO;
+});
+$app['dao.type'] = $app->share(function ($app) {
+    return new Planning\DAO\TypeDAO($app['db']);
+});
+
+$app['dao.salle'] = $app->share(function ($app) {
+    return new Planning\DAO\SalleDAO($app['db']);
+});
 
 
+$app['dao.heurepassage'] = $app->share(function ($app) {
+    return new Planning\DAO\HeurepassageDAO($app['db']);
+});
+
+$app['dao.epreuve'] = $app->share(function ($app) {
+    $epreuveDAO = new Planning\DAO\EpreuveDAO($app['db']);
+    $epreuveDAO->setEleveDAO($app['dao.eleve']);
+    $epreuveDAO->setHeurepassageDAO($app['dao.heurepassage']);
+    $epreuveDAO->setLangueDAO($app['dao.langue']);
+    $epreuveDAO->setProfesseurDAO($app['dao.professeur']);
+    $epreuveDAO->setSalleDAO($app['dao.salle']);
+    return $epreuveDAO;
+});
+
+$app['dao.enseigne'] = $app->share(function ($app) {
+    $enseigneDAO = new Planning\DAO\EnseigneDAO($app['db']);
+    $enseigneDAO->setEleveDAO($app['dao.eleve']);
+    $enseigneDAO->setLangueDAO($app['dao.langue']);
+    $enseigneDAO->setProfesseurDAO($app['dao.professeur']);
+    return $enseigneDAO;
+});
