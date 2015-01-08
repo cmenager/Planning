@@ -7,7 +7,7 @@ use Planning\Domain\Eleve;
 class EleveDAO extends DAO {
 
     /**
-     * @var \GSB\DAO\ClasseDAO
+     * @var \Planning\DAO\ClasseDAO
      */
     private $classeDAO;
 
@@ -25,6 +25,7 @@ class EleveDAO extends DAO {
      */
     public function find($id) {
         $sql = "select * from eleve where ID_ELEVE=?";
+        
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -85,7 +86,7 @@ class EleveDAO extends DAO {
      * @return array The list of drugs.
      */
     public function findAllByNom($nomId) {
-        $sql = "select * from eleve where NOM_ELEVE=? order by NOM_ELEVE";
+        $sql = "select * from eleve where NOM_ELEVE=? order by ID_ELEVE";
         $result = $this->getDb()->fetchAll($sql, array($nomId));
 
         // Convert query result to an array of domain objects

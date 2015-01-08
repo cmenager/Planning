@@ -2,6 +2,7 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Planning\Domain\Eleve;
+use Planning\Domain\Classe;
 
 // Home page
 $app->get('/', function () use ($app) {
@@ -32,7 +33,6 @@ $app->post('/eleves/results/', function(Request $request) use ($app) {
     $eleves = $app['dao.eleve']->findAllByClasse($classeId);
     return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
 });
-
 
 
 
