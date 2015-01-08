@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+
 use Planning\Domain\Professeur;
 
 class ProfesseurDAO extends DAO implements UserProviderInterface {
@@ -128,7 +129,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
         $professeur = new Professeur();
         $professeur->setId($row['ID_PROFESSEUR']);
         $professeur->setNom($row['NOM_PROFESSEUR']);
-        $professeur->setPrenom($row['PRENOM_PROFFESSEUR']);
+        $professeur->setPrenom($row['PRENOM_PROFESSEUR']);
         $professeur->setUsername($row['LOGIN_PROFESSEUR']);
         $professeur->setPassword($row['PWD_PROFESSEUR']);
         $professeur->setSalt($row['SALT_PROFESSEUR']);

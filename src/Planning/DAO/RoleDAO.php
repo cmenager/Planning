@@ -2,7 +2,7 @@
 
 namespace Planning\DAO;
 
-use Planning\Domain\Professeur;
+use Planning\Domain\Role;
 
 class RoleDAO extends DAO {
     
@@ -55,7 +55,7 @@ class RoleDAO extends DAO {
      * @return \Planning\Domain\Role
      */
     protected function buildDomainObject($row) {
-        $role = new Classe();
+        $role = new Role();
         $role->setId($row['ID_ROLE']);
         $role->setLibelle($row['LIBELLE_ROLE']);
         

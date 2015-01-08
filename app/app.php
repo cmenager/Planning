@@ -18,7 +18,6 @@ $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
 
-
 // Register services.
 $app['dao.eleve'] = $app->share(function ($app) {
     $eleveDAO = new Planning\DAO\EleveDAO($app['db']);

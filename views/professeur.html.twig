@@ -1,0 +1,53 @@
+{% extends "layout.html.twig" %}
+{% set profMenu = true %}
+
+    {% block title %}{{ professeur.nom }} {{ professeur.prenom }}{% endblock %}
+
+    {% block content %}
+        <h2 class="text-center">{{ block('title') }}</h2>
+        <div class="well">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Identifiant</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.id }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Nom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.nom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Prénom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.prenom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Role</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.role.libelle }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">UserName</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.username }}</p>
+                    </div>
+                </div><div class="form-group">
+                    <label class="col-sm-5 control-label">Password</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.password }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Salt</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ professeur.salt }}</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endblock %}

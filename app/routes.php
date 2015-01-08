@@ -8,7 +8,9 @@ use Planning\Domain\Classe;
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig');
 });
-
+//----------------------------------------------------------------------//
+//------------------------- Routes for eleves---------------------------//
+//----------------------------------------------------------------------//
 // Details for a eleve
 $app->get('/eleves/{id}', function($id) use ($app) {
     $eleve = $app['dao.eleve']->find($id);
@@ -34,5 +36,18 @@ $app->post('/eleves/results/', function(Request $request) use ($app) {
     return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
 });
 
+//----------------------------------------------------------------------//
+//------------------------- Routes for professeurs---------------------------//
+//----------------------------------------------------------------------//
+// Details for a professeur
+$app->get('/professeurs/{id}', function($id) use ($app) {
+    $professeur = $app['dao.professeur']->find($id);
+    return $app['twig']->render('professeur.html.twig', array('professeur' => $professeur));
+});
 
+// List of all professeur
+$app->get('/professeurs/', function() use ($app) {
+    $professeurs = $app['dao.professeur']->findAll();
+    return $app['twig']->render('professeurs.html.twig', array('professeurs' => $professeurs));
+});
 
