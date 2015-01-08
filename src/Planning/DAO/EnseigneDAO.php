@@ -2,9 +2,9 @@
 
 namespace Planning\DAO;
 
-use Planning\Domain\Epreuve;
+use Planning\Domain\Enseigne;
 
-class EpreuveDAO extends DAO {
+class EnseigneDAO extends DAO {
 
     /**
      * @var \Planning\DAO\EleveDAO
@@ -13,15 +13,6 @@ class EpreuveDAO extends DAO {
 
     public function setEleveDAO($eleveDAO) {
         $this->eleveDAO = $eleveDAO;
-    }
-
-    /**
-     * @var \Planning\DAO\HeurepassageDAO
-     */
-    private $heurepassageDAO;
-
-    public function setHeurepassageDAO($heurepassageDAO) {
-        $this->heurepassageDAO = $heurepassageDAO;
     }
 
     /**
@@ -42,16 +33,7 @@ class EpreuveDAO extends DAO {
         $this->professeurDAO = $professeurDAO;
     }
 
-    /**
-     * @var \Planning\DAO\Professeur
-     */
-    private $salleDAO;
-
-    public function setSalleDAO($salleDAO) {
-        $this->salleDAO = $salleDAO;
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Trouver un epreuve par identifiant : (find($id))"> 
+    // <editor-fold defaultstate="collapsed" desc="Trouver un enseigne par identifiant : (find($id))"> 
     /**
      * Returns the eleve matching a given id.
      *
@@ -60,14 +42,14 @@ class EpreuveDAO extends DAO {
      * @return \Planning\Domain\Eleve|throws an exception if no eleve is found.
      */
     public function find($id) {
-        $sql = "select * from epreuve where ID_ELEVE=? AND ID_HEURE_PASSAGE=? AND DATE_PASSAGE=?";
+        $sql = "select * from enseigne where ID_ELEVE=? AND ID_PROFESSEUR=? AND ID_LANGUE=?";
 
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No epreuve found for id " . $id);
+            throw new \Exception("No enseigne found for id " . $id);
     }
 
 // </editor-fold>
@@ -78,20 +60,21 @@ class EpreuveDAO extends DAO {
      * @return array The list of all eleves.
      */
     public function findAll() {
-        $sql = "select * from epreuve where DATE_PASSAGE=?";
+        $sql = "select * from epreuve where ID_ELEVE=? AND ID_PROFESSEUR=? AND ID_LANGUE=?";
         $result = $this->getDb()->fetchAll($sql);
 
         // Converts query result to an array of domain objects
-        $epreuves = array();
+        $enseignes = array();
         foreach ($result as $row) {
-            $epreuveId = $row['DATE_PASSAGE'];
-            $epreuves[$epreuveId] = $this->buildDomainObject($row);
+            $enseigneId = $row['ID_ELEVE'];
+            ///DEMANDE POUR LES AUTRES id_prof, id_langue
+            $enseignes[$enseigneId] = $this->buildDomainObject($row);
         }
-        return $epreuves;
+        return $enseignes;
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Cree un epreuve : buildDomainObject($row) ">
+    // <editor-fold defaultstate="collapsed" desc="Cree un enseigne : buildDomainObject($row) ">
     /**
      * Creates a Eleve instance from a DB query result row.
      *
@@ -103,28 +86,18 @@ class EpreuveDAO extends DAO {
         $eleveId = $row['ID_ELEVE'];
         $eleve = $this->eleveDAO->find($eleveId);
 
-        $heurepassageId = $row['ID_HEURE_PASSAGE'];
-        $heurepassage = $this->heurepassageDAO->find($heurepassageId);
-
         $langueId = $row['ID_LANGUE'];
         $langue = $this->langueDAO->find($langueId);
 
         $professeurId = $row['ID_PROFESSEUR'];
         $professeur = $this->professeurDAO->find($professeurId);
 
-        $salleId = $row['ID_SALLE'];
-        $salle = $this->salleDAO->find($salleId);
+        $enseigne = new Enseigne();
+        $enseigne->setEleve($eleve);
+        $enseigne->setLangue($langue);
+        $enseigne->setProfesseur($professeur);
 
-        $epreuve = new Epreuve();
-        $epreuve->setDatepassage($row['DATE_PASSAGE']);
-
-        $epreuve->setEleve($eleve);
-        $epreuve->setHeurepassage($heurepassage);
-        $epreuve->setLangue($langue);
-        $epreuve->setProfesseur($professeur);
-        $epreuve->setSalle($salle);
-        
-        return $epreuve;
+        return $enseigne;
     }
 
 // </editor-fold>
