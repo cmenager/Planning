@@ -14,7 +14,7 @@ class Eleve
     /**
      * classe id.
      *
-     * @var \GSB\Domaine\Classe
+     * @var \planning\Domaine\Classe
      */
     private $classe;
 
