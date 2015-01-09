@@ -81,6 +81,28 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
     }
 
     // </editor-fold>
+    //  // // <editor-fold defaultstate="collapsed" desc="Trouver les professeurs par nom : findAllByNom()"> 
+    /*
+     * Returns the list of all drugs for a given family, sorted by trade name.
+     *
+     * @param integer $familyDd The family id.
+     *
+     * @return array The list of drugs.
+     */
+    public function findAllByNom($nomId) {
+        $sql = "select * from professeur where NOM_PROFESSEUR=? order by ID_PROFESSEUR";
+        $result = $this->getDb()->fetchAll($sql, array($nomId));
+
+        // Convert query result to an array of domain objects
+        $professeurs = array();
+        foreach ($result as $row) {
+            $professeurId = $row['ID_PROFESSEUR'];
+            $professeurs[$professeurId] = $this->buildDomainObject($row);
+        }
+        return $professeurs;
+    }
+
+// </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="loadUserByUsername($username)"> 
     /**
      * {@inheritDoc}

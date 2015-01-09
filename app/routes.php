@@ -58,3 +58,24 @@ $app->get('/professeurs/', function() use ($app) {
     return $app['twig']->render('professeurs.html.twig', array('professeurs' => $professeurs));
 });
 
+
+// Search form for professeurs
+$app->get('/professeurssearch/', function() use ($app) {
+    $roles = $app['dao.role']->findAll();
+    return $app['twig']->render('professeurs_search.html.twig', array('roles' => $roles));
+});
+
+
+// Results page for professeurss
+$app->post('/professeurs/results/', function(Request $request) use ($app) {
+    if ($request->request->has('nom')) {
+// Advanced search by nom
+        $nom = $request->request->get('nom');
+        $professeurs = $app['dao.professeur']->findAllByNom($nom);
+    } else {
+// Simple search by classe
+        $roleId = $request->request->get('role');
+        $professeurs = $app['dao.professeur']->findAllByRole($roleId);
+    }
+    return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
+});
