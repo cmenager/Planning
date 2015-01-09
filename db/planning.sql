@@ -146,7 +146,6 @@ INSERT INTO `heurepassage` (`ID_HEURE_PASSAGE`, `HEURE_DEBUT`, `HEURE_FIN`) VALU
 
 CREATE TABLE IF NOT EXISTS `langue` (
   `ID_LANGUE` int(11) NOT NULL,
-  `ID_TYPE` int(11) NOT NULL,
   `LIBELLE_LANGUE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -154,11 +153,16 @@ CREATE TABLE IF NOT EXISTS `langue` (
 -- Contenu de la table `langue`
 --
 
-INSERT INTO `langue` (`ID_LANGUE`, `ID_TYPE`, `LIBELLE_LANGUE`) VALUES
-(1, 1, 'Espagnol'),
-(2, 2, 'Anglais'),
-(3, 3, 'Italien'),
-(4, 4, 'Allemand');
+INSERT INTO `langue` (`ID_LANGUE`, `LIBELLE_LANGUE`) VALUES
+(1, 'Espagnol LV1'),
+(4, 'Espagnol LV2'),
+(5, 'Espagnol LV3'),
+(2, 'Anglais LV1'),
+(6, 'Anglais LV2'),
+(7, 'Anglais LV3'),
+(3, 'Allemand LV1'),
+(8, 'Allemand LV2'),
+(9, 'Allemand LV3');
 
 -- --------------------------------------------------------
 
@@ -230,25 +234,6 @@ INSERT INTO `salle` (`ID_SALLE`, `LIBELLE_SALLE`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `type`
---
-
-CREATE TABLE IF NOT EXISTS `type` (
-  `ID_TYPE` int(11) NOT NULL,
-  `LIBELLE_TYPE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `type`
---
-
-INSERT INTO `type` (`ID_TYPE`, `LIBELLE_TYPE`) VALUES
-(1, 'LV1'),
-(2, 'LV2'),
-(3, 'LV3'),
-(4, 'LV4');
-
---
 -- Index pour les tables exportées
 --
 
@@ -283,12 +268,6 @@ ALTER TABLE `heurepassage`
  ADD PRIMARY KEY (`ID_HEURE_PASSAGE`);
 
 --
--- Index pour la table `langue`
---
-ALTER TABLE `langue`
- ADD PRIMARY KEY (`ID_LANGUE`), ADD KEY `FK_LANGUE_TYPE` (`ID_TYPE`);
-
---
 -- Index pour la table `professeur`
 --
 ALTER TABLE `professeur`
@@ -306,11 +285,6 @@ ALTER TABLE `role`
 ALTER TABLE `salle`
  ADD PRIMARY KEY (`ID_SALLE`);
 
---
--- Index pour la table `type`
---
-ALTER TABLE `type`
- ADD PRIMARY KEY (`ID_TYPE`);
 
 --
 -- Contraintes pour les tables exportées
@@ -340,11 +314,6 @@ ADD CONSTRAINT `FK_EPREUVE_LANGUE` FOREIGN KEY (`ID_LANGUE`) REFERENCES `langue`
 ADD CONSTRAINT `FK_EPREUVE_PROFESSEUR` FOREIGN KEY (`ID_PROFESSEUR`) REFERENCES `professeur` (`ID_PROFESSEUR`),
 ADD CONSTRAINT `FK_EPREUVE_SALLE` FOREIGN KEY (`ID_SALLE`) REFERENCES `salle` (`ID_SALLE`);
 
---
--- Contraintes pour la table `langue`
---
-ALTER TABLE `langue`
-ADD CONSTRAINT `FK_LANGUE_TYPE` FOREIGN KEY (`ID_TYPE`) REFERENCES `type` (`ID_TYPE`);
 
 --
 -- Contraintes pour la table `professeur`
