@@ -85,7 +85,7 @@ class EleveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByNom($nomId) {
+    public function findAllByNomAndPrenom($nomId) {
         $sql = "select * from eleve where NOM_ELEVE=? order by ID_ELEVE";
         $result = $this->getDb()->fetchAll($sql, array($nomId));
 
