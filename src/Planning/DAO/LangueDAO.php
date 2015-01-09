@@ -6,14 +6,6 @@ use Planning\Domain\Langue;
 
 class LangueDAO extends DAO {
 
-    /**
-     * @var \Planning\DAO\LangueDAO
-     */
-    private $langueDAO;
-
-    public function setLangueDAO($langueDAO) {
-        $this->langueDAO = $langueDAO;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="Trouver un langue par identifiant : (find($id))"> 
     /**
@@ -64,14 +56,9 @@ class LangueDAO extends DAO {
      * @return \Planning\Domain\Eleve
      */
     protected function buildDomainObject($row) {
-        $typeId = $row['ID_TYPE'];
-        $type = $this->classeDAO->find($typeId);
-
-
         $langue = new Langue();
         $langue->setId($row['ID_LANGUE']);
         $langue->setLibelle($row['LIBELLE_LANGUE']);
-        $langue->setType($type);
 
         return $langue;
     }
