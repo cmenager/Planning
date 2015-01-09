@@ -1,0 +1,61 @@
+{% extends "layout.html.twig" %}
+{% set ereuveMenu = true %}
+
+    {% block title %}{{ epreuve.eleve.nom }} {{ epreuve.eleve.prenom }}{% endblock %}
+
+    {% block content %}
+        <h2 class="text-center">{{ block('title') }}</h2>
+        <div class="well">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Identifiant</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.eleve.id }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Nom prénom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.eleve.nom }} {{ epreuve.eleve.prenom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Date de passage</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.datepassage }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Heure de debut</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.heurepassage.heuredeb }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Heure de fin</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.heurepassage.heurefin }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Langue</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.langue.libelle }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Professeur</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.professeur.nom }} {{ epreuve.professeur.prenom }}</p>
+                    </div>
+                </div>
+                    <div class="form-group">
+                    <label class="col-sm-5 control-label">Salle de l'examen</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ epreuve.salle.libelle}}</p>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    {% endblock %}

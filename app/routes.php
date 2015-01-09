@@ -44,7 +44,7 @@ $app->post('/eleves/results/', function(Request $request) use ($app) {
 });
 
 //----------------------------------------------------------------------//
-//------------------------- Routes for professeurs---------------------------//
+//------------------------- Routes for professeurs----------------------//
 //----------------------------------------------------------------------//
 // Details for a professeur
 $app->get('/professeurs/{id}', function($id) use ($app) {
@@ -78,4 +78,41 @@ $app->post('/professeurs/results/', function(Request $request) use ($app) {
         $professeurs = $app['dao.professeur']->findAllByRole($roleId);
     }
     return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
+});
+
+//----------------------------------------------------------------------//
+//------------------------- Routes for Epreuves-------------------------//
+//----------------------------------------------------------------------//
+// Details for a epreuve
+$app->get('/epreuves/{id}', function($id) use ($app) {
+    $epreuve= $app['dao.epreuve']->find($id);
+    return $app['twig']->render('epreuve.html.twig', array('epreuve' => $epreuve));
+});
+
+// List of all epreuves
+$app->get('/epreuves/', function() use ($app) {
+    $epreuves = $app['dao.epreuve']->findAll();
+    return $app['twig']->render('epreuves.html.twig', array('epreuves' => $epreuves));
+});
+
+// Search form for epreuves
+$app->get('/epreuvessearch/', function() use ($app) {
+    $eleves = $app['dao.eleve']->findAll();
+    $professeurs = $app['dao.professeur']->findAll();
+    return $app['twig']->render('epreuves_search.html.twig', array('eleves' => $eleves, 'professeurs' => $professeurs));
+});
+
+
+// Results page for epreuves
+$app->post('/epreuves/results/', function(Request $request) use ($app) {
+    if ($request->request->has('nom')) {
+// Advanced search by nom
+        $nom = $request->request->get('nom');
+        $epreuves = $app['dao.epreuve']->findAllByNom($nom);
+    } else {
+// Simple search by classe
+        $professeurId = $request->request->get('professeur');
+        $epreuves = $app['dao.epreuve']->findAllByProfesseur($professeurId);
+    }
+    return $app['twig']->render('epreuves_results.html.twig', array('epreuves' => $epreuves));
 });

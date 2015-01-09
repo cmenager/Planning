@@ -38,15 +38,8 @@ $app['dao.role'] = $app->share(function ($app) {
     return new Planning\DAO\RoleDAO($app['db']);
 });
 
-
-
 $app['dao.langue'] = $app->share(function ($app) {
-    $langueDAO = new Planning\DAO\LangueDAO($app['db']);
-    $langueDAO->setTypeDAO($app['dao.type']);
-    return $langueDAO;
-});
-$app['dao.type'] = $app->share(function ($app) {
-    return new Planning\DAO\TypeDAO($app['db']);
+    return new Planning\DAO\LangueDAO($app['db']);
 });
 
 $app['dao.salle'] = $app->share(function ($app) {

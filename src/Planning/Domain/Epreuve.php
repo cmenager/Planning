@@ -74,27 +74,27 @@ class Epreuve {
         return $this->salle;
     }
 
-    public function setEleve(\planning\Domaine\Eleve $eleve) {
+    public function setEleve($eleve) {
         $this->eleve = $eleve;
     }
 
-    public function setDatepassage(date $datepassage) {
+    public function setDatepassage($datepassage) {
         $this->datepassage = $datepassage;
     }
 
-    public function setHeurepassage(\planning\Domaine\Heurepassage $heurepassage) {
+    public function setHeurepassage($heurepassage) {
         $this->heurepassage = $heurepassage;
     }
 
-    public function setLangue(\planning\Domaine\Langue $langue) {
+    public function setLangue($langue) {
         $this->langue = $langue;
     }
 
-    public function setProfesseur(\planning\Domaine\Professeur $professeur) {
+    public function setProfesseur($professeur) {
         $this->professeur = $professeur;
     }
 
-    public function setSalle(\planning\Domaine\Salle $salle) {
+    public function setSalle($salle) {
         $this->salle = $salle;
     }
 
