@@ -1,0 +1,180 @@
+{% extends "layout.html.twig" %}
+{% set adminMenu = true %}
+
+{% block title %}Administration{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">{{ block('title') }}</h2>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %} 
+    <!-- Tableau pour acceder les outils dans l'administration -->
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+            <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#eleves" data-toggle="tab">Eleves</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- Fin tableau pour acceder les outils dans l'administration -->
+
+    <div class="tab-content">
+        <div class="tab-pane fade in active adminTable" id="movies">
+            <!--Table où il y a tous les films a modifier ou a supprimer ou a ajouter-->
+            {% if eleves %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                            <tr>                              
+                                <th>id</th>
+                                <th>nom</th>
+                                <th></th>  <!-- Actions column -->
+                            </tr>
+                        </thead>
+                        {% for eleve in eleves %}
+                            <tr>
+                                <td><a class="eleveTitle" href="/movie/{{ movie.id }}">{{ movie.title }}</a></td>
+                                
+                                <td>
+                                    <a href="/admin/movie/{{ movie.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#movieDialog{{ movie.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <div class="modal fade" id="movieDialog{{ movie.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Voulez-vous vraiment supprimer ce film ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="/admin/movie/{{ movie.id }}/delete" class="btn btn-danger">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            {% else %}
+                <div class="alert alert-warning">Aucun film trouvé.</div>
+            {% endif %}     
+            <a href="/admin/movie/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un film</button></a>
+            <!--Fin table où il y a tous les films a modifier ou a supprimer ou a ajouter-->
+        </div>
+
+
+        <div class="tab-pane fade  adminTable" id="genres">
+            <!--Table où il y a tous les genres a modifier ou a supprimer ou a ajouter-->
+            {% if genres %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Genres</th>
+                                <th></th>  <!-- Actions column -->
+                            </tr>
+                        </thead>
+                        {% for genre in genres %}
+                            <tr>
+                                <td>{{ genre.name }}</a></td>
+                                <td>
+                                    <a href="/admin/genre/{{ genre.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#movieDialog{{ genre.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <div class="modal fade" id="genreDialog{{ genre.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Voulez-vous vraiment supprimer ce genre ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="/admin/genre/{{ genre.id }}/delete" class="btn btn-danger">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">Aucun genre trouvé.</div>
+            {% endif %}
+            <a href="/admin/genre/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un genre</button></a>
+            <!--Fin table où il y a tous les genres a modifier ou a supprimer ou a ajouter-->
+        </div>
+
+
+
+        <div class="tab-pane fade adminTable" id="users">
+            <!--Table où il y a tous les utilisateurs a modifier ou a supprimer ou a ajouter-->
+            {% if users %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th></th>  <!-- Actions column -->
+                            </tr>
+                        </thead>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</a></td>
+                                <td>
+                                    {% if user.role == 'ROLE_ADMIN' %}
+                                        Admin
+                                    {% else %}
+                                        User
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="/admin/user/{{ user.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#userDialog{{ user.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <div class="modal fade" id="userDialog{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Do you really want to delete this user ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <a href="/admin/user/{{ user.id }}/delete" class="btn btn-danger">Confirm</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">No users found.</div>
+            {% endif %}
+            <a href="/admin/user/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add user</button></a>
+        <!--Fin table où il y a tous les utilisateurs a modifier ou a supprimer ou a ajouter-->
+        </div>
+    </div>
+{% endblock %}

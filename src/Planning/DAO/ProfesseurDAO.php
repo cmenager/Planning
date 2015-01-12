@@ -6,7 +6,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-
 use Planning\Domain\Professeur;
 
 class ProfesseurDAO extends DAO implements UserProviderInterface {
@@ -116,6 +115,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
         else
             throw new UsernameNotFoundException(sprintf('professeur "%s" not found.', $username));
     }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="refreshUser(UserInterface $user)"> 
     /**
@@ -128,6 +128,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
         }
         return $this->loadUserByUsername($user->getUsername());
     }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="supportsClass($class)"> 
     /**
@@ -136,6 +137,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
     public function supportsClass($class) {
         return 'Planning\Domain\Professeur' === $class;
     }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="buildDomainObject($row)"> 
     /**
@@ -159,5 +161,6 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
 
         return $professeur;
     }
+
     // </editor-fold>
 }
