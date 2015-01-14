@@ -172,7 +172,7 @@ INSERT INTO `langue` (`ID_LANGUE`, `LIBELLE_LANGUE`) VALUES
 
 CREATE TABLE IF NOT EXISTS `professeur` (
   `ID_PROFESSEUR` int(11) NOT NULL,
-  `LIBELLE_ROLE` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ROLE` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `NOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `PRENOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `LOGIN_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `professeur` (
 -- Contenu de la table `professeur`
 --
 
-INSERT INTO `professeur` (`ID_PROFESSEUR`, `LIBELLE_ROLE`, `NOM_PROFESSEUR`, `PRENOM_PROFESSEUR`, `LOGIN_PROFESSEUR`, `PWD_PROFESSEUR`, `SALT_PROFESSEUR`) VALUES
+INSERT INTO `professeur` (`ID_PROFESSEUR`, `ROLE`, `NOM_PROFESSEUR`, `PRENOM_PROFESSEUR`, `LOGIN_PROFESSEUR`, `PWD_PROFESSEUR`, `SALT_PROFESSEUR`) VALUES
 (1, 'ROLE_PROFESSEUR', 'Pluchot', 'Daniel', 'p.dan@me.fr', 'secret', NULL),
 (2, 'ROLE_ADMIN', 'Boissel', 'Alain', 'boissel.alain@me.fr', 'adm', NULL),
 (3, 'ROLE_PROFESSEUR', 'Riamon', 'Clemence', 'r.clem@me.fr', 'rclem', NULL),

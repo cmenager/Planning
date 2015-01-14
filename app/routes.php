@@ -2,7 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-
 // Home page
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig');
@@ -12,11 +11,20 @@ $app->get('/', function () use ($app) {
 // Login form
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
-        'error'         => $app['security.last_error']($request),
-        'last_username' => $app['session']->get('_security.last_username'),
+                'error' => $app['security.last_error']($request),
+                'last_username' => $app['session']->get('_security.last_username'),
     ));
 })->bind('login');  // named route so that path('login') works in Twig templates 
 
+
+// Admin zone
+$app->get('/admin', function() use ($app) {
+    $eleves = $app['dao.eleve']->findAll();
+    $professeurs = $app['dao.professeur']->findAll();
+    return $app['twig']->render('admin.html.twig', array(
+        'eleves' => $eleves,
+        'professeurs' => $professeurs));
+});
 
 //----------------------------------------------------------------------//
 //------------------------- Routes for eleves---------------------------//
@@ -41,14 +49,16 @@ $app->get('/elevessearch/', function() use ($app) {
 
 // Results page for eleve
 $app->post('/eleves/results/', function(Request $request) use ($app) {
-    if ($request->request->has('nom')) {
+    if ($request->request->has('dllEleve')) {
 // Advanced search by nom
-        $nom = $request->request->get('nom');
-        $eleves = $app['dao.eleve']->findAllByNom($nom);
+        $eleveId = $request->request->get('dllEleve');
+        $eleves = $app['dao.eleve']->findAllByNom($eleveId);
     } else {
+        if ($request->request->has('dllClasse')) {
 // Simple search by classe
-        $classeId = $request->request->get('classe');
-        $eleves = $app['dao.eleve']->findAllByClasse($classeId);
+            $classeId = $request->request->get('dllClasse');
+            $eleves = $app['dao.eleve']->findAllByClasse($classeId);
+        }
     }
     return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
 });
@@ -83,9 +93,11 @@ $app->post('/professeurs/results/', function(Request $request) use ($app) {
         $ddlProfs = $request->request->get('ddlProfs');
         $professeurs = $app['dao.professeur']->findAllByNom($ddlProfs);
     } else {
+        if ($request->request->has('ddlRoles')) {
 // Simple search by classe
-        $role = $request->request->get('ddlRoles');
-        $professeurs = $app['dao.professeur']->findAllByRole($role);
+            $ddlRoles = $request->request->get('ddlRoles');
+            $professeurs = $app['dao.professeur']->findAllByRole($ddlRoles);
+        }
     }
     return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
 });
@@ -95,7 +107,7 @@ $app->post('/professeurs/results/', function(Request $request) use ($app) {
 //----------------------------------------------------------------------//
 // Details for a epreuve
 $app->get('/epreuves/{id}', function($id) use ($app) {
-    $epreuve= $app['dao.epreuve']->find($id);
+    $epreuve = $app['dao.epreuve']->find($id);
     return $app['twig']->render('epreuve.html.twig', array('epreuve' => $epreuve));
 });
 

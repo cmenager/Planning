@@ -17,7 +17,7 @@
                     <br>
                     <form class="form-horizontal" role="form" action="/professeurs/results/" method="post">
                         <div class="form-group">
-                            <label class="col-sm-3 col-sm-offset-2 control-label">Role</label>
+                            <label class="col-sm-3 col-sm-offset-2 control-label">Nom</label>
                             <div class="col-sm-5 col-md-4">
                                 <select class="form-control" name="ddlProfs">
                                     {% for professeur in professeurs %}
@@ -39,8 +39,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Role</label>
                             <div class="col-sm-5 col-md-4">
-                                <input name="ddlRoles" type="text" class="form-control" autofocus>
-                                ROLE_PROFESSEUR or ROLE_ADMIN
+                                <select class="form-control" name="ddlRole">
+                                    {% for professeur in professeurs %}
+                                        <option value="{{ professeur.id }}">{{ professeur.role }} </option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>     
                         <div class="form-group">

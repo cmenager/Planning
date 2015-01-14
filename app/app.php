@@ -18,20 +18,21 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
-        'login' => array(
-            'pattern' => '^/login$',
-            'anonymous' => true
-            ),
         'secured' => array(
             'pattern' => '^.*$',
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => $app->share(function () use ($app) {
                 return new Planning\DAO\ProfesseurDAO($app['db']);
-                
             }),
-            ),
         ),
+        'security.role_hierarchy' => array(
+            'ROLE_ADMIN' => array('ROLE_PROFESSEUR'),
+        ),
+        'security.access_rules' => array(
+            array('^/admin', 'ROLE_ADMIN'),
+        ),
+    ),
 ));
 
 // Register error handler
@@ -51,10 +52,23 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });
 
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $twig->addExtension(new Twig_Extensions_Extension_Text());
+    return $twig;
+}));
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+// Register JSON data decoder for JSON requests
+use Symfony\Component\HttpFoundation\Request;
+
+$app->before(function (Request $request) {
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+        $data = json_decode($request->getContent(), true);
+        $request->request->replace(is_array($data) ? $data : array());
+    }
+});
 
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
-$app->register(new Silex\Provider\ValidatorServiceProvider());
 
 
 // Register services.

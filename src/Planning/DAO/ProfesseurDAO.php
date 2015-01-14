@@ -58,7 +58,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
      * @return array The list of drugs.
      */
     public function findAllByRole($roleId) {
-        $sql = "select * from professeur where LIBELLE_ROLE=? ";
+        $sql = "select * from professeur where ROLE=? ";
         $result = $this->getDb()->fetchAll($sql, array($roleId));
 
         // Convert query result to an array of domain objects
@@ -141,7 +141,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
 
         $professeur = new Professeur();
         $professeur->setId($row['ID_PROFESSEUR']);
-        $professeur->setRole($row['LIBELLE_ROLE']);
+        $professeur->setRole($row['ROLE']);
         $professeur->setNom($row['NOM_PROFESSEUR']);
         $professeur->setPrenom($row['PRENOM_PROFESSEUR']);
         $professeur->setUsername($row['LOGIN_PROFESSEUR']);
