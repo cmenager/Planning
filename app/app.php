@@ -19,15 +19,14 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
         'secured' => array(
-            'pattern' => '^/',
-            'anonymous' => true,
+            'pattern' => '^.*$',
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => $app->share(function () use ($app) {
                 return new Planning\DAO\ProfesseurDAO($app['db']);
             }),
         ),
-    ),
+    )
 ));
 
 // Register error handler
@@ -65,12 +64,7 @@ $app['dao.classe'] = $app->share(function ($app) {
 
 
 $app['dao.professeur'] = $app->share(function ($app) {
-    $professeurDAO = new Planning\DAO\ProfesseurDAO($app['db']);
-    $professeurDAO->setRoleDAO($app['dao.role']);
-    return $professeurDAO;
-});
-$app['dao.role'] = $app->share(function ($app) {
-    return new Planning\DAO\RoleDAO($app['db']);
+    return new Planning\DAO\ProfesseurDAO($app['db']);
 });
 
 $app['dao.langue'] = $app->share(function ($app) {

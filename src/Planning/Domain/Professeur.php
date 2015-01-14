@@ -16,7 +16,7 @@ class Professeur implements UserInterface {
     /**
      * role id.
      *
-     * @var \Planning\Domaine\Role
+     * @var String
      */
     private $role;
 

@@ -1,13 +1,13 @@
 /* Header */
 #head { 
-    background:#181015 url(http://foundd.com/assets/1.0-b2968/ctx/images/landing/couch-landing.jpg) no-repeat; 
+    background:#181015 url(../images/couch-landing.jpg) no-repeat; 
     background-size: cover; min-height:520px; text-align: center; padding-top:240px; color:white; font-family:"Open sans", Helvetica, Arial; font-weight:300; }
 #hindex { 
     
     
 position: relative;
 z-index: -1;
-background: url('http://rack.1.mshcdn.com/media/ZgkyMDEzLzAxLzIzLzk2L0ZpbG1SZWVsLjBlODkzLmpwZwpwCXRodW1iCTk1MHg1MzQjCmUJanBn/feeeed58/70e/Film-Reel.jpg');
+background: url('../images/Film-Reel.jpg');
 background-size: cover;
 background-position: center top;
     

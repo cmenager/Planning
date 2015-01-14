@@ -10,3 +10,7 @@ body {
     text-align: center;
     
 }
+#errorPanel {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}

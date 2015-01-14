@@ -172,11 +172,11 @@ INSERT INTO `langue` (`ID_LANGUE`, `LIBELLE_LANGUE`) VALUES
 
 CREATE TABLE IF NOT EXISTS `professeur` (
   `ID_PROFESSEUR` int(11) NOT NULL,
-  `ID_ROLE` int(11) NOT NULL,
+  `LIBELLE_ROLE` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `NOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `PRENOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `LOGIN_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `PWD_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `PWD_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SALT_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -184,31 +184,12 @@ CREATE TABLE IF NOT EXISTS `professeur` (
 -- Contenu de la table `professeur`
 --
 
-INSERT INTO `professeur` (`ID_PROFESSEUR`, `ID_ROLE`, `NOM_PROFESSEUR`, `PRENOM_PROFESSEUR`, `LOGIN_PROFESSEUR`, `PWD_PROFESSEUR`, `SALT_PROFESSEUR`) VALUES
-(1, 2, 'Pluchot', 'Daniel', 'p.dan@me.fr', 'secret', NULL),
-(2, 1, 'Boissel', 'Alain', 'boissel.alain@me.fr', 'adm', NULL),
-(3, 2, 'Riamon', 'Clemence', 'r.clem@me.fr', 'rclem', NULL),
-(4, 2, 'Pitois', 'Remy', 'p.remy@me.fr', 'pr', NULL),
-(5, 2, 'Gomena', 'Dimitri', 'g.d@me.fr', 'gd', NULL);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `role`
---
-
-CREATE TABLE IF NOT EXISTS `role` (
-  `ID_ROLE` int(11) NOT NULL,
-  `LIBELLE_ROLE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `role`
---
-
-INSERT INTO `role` (`ID_ROLE`, `LIBELLE_ROLE`) VALUES
-(1, 'ROLE_ADMIN'),
-(2, 'ROLE_PROFESSEUR');
+INSERT INTO `professeur` (`ID_PROFESSEUR`, `LIBELLE_ROLE`, `NOM_PROFESSEUR`, `PRENOM_PROFESSEUR`, `LOGIN_PROFESSEUR`, `PWD_PROFESSEUR`, `SALT_PROFESSEUR`) VALUES
+(1, 'ROLE_PROFESSEUR', 'Pluchot', 'Daniel', 'p.dan@me.fr', 'secret', NULL),
+(2, 'ROLE_ADMIN', 'Boissel', 'Alain', 'boissel.alain@me.fr', 'adm', NULL),
+(3, 'ROLE_PROFESSEUR', 'Riamon', 'Clemence', 'r.clem@me.fr', 'rclem', NULL),
+(4, 'ROLE_PROFESSEUR', 'Pitois', 'Remy', 'p.remy@me.fr', 'pr', NULL),
+(5, 'ROLE_PROFESSEUR', 'Gomena', 'Dimitri', 'g.d@me.fr', 'gd', NULL);
 
 -- --------------------------------------------------------
 
@@ -271,13 +252,7 @@ ALTER TABLE `heurepassage`
 -- Index pour la table `professeur`
 --
 ALTER TABLE `professeur`
- ADD PRIMARY KEY (`ID_PROFESSEUR`), ADD KEY `FK_PROFESSEUR_ROLE` (`ID_ROLE`);
-
---
--- Index pour la table `role`
---
-ALTER TABLE `role`
- ADD PRIMARY KEY (`ID_ROLE`);
+ ADD PRIMARY KEY (`ID_PROFESSEUR`);
 
 --
 -- Index pour la table `salle`
@@ -321,13 +296,3 @@ ADD CONSTRAINT `FK_EPREUVE_PROFESSEUR` FOREIGN KEY (`ID_PROFESSEUR`) REFERENCES 
 ADD CONSTRAINT `FK_EPREUVE_SALLE` FOREIGN KEY (`ID_SALLE`) REFERENCES `salle` (`ID_SALLE`);
 
 
-
---
--- Contraintes pour la table `professeur`
---
-ALTER TABLE `professeur`
-ADD CONSTRAINT `FK_PROFESSEUR_ROLE` FOREIGN KEY (`ID_ROLE`) REFERENCES `role` (`ID_ROLE`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,8 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Planning\Domain\Eleve;
-use Planning\Domain\Classe;
+
 
 // Home page
 $app->get('/', function () use ($app) {
@@ -14,9 +13,9 @@ $app->get('/', function () use ($app) {
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
         'error'         => $app['security.last_error']($request),
-        'last_username' => $app['session']->get('_security.last_username'),
+        'mail' => $app['session']->get('_security.mail'),
     ));
-})->bind('login');  // named route so that path('login') works in Twig templates
+})->bind('login');  // named route so that path('login') works in Twig templates 
 
 
 //----------------------------------------------------------------------//
@@ -72,21 +71,21 @@ $app->get('/professeurs/', function() use ($app) {
 
 // Search form for professeurs
 $app->get('/professeurssearch/', function() use ($app) {
-    $roles = $app['dao.role']->findAll();
-    return $app['twig']->render('professeurs_search.html.twig', array('roles' => $roles));
+    $professeurs = $app['dao.professeur']->findAll();
+    return $app['twig']->render('professeurs_search.html.twig', array('professeurs' => $professeurs));
 });
 
 
 // Results page for professeurss
 $app->post('/professeurs/results/', function(Request $request) use ($app) {
-    if ($request->request->has('nom')) {
+    if ($request->request->has('ddlProfs')) {
 // Advanced search by nom
-        $nom = $request->request->get('nom');
-        $professeurs = $app['dao.professeur']->findAllByNom($nom);
+        $ddlProfs = $request->request->get('ddlProfs');
+        $professeurs = $app['dao.professeur']->findAllByNom($ddlProfs);
     } else {
 // Simple search by classe
-        $roleId = $request->request->get('role');
-        $professeurs = $app['dao.professeur']->findAllByRole($roleId);
+        $role = $request->request->get('ddlRoles');
+        $professeurs = $app['dao.professeur']->findAllByRole($role);
     }
     return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
 });

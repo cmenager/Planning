@@ -10,15 +10,6 @@ use Planning\Domain\Professeur;
 
 class ProfesseurDAO extends DAO implements UserProviderInterface {
 
-    /**
-     * @var \Planning\DAO\RoleDAO
-     */
-    private $roleDAO;
-
-    public function setRoleDAO($roleDAO) {
-        $this->roleDAO = $roleDAO;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="Trouver un professeur par identifiant : (find($id))"> 
     /**
      * Returns a Prof matching the supplied id.
@@ -45,7 +36,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
      * @return array The list of all eleves.
      */
     public function findAll() {
-        $sql = "select * from professeur order by ID_PROFESSEUR";
+        $sql = "select * from professeur";
         $result = $this->getDb()->fetchAll($sql);
 
         // Converts query result to an array of domain objects
@@ -60,14 +51,14 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Trouver les professeurs par role : findAllByRole()"> 
     /*
-     * Returns the list of all drugs for a given family, sorted by trade name.
+     * Returns the list of all professeur for a given role, sorted by trade name.
      *
-     * @param integer $familyDd The family id.
+     * @param integer $role The role id.
      *
      * @return array The list of drugs.
      */
     public function findAllByRole($roleId) {
-        $sql = "select * from professeur where ID_ROLE=? order by ID_PROFESSEUR";
+        $sql = "select * from professeur where LIBELLE_ROLE=? ";
         $result = $this->getDb()->fetchAll($sql, array($roleId));
 
         // Convert query result to an array of domain objects
@@ -147,17 +138,16 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
      * @return \MicroCMS\Domain\User
      */
     protected function buildDomainObject($row) {
-        $roleId = $row['ID_ROLE'];
-        $role = $this->roleDAO->find($roleId);
 
         $professeur = new Professeur();
         $professeur->setId($row['ID_PROFESSEUR']);
+        $professeur->setRole($row['LIBELLE_ROLE']);
         $professeur->setNom($row['NOM_PROFESSEUR']);
         $professeur->setPrenom($row['PRENOM_PROFESSEUR']);
         $professeur->setUsername($row['LOGIN_PROFESSEUR']);
         $professeur->setPassword($row['PWD_PROFESSEUR']);
         $professeur->setSalt($row['SALT_PROFESSEUR']);
-        $professeur->setRole($role);
+
 
         return $professeur;
     }
