@@ -45,7 +45,25 @@
                                 </ul>
                             </li> 
                         </ul>
-                        
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-user"></span> Bonjour, {{ app.security.token.user.username }} <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-user"></span> Connexion <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('login') }}">Se connecter</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div><!-- /.container -->
             </nav>
