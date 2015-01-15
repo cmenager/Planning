@@ -57,7 +57,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                        <a href="/admin/eleve/{{ eleve.id }}/delete" class="btn btn-danger">Confirmer</a>
+                                                        <a href="/admin/eleve/delete/{{ eleve.id }}" class="btn btn-danger">Confirmer</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -97,7 +97,7 @@
                                     <td>{{professeur.username}} </td>
                                     <td>{{professeur.role }}</td>
                                     <td>
-                                        <a href="/admin/professeur/{{ professeur.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <a href="/admin/professeur/edit/{{ professeur.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <div class="modal fade" id="professeurDialog{{ professeur.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -112,7 +112,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                        <a href="/admin/professeur/{{ professeur.id }}/delete" class="btn btn-danger">Confirmer</a>
+                                                        <a href="/admin/professeur/delete/{{ professeur.id }}" class="btn btn-danger">Confirmer</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->

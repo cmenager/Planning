@@ -123,21 +123,21 @@ class EleveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Sauvegarder un film : save($eleve)">
+    // <editor-fold defaultstate="collapsed" desc="Sauvegarder un eleve : save($eleve)">
     public function save($eleve) {
         $eleveData = array(
-            'NOM_ELEVE' => $eleve->getNom(),
-            'PRENOM_ELEVE' => $eleve->getPrenom(),            
-            'ID_CLASSE' => $eleve->getClasse()
-        );
+            'NOM_ELEVE' => $eleve->getNom(),           
+            'PRENOM_ELEVE' => $eleve->getPrenom(),
+            'ID_CLASSE' => $eleve->getClasse()->getId()
+            );
 
         if ($eleve->getId()) {
-            // The eleve has already been saved : update it --> modification un film 
-            $this->getDb()->update('eleves', $eleveData, array('ID_ELEVE' => $eleve->getId()));
+            // The visit report has already been saved : update it
+            $this->getDb()->update('eleve', $eleveData, array('ID_ELEVE' => $eleve->getId()));
         } else {
-            // The eleve has never been saved : insert it --> inserer un nouveau film
-            $this->getDb()->insert('eleves', $eleveData);
-            // Get the id of the newly created eleve and set it on the entity.
+            // The visit report has never been saved : insert it
+            $this->getDb()->insert('eleve', $eleveData);
+            // Get the id of the newly created visit report and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $eleve->setId($id);
         }

@@ -47,18 +47,24 @@ class EleveController {
      * @param Application $app
      * @return type
      */
-    public function addAction(Request $request, Application $app) {
-        $eleve = new Eleve();
-        $eleveForm = $app['form.factory']->create(new EleveType(), $eleve);
+    public function addAction(Request $request, Application $app) {       
+        $eleveFormView = NULL;
+        $eleve = new VisitReport();        
+        $classes = $app['dao.classe']->findAll();
+        $classe = current($classes);
+        $classeId = $classe->getId();
+        $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleve);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
+            // Manually affect classe to the new visit report
+            $classeId = $eleveForm->get('classe')->getData();
+            $classe = $app['dao.classe']->find($classeId);
+            $eleve->setClasse($classe);
             $app['dao.eleve']->save($eleve);
-            $app['session']->getFlashBag()->add('success', 'Un eleve a été créée avec succés');
+            $app['session']->getFlashBag()->add('success', 'Un eleve a été ajouté.');
         }
-        $classes = $app['dao.classe']->findAll();
-        return $app['twig']->render('eleve_form.html.twig', array(
-                    'title' => 'Nouveau eleve',
-                    'eleveForm' => $eleveForm->createView(), 'classes' => $classes,));
+        $eleveFormView = $eleveForm->createView();
+        return $app['twig']->render('eleve_form.html.twig', array('eleveForm' => $eleveFormView));
     }
 
     /**
@@ -81,10 +87,10 @@ class EleveController {
             $classe = $app['dao.classe']->find($classeId);
             $eleve->setClasse($classe);
             $app['dao.eleve']->save($eleve);
-            $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié.');
+            $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié avec succès .');
         }
         $eleveFormView = $eleveForm->createView();
-        return $app['twig']->render('eleve_form.html.twig', array('eleveForm' => $eleveFormView));
+        return $app['twig']->render('eleves.html.twig', array('eleveForm' => $eleveFormView));
     }
 
     /**
