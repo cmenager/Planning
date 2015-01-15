@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+{% set adminMenu = true %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h2 class="text-center">{{ block('title') }}</h2>
+    <!-- Pour afficher le le statut de realisation -->
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <!-- Fin pour afficher le statut de realisation -->
+    <!-- Un tableau pour ajouter un film -->
+    <div class="well">
+        {{ form_start(eleveForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        <!-- un ligne pour le nom d'un eleve-->
+        <div class="form-group">
+            {{ form_label(eleveForm.nom, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'}}) }}
+            <div class="col-sm-6 col-md-3">
+                {{ form_errors(eleveForm.nom) }}
+                {{ form_widget(eleveForm.nom, { 'attr': 'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <!-- un ligne pour le prenom d'un eleve-->
+        <div class="form-group">
+            {{ form_label(eleveForm.prenom, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'}}) }}
+            <div class="col-sm-6 col-md-3">
+                {{ form_errors(eleveForm.prenom) }}
+                {{ form_widget(eleveForm.prenom, { 'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <!-- un ligne pour la classe d'un eleve -->
+        <div class="form-group">
+            {{ form_label(eleveForm.classe, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'
+            }}) }}
+            <div class="col-sm-6 col-md-3">
+                {{ form_errors(eleveForm.classe) }}
+                {{ form_widget(eleveForm.classe, { 'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>             
+        <!-- Bouton pour sauvegarder un eleve -->
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+            </div>
+        </div>
+        <!-- Fin bouton pour sauvegarder un film -->
+        {{ form_end(eleveForm) }}
+    </div>
+    <!-- Fin un tableau pour ajouter un film -->
+{% endblock %}

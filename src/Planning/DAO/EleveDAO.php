@@ -25,7 +25,7 @@ class EleveDAO extends DAO {
      */
     public function find($id) {
         $sql = "select * from eleve where ID_ELEVE=?";
-        
+
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -57,11 +57,11 @@ class EleveDAO extends DAO {
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByClasse()"> 
     /*
-     * Returns the list of all drugs for a given family, sorted by trade name.
+     * Returns the list of all eleves for a given nom, sorted by trade name.
      *
-     * @param integer $familyDd The family id.
+     * @param integer $nomDd The nom id.
      *
-     * @return array The list of drugs.
+     * @return array The list of eleves.
      */
     public function findAllByClasse($classeId) {
         $sql = "select * from eleve where ID_CLASSE=? order by NOM_ELEVE";
@@ -79,11 +79,11 @@ class EleveDAO extends DAO {
 // </editor-fold>
     // // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par nom : findAllByNom()"> 
     /*
-     * Returns the list of all drugs for a given family, sorted by trade name.
+     * Returns the list of all eleves for a given nom, sorted by trade name.
      *
-     * @param integer $familyDd The family id.
+     * @param integer $nomDd The nom id.
      *
-     * @return array The list of drugs.
+     * @return array The list of eleves.
      */
     public function findAllByNom($nomId) {
         $sql = "select * from eleve where NOM_ELEVE=? order by ID_ELEVE";
@@ -120,6 +120,39 @@ class EleveDAO extends DAO {
         $eleve->setClasse($classe);
 
         return $eleve;
+    }
+
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Sauvegarder un film : save($eleve)">
+    public function save($eleve) {
+        $eleveData = array(
+            'NOM_ELEVE' => $eleve->getNom(),
+            'PRENOM_ELEVE' => $eleve->getPrenom(),            
+            'ID_CLASSE' => $eleve->getClasse()
+        );
+
+        if ($eleve->getId()) {
+            // The eleve has already been saved : update it --> modification un film 
+            $this->getDb()->update('eleves', $eleveData, array('ID_ELEVE' => $eleve->getId()));
+        } else {
+            // The eleve has never been saved : insert it --> inserer un nouveau film
+            $this->getDb()->insert('eleves', $eleveData);
+            // Get the id of the newly created eleve and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $eleve->setId($id);
+        }
+    }
+
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Supprimer un film : delete($id)">
+    /**
+     * Removes a eleve from the database.
+     *
+     * @param \Planning\Domain\Eleve $eleve The eleve to remove
+     */
+    public function delete($id) {
+        // Delete the eleve
+        $this->getDb()->delete('eleves', array('ID_ELEVE' => $id));
     }
 
 // </editor-fold>

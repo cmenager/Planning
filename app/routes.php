@@ -2,12 +2,18 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Planning\Form\Type\EleveType;
+use Planning\Domain\Eleve;
+use PLanning\Domain\professeur;
+
 // Home page
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig');
 });
 
-
+//----------------------------------------------------------------------//
+//------------------------- Routes for login----------------------------//
+//----------------------------------------------------------------------//
 // Login form
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
@@ -16,7 +22,9 @@ $app->get('/login', function(Request $request) use ($app) {
     ));
 })->bind('login');  // named route so that path('login') works in Twig templates 
 
-
+//----------------------------------------------------------------------//
+//------------------------- Routes for admin----------------------------//
+//----------------------------------------------------------------------//
 // Admin zone
 $app->get('/admin', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
@@ -137,4 +145,45 @@ $app->post('/epreuves/results/', function(Request $request) use ($app) {
         $epreuves = $app['dao.epreuve']->findAllByProfesseur($professeurId);
     }
     return $app['twig']->render('epreuves_results.html.twig', array('epreuves' => $epreuves));
+});
+
+//----------------------------------------------------------------------//
+//------------------------- Routes for admin/eleve----------------------//
+//----------------------------------------------------------------------//
+
+// Add a new eleve
+$app->match('/admin/eleve/add', function(Request $request) use ($app) {
+    $eleve = new Eleve();
+    $eleveForm = $app['form.factory']->create(new EleveType(), $eleve);
+    $eleveForm->handleRequest($request);
+    if ($eleveForm->isValid()) {
+        $app['dao.eleve']->save($eleve);
+        $app['session']->getFlashBag()->add('success', 'Un eleve a été créée avec succés');
+    }
+    $classes = $app['dao.classe']->findAll();
+    return $app['twig']->render('eleve_form.html.twig', array(
+        'title' => 'Nouveau eleve',
+        'eleveForm' => $eleveForm->createView(),'classes' => $classes,));
+});
+
+// Edit an existing eleve
+$app->match('/admin/eleve/{id}/edit', function($id, Request $request) use ($app) {
+    $eleve = $app['dao.eleve']->find($id);
+    $eleveForm = $app['form.factory']->create(new EleveType(), $eleve);
+    $eleveForm->handleRequest($request);
+    if ($eleveForm->isValid()) {
+        $app['dao.eleve']->save($eleve);
+        $app['session']->getFlashBag()->add('success', 'Un eleve a été mofidifié avec succés ');
+    }
+    $classes = $app['dao.classe']->findAll();
+    return $app['twig']->render('eleve_form.html.twig', array(
+        'title' => 'Edit eleve',
+        'eleveForm' => $eleveForm->createView(),'classes' => $classes,));
+});
+
+// Remove an eleve
+$app->get('/admin/eleve/{id}/delete', function($id, Request $request) use ($app) {
+    $app['dao.eleve']->delete($id);
+    $app['session']->getFlashBag()->add('success', 'Un eleve a été supprimé avec succès !');
+    return $app->redirect('/admin');
 });

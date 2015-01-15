@@ -11,11 +11,15 @@ body {
     
 }
 #errorPanel {
-    padding-top: 30px;
+    padding-top: 40px;
     padding-bottom: 10px;
 }
 
 .adminTable {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 20px;
+}
+
+.eleveTitle:hover, .eleveTitle:focus {
+    text-decoration: none;
 }

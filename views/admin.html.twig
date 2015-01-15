@@ -15,30 +15,32 @@
             <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <ul class="nav nav-tabs nav-justified">
                     <li class="active"><a href="#eleves" data-toggle="tab">Eleves</a></li>
-                    <li><a href="#professeurs" data-toggle="tab">Professeurs</li>
-                    <li><a href="#epreuves" data-toggle="tab">Epreuves</li>
+
+                    <li><a href="#professeurs" data-toggle="tab">Professeurs</a></li>
                 </ul>
             </div>
         </div>
         <!-- Fin tableau pour acceder les outils dans l'administration -->
 
         <div class="tab-content">
-            <div class="tab-pane fade in active adminTable" id="movies">
-                <!--Table où il y a tous les films a modifier ou a supprimer ou a ajouter-->
+            <div class="tab-pane fade in active adminTable" id="eleves">
+                <!--Table où il y a tous les eleves a modifier ou a supprimer ou a ajouter-->
                 {% if eleves %}
                     <div class="table-responsive">
                         <table class="table table-hover table-condensed">
                             <thead>
                                 <tr>                              
-                                    <th>Identifiant</th>
-                                    <th>Nom</th>
+                                    <th>Nom </th>
+                                    <th>Prenom</th>
+                                    <th>Classe</th>
                                     <th></th>  <!-- Actions column -->
                                 </tr>
                             </thead>
                             {% for eleve in eleves %}
                                 <tr>
-                                    <td><a class="eleveTitle" href="/eleve/{{ eleve.id }}">{{ eleve.nom }}{{eleve.prenom}}</a></td>
-
+                                    <td><a class="eleveTitle" href="/eleve/{{ eleve.id }}">{{ eleve.nom }} </a></td>
+                                    <td>{{eleve.prenom}}</td>
+                                    <td>{{ eleve.classe.libelle }}</td>
                                     <td>
                                         <a href="/admin/eleve/{{ eleve.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
@@ -74,21 +76,26 @@
             </div>
 
 
-            <div class="tab-pane fade  adminTable" id="genres">
-                <!--Table où il y a tous les genres a modifier ou a supprimer ou a ajouter-->
+            <div class="tab-pane fade  adminTable" id="professeurs">
+                <!--Table où il y a tous les professeurs a modifier ou a supprimer ou a ajouter-->
                 {% if professeurs %}
                     <div class="table-responsive">
                         <table class="table table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Identifiant</th>
-                                    <th>Nom</th>
+                                    <th>Nom </th>
+                                    <th>Prenom</th>
+                                    <th>Login</th>
+                                    <th>Role</th>
                                     <th></th>  <!-- Actions column -->
                                 </tr>
                             </thead>
                             {% for professeur in professeurs %}
                                 <tr>
-                                    <td>{{ professeur.nom }} {{professeur.prenom}}</a></td>
+                                    <td><a class="eleveTitle" href="/professeur/{{ professeur.id }}">{{ professeur.nom }} </a></td>
+                                    <td>{{professeur.prenom}}</td>
+                                    <td>{{professeur.username}} </td>
+                                    <td>{{professeur.role }}</td>
                                     <td>
                                         <a href="/admin/professeur/{{ professeur.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
@@ -118,8 +125,8 @@
                 {% else %}
                     <div class="alert alert-warning">Aucun professeur trouvé.</div>
                 {% endif %}
-                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un genre</button></a>
-                <!--Fin table où il y a tous les genres a modifier ou a supprimer ou a ajouter-->
+                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
+                <!--Fin table où il y a tous les professeurs a modifier ou a supprimer ou a ajouter-->
             </div>
 
         </div>
