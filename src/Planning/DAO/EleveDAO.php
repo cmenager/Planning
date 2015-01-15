@@ -124,12 +124,12 @@ class EleveDAO extends DAO {
 
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Sauvegarder un eleve : save($eleve)">
-    public function save($eleve) {
+    public function save(Eleve $eleve) {
         $eleveData = array(
-            'NOM_ELEVE' => $eleve->getNom(),           
+            'NOM_ELEVE' => $eleve->getNom(),
             'PRENOM_ELEVE' => $eleve->getPrenom(),
             'ID_CLASSE' => $eleve->getClasse()->getId()
-            );
+        );
 
         if ($eleve->getId()) {
             // The visit report has already been saved : update it
@@ -144,7 +144,7 @@ class EleveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Supprimer un film : delete($id)">
+    // <editor-fold defaultstate="collapsed" desc="Supprimer un eleve : delete($id)">
     /**
      * Removes a eleve from the database.
      *

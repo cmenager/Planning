@@ -31,9 +31,9 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Trouver tous les professeurs par identifiant : findAll()"> 
     /**
-     * Returns the list of all eleve, sorted by nom.
+     * Returns the list of all professeur, sorted by nom.
      *
-     * @return array The list of all eleves.
+     * @return array The list of all professeurs.
      */
     public function findAll() {
         $sql = "select * from professeur";
@@ -153,4 +153,38 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
     }
 
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Sauvegarder un professeur : save($professeur)">
+    public function save(Professeur $professeur) {
+        $professeurData = array(
+            'NOM_PROFESSEUR' => $professeur->getNom(),
+            'PRENOM_PROFESSEUR' => $professeur->getPrenom(),
+            'LOGIN_PROFESSEUR' => $professeur->getUsername(),
+            'ROLE'=> $professeur->getRole()
+        );
+
+        if ($professeur->getId()) {
+            // The visit report has already been saved : update it
+            $this->getDb()->update('professeur', $professeurData, array('ID_PROFESSEUR' => $professeur->getId()));
+        } else {
+            // The visit report has never been saved : insert it
+            $this->getDb()->insert('professeur', $professeurData);
+            // Get the id of the newly created visit report and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $professeur->setId($id);
+        }
+    }
+
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Supprimer un professeur : delete($id)">
+    /**
+     * Removes a professeur from the database.
+     *
+     * @param \Planning\Domain\Professeur $professeur The professeur to remove
+     */
+    public function delete($id) {
+        // Delete the professeur
+        $this->getDb()->delete('professeurs', array('ID_PROFESSEUR' => $id));
+    }
+
+// </editor-fold>
 }

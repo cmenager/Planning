@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Planning\Domain\Eleve;
 use Planning\DAO\EleveDAO;
+use Planning\Form\Type\EleveFType;
 
 class EleveController {
 
@@ -42,25 +43,25 @@ class EleveController {
     }
 
     /**
-     * Adds a Report
+     * Adds a eleve
      * @param Request $request
      * @param Application $app
      * @return type
      */
     public function addAction(Request $request, Application $app) {       
         $eleveFormView = NULL;
-        $eleve = new VisitReport();        
+        $eleveF = new EleveF();        
         $classes = $app['dao.classe']->findAll();
         $classe = current($classes);
         $classeId = $classe->getId();
-        $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleve);
+        $eleveForm = $app['form.factory']->create(new EleveFType($classes, $classeId), $eleveF);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
-            // Manually affect classe to the new visit report
+            // Manually affect classe to the new eleve
             $classeId = $eleveForm->get('classe')->getData();
             $classe = $app['dao.classe']->find($classeId);
-            $eleve->setClasse($classe);
-            $app['dao.eleve']->save($eleve);
+            $eleveF->setClasse($classe);
+            $app['dao.eleve']->save($eleveF);
             $app['session']->getFlashBag()->add('success', 'Un eleve a été ajouté.');
         }
         $eleveFormView = $eleveForm->createView();
@@ -68,7 +69,7 @@ class EleveController {
     }
 
     /**
-     * Updates a Report
+     * Updates a eleve
      * @param Request $request
      * @param Application $app
      * @param type $id
@@ -76,35 +77,23 @@ class EleveController {
      */
     public function editAction(Request $request, Application $app, $id) {
         $eleveFormView = NULL;
-        $eleve = $app['dao.eleve']->find($id);
+        $eleveF = $app['dao.eleve']->find($id);
         $classes = $app['dao.classe']->findAll();
         // When editing we need to assign the good classe in the dropdown list
-        $eleveForm = $app['form.factory']->create(new EleveType($classes, $eleve->getClasse()->getId()), $eleve);
+        $eleveForm = $app['form.factory']->create(new EleveFType($classes, $eleveF->getClasse()->getId()), $eleveF);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
-            // Manually affect classe to the new visit report
+            // Manually affect classe to the new eleve 
             $classeId = $eleveForm->get('classe')->getData();
             $classe = $app['dao.classe']->find($classeId);
-            $eleve->setClasse($classe);
-            $app['dao.eleve']->save($eleve);
+            $eleveF->setClasse($classe);
+            $app['dao.eleve']->save($eleveF);
             $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié avec succès .');
         }
         $eleveFormView = $eleveForm->createView();
-        return $app['twig']->render('eleves.html.twig', array('eleveForm' => $eleveFormView));
+        return $app['twig']->render('eleve.html.twig', array('eleveForm' => $eleveFormView));
     }
 
-    /**
-     * Delete a Eleve
-     * @param Request $request
-     * @param Application $app
-     * @param type $id
-     * @return type
-     */
-    public function deleteAction(Request $request, Application $app, $id) {
-        $app['dao.eleve']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'Un eleve a été supprimé avec succès !');
-        return $app->redirect('/admin');
-    }
 
     /**
      * Gets the parameters of search and displays the results of search

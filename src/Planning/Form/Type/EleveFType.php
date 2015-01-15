@@ -1,11 +1,10 @@
 <?php
-
 namespace Planning\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EleveType extends AbstractType {
+class EleveFType extends AbstractType {
 
     private $classes;
     private $classeId;
@@ -21,8 +20,7 @@ class EleveType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                ->add('nom', 'text', array(
+        $builder->add('nom', 'text', array(
                     'label' => "Nom",
                 ))
                 ->add('prenom', 'text', array(

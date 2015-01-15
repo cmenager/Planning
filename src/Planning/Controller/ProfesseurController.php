@@ -12,7 +12,7 @@ use Planning\DAO\ProfesseurDAO;
 class ProfesseurController {
 
     /**
-     * Displays the detail of the eleve with the given id
+     * Displays the detail of the professeur with the given id
      * @param Application $app
      * @param type $id
      * @return type
@@ -23,7 +23,7 @@ class ProfesseurController {
     }
 
     /**
-     * Lists all the eleves
+     * Lists all the professeurs
      * @param Application $app
      * @return type
      */
@@ -41,7 +41,51 @@ class ProfesseurController {
         $professeurs = $app['dao.professeur']->findAll();
         return $app['twig']->render('professeurs_search.html.twig', array('professeurs' => $professeurs));
     }
+  
+    /**
+     * Adds a professeur
+     * @param Request $request
+     * @param Application $app
+     * @return type
+     */
+    public function addAction(Request $request, Application $app) {       
+        $professeurFormView = NULL;
+        $professeur = new Professeur();        
+        $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur);
+        $professeurForm->handleRequest($request);
+        if ($professeurForm->isValid()) {
+            // Manually affect classe to the new visit report
+            $app['dao.professeur']->save($professeur);
+            $app['session']->getFlashBag()->add('success', 'Un professeur a été ajouté.');
+        }
+        $professeurFormView = $professeurForm->createView();
+        return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView));
+    }
 
+    /**
+     * Updates a professeur
+     * @param Request $request
+     * @param Application $app
+     * @param type $id
+     * @return type
+     */
+    public function editAction(Request $request, Application $app, $id) {
+        $professeurFormView = NULL;
+        $professeur = $app['dao.professeur']->find($id);;
+        // When editing we need to assign the good classe in the dropdown list
+        $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur );
+        $professeurForm->handleRequest($request);
+        if ($professeurForm->isValid()) {
+            // Manually affect classe to the new visit report
+            $app['dao.professeur']->save($professeur);
+            $app['session']->getFlashBag()->add('success', 'Un professeur a été modifié avec succès .');
+        }
+        $professeurFormView = $professeurForm->createView();
+        return $app['twig']->render('professeurs.html.twig', array('professeurForm' => $professeurFormView));
+    }
+    
+    
+    
     
     /**
      * Gets the parameters of search and displays the results of search
