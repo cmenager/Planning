@@ -1,7 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Planning\Form\Type\EleveFType;
+use Planning\Form\Type\EleveType;
 use Planning\Domain\Eleve;
 use PLanning\Domain\professeur;
 
@@ -24,7 +24,7 @@ $app->get('/eleves/search/', 'Planning\Controller\EleveController::searchAction'
 $app->post('/eleves/results/', 'Planning\Controller\EleveController::resultsAction');
 
 // New eleve
-$app->match('/admin/eleves/add/', 'Planning\Controller\EleveController::addAction');
+$app->match('/eleves/add/', 'Planning\Controller\EleveController::addAction');
 
 // Editing a eleve
 $app->match('/admin/eleve/edit/{id}', 'Planning\Controller\EleveController::editAction');
@@ -44,10 +44,10 @@ $app->get('/professeurs/search/', 'Planning\Controller\ProfesseurController::sea
 $app->post('/professeurs/results/', 'Planning\Controller\ProfesseurController::resultsAction');
 
 // New professeurs
-$app->match('/admin/professeurs/add/', 'Planning\Controller\ProfesseurController::addAction');
+$app->match('/professeurs/add/', 'Planning\Controller\ProfesseurController::addAction');
 
 // Editing a professeurs
-$app->match('/admin/professeurs/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
+$app->match('/professeurs/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
 
 //EPREUVE////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a epreuve

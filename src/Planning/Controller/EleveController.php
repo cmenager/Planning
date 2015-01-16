@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Planning\Domain\Eleve;
 use Planning\DAO\EleveDAO;
-use Planning\Form\Type\EleveFType;
+use Planning\Form\Type\EleveType;
 
 class EleveController {
 
@@ -50,18 +50,18 @@ class EleveController {
      */
     public function addAction(Request $request, Application $app) {       
         $eleveFormView = NULL;
-        $eleveF = new EleveF();        
+        $eleve = new Eleve();        
         $classes = $app['dao.classe']->findAll();
         $classe = current($classes);
         $classeId = $classe->getId();
-        $eleveForm = $app['form.factory']->create(new EleveFType($classes, $classeId), $eleveF);
+        $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleveF);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
             // Manually affect classe to the new eleve
             $classeId = $eleveForm->get('classe')->getData();
             $classe = $app['dao.classe']->find($classeId);
-            $eleveF->setClasse($classe);
-            $app['dao.eleve']->save($eleveF);
+            $eleve->setClasse($classe);
+            $app['dao.eleve']->save($eleve);
             $app['session']->getFlashBag()->add('success', 'Un eleve a été ajouté.');
         }
         $eleveFormView = $eleveForm->createView();
@@ -77,17 +77,17 @@ class EleveController {
      */
     public function editAction(Request $request, Application $app, $id) {
         $eleveFormView = NULL;
-        $eleveF = $app['dao.eleve']->find($id);
+        $eleve = $app['dao.eleve']->find($id);
         $classes = $app['dao.classe']->findAll();
         // When editing we need to assign the good classe in the dropdown list
-        $eleveForm = $app['form.factory']->create(new EleveFType($classes, $eleveF->getClasse()->getId()), $eleveF);
+        $eleveForm = $app['form.factory']->create(new EleveType($classes, $eleve->getClasse()->getId()), $eleve);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
             // Manually affect classe to the new eleve 
             $classeId = $eleveForm->get('classe')->getData();
             $classe = $app['dao.classe']->find($classeId);
-            $eleveF->setClasse($classe);
-            $app['dao.eleve']->save($eleveF);
+            $eleve->setClasse($classe);
+            $app['dao.eleve']->save($eleve);
             $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié avec succès .');
         }
         $eleveFormView = $eleveForm->createView();

@@ -4,7 +4,7 @@ namespace Planning\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EleveFType extends AbstractType {
+class EleveType extends AbstractType {
 
     private $classes;
     private $classeId;
@@ -26,6 +26,9 @@ class EleveFType extends AbstractType {
                 ->add('prenom', 'text', array(
                     'label' => "Prenom",
                 ))
+                ->add('tierstemps', 'text', array(
+                    'label' => "Tiers temps",
+                ))                
                 ->add('classe', 'choice', array(
                     'label' => "Classe",
                     'choices' => $this->classes,
@@ -36,7 +39,7 @@ class EleveFType extends AbstractType {
                 ))
                 ->add('save', 'submit', array(
                     'label' => 'Valider',
-        ));
+                ));
     }
 
     public function getName() {

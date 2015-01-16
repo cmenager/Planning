@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 08 Janvier 2015 à 18:26
+-- Généré le :  Ven 16 Janvier 2015 à 09:58
 -- Version du serveur :  5.6.21
 -- Version de PHP :  5.6.3
 
@@ -19,7 +19,9 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `planning`
 --
-
+create database if not exists planning character set utf8 collate utf8_unicode_ci;
+use planning;
+grant all privileges on planning.* to 'planning_user'@'localhost' identified by 'secret'; 
 -- --------------------------------------------------------
 
 --
@@ -155,12 +157,12 @@ CREATE TABLE IF NOT EXISTS `langue` (
 
 INSERT INTO `langue` (`ID_LANGUE`, `LIBELLE_LANGUE`) VALUES
 (1, 'Espagnol LV1'),
+(2, 'Anglais LV1'),
+(3, 'Allemand LV1'),
 (4, 'Espagnol LV2'),
 (5, 'Espagnol LV3'),
-(2, 'Anglais LV1'),
 (6, 'Anglais LV2'),
 (7, 'Anglais LV3'),
-(3, 'Allemand LV1'),
 (8, 'Allemand LV2'),
 (9, 'Allemand LV3');
 
@@ -185,11 +187,11 @@ CREATE TABLE IF NOT EXISTS `professeur` (
 --
 
 INSERT INTO `professeur` (`ID_PROFESSEUR`, `ROLE`, `NOM_PROFESSEUR`, `PRENOM_PROFESSEUR`, `LOGIN_PROFESSEUR`, `PWD_PROFESSEUR`, `SALT_PROFESSEUR`) VALUES
-(1, 'ROLE_PROFESSEUR', 'Pluchot', 'Daniel', 'p.dan@me.fr', 'secret', NULL),
-(2, 'ROLE_ADMIN', 'Boissel', 'Alain', 'boissel.alain@me.fr', 'adm', NULL),
-(3, 'ROLE_PROFESSEUR', 'Riamon', 'Clemence', 'r.clem@me.fr', 'rclem', NULL),
-(4, 'ROLE_PROFESSEUR', 'Pitois', 'Remy', 'p.remy@me.fr', 'pr', NULL),
-(5, 'ROLE_PROFESSEUR', 'Gomena', 'Dimitri', 'g.d@me.fr', 'gd', NULL);
+(1, 'ROLE_USER', 'John', 'Doe', 'JohnDoe', 'L2nNR5hIcinaJkKR+j4baYaZjcHS0c3WX2gjYF6Tmgl1Bs+C9Qbr+69X8eQwXDvw0vp73PrcSeT0bGEW5+T2hA==', 'YcM=A$nsYzkyeDVjEUa7W9K'),
+(2, 'ROLE_ADMIN', 'Boissel', 'Alain', 'boisselAlain', 'YRKBx8oeQ2sLBrEqjJeqc8UwC9HPp+Ed6dhCeeHPQJ9vY4vbMepUbS14/rE6njWr4RZd4E+tU4pcOMI0h8Z6UA==', 'mnPEaJNz6,rUPbAYGg6$UXt'),
+(3, 'ROLE_USER', 'Riamon', 'Clemence', 'rclem', 'rclem', NULL),
+(4, 'ROLE_USER', 'Pitois', 'Remy', 'premy', 'premy', NULL),
+(5, 'ROLE_USER', 'Gomena', 'Dimitri', 'gdimi', 'gd', NULL);
 
 -- --------------------------------------------------------
 
@@ -211,8 +213,6 @@ INSERT INTO `salle` (`ID_SALLE`, `LIBELLE_SALLE`) VALUES
 (2, 'B201'),
 (3, 'B216'),
 (4, 'B101');
-
--- --------------------------------------------------------
 
 --
 -- Index pour les tables exportées
@@ -249,6 +249,12 @@ ALTER TABLE `heurepassage`
  ADD PRIMARY KEY (`ID_HEURE_PASSAGE`);
 
 --
+-- Index pour la table `langue`
+--
+ALTER TABLE `langue`
+ ADD PRIMARY KEY (`ID_LANGUE`);
+
+--
 -- Index pour la table `professeur`
 --
 ALTER TABLE `professeur`
@@ -259,13 +265,6 @@ ALTER TABLE `professeur`
 --
 ALTER TABLE `salle`
  ADD PRIMARY KEY (`ID_SALLE`);
-
---
--- Index pour la table `salle`
---
-ALTER TABLE `langue`
- ADD PRIMARY KEY (`ID_LANGUE`);
-
 
 --
 -- Contraintes pour les tables exportées
@@ -295,4 +294,6 @@ ADD CONSTRAINT `FK_EPREUVE_LANGUE` FOREIGN KEY (`ID_LANGUE`) REFERENCES `langue`
 ADD CONSTRAINT `FK_EPREUVE_PROFESSEUR` FOREIGN KEY (`ID_PROFESSEUR`) REFERENCES `professeur` (`ID_PROFESSEUR`),
 ADD CONSTRAINT `FK_EPREUVE_SALLE` FOREIGN KEY (`ID_SALLE`) REFERENCES `salle` (`ID_SALLE`);
 
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
