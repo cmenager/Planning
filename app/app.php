@@ -50,7 +50,6 @@ $app->get('/admin', function() use ($app) {
 
 // Register error handler
 use Symfony\Component\HttpFoundation\Response;
-
 $app->error(function (\Exception $e, $code) use ($app) {
     switch ($code) {
         case 403:
@@ -130,3 +129,16 @@ $app['dao.enseigne'] = $app->share(function ($app) {
     $enseigneDAO->setProfesseurDAO($app['dao.professeur']);
     return $enseigneDAO;
 });
+
+
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => $app['monolog.logfile'],
+    'monolog.name' => 'Planning',
+    'monolog.level' => $app['monolog.level']
+));
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+if (isset($app['debug']) and $app['debug']) {
+    $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
+        'profiler.cache_dir' => __DIR__.'/../var/cache/profiler'
+    ));
+}

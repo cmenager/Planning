@@ -3,7 +3,6 @@
 {% block title %}Error!{% endblock %}
 
 {% block content %}
-    <!--Page pour afficher en cas d'errreur  -->
     <div class="row" id="errorPanel">
         <div class="col-xs-5">
             <img class="img-responsive pull-right" src="{{ app.request.basepath }}/images/404-ghost.png" alt="Error ghost" />
@@ -12,5 +11,4 @@
             <h1>Whoops...<br><small>{{ message }}</small></h1>
         </div>
     </div>
-    <!-- Fin page pour afficher en cas d'errreur  -->
 {% endblock %}

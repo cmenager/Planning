@@ -1,4 +1,5 @@
 <?php
+
 namespace Planning\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -28,18 +29,18 @@ class EleveType extends AbstractType {
                 ))
                 ->add('tierstemps', 'text', array(
                     'label' => "Tiers temps",
-                ))                
+                ))
                 ->add('classe', 'choice', array(
-                    'label' => "Classe",
+                    'label' => "Secteur",
                     'choices' => $this->classes,
                     'expanded' => false,
                     'multiple' => false,
                     'mapped' => false, // this field is not mapped to an object property
-                    'preferred_choices' => array($this->classeId), // To indicate the classe witch was selected the previous time             
+                    'preferred_choices' => array($this->classeId),
                 ))
                 ->add('save', 'submit', array(
                     'label' => 'Valider',
-                ));
+        ));
     }
 
     public function getName() {
