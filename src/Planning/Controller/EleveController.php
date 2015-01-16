@@ -39,7 +39,8 @@ class EleveController {
      */
     public function searchAction(Application $app) {
         $classes = $app['dao.classe']->findAll();
-        return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes));
+        $eleves = $app['dao.eleve']->findAll();
+        return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes,'eleves' => $eleves ));
     }
 
     /**
@@ -93,8 +94,24 @@ class EleveController {
         $eleveFormView = $eleveForm->createView();
         return $app['twig']->render('eleve.html.twig', array('eleveForm' => $eleveFormView));
     }
-
-
+/////////////////////////////////////////////////////////////A TESTER///////////////////////////////////////////////
+    /**
+     * Delete article controller.
+     *
+     * @param integer $id Article id
+     * @param Request $request Incoming request
+     * @param Application $app Silex application
+     */
+    public function deleteEleveAction($id, Request $request, Application $app) {
+        // Delete all associated comments
+        $app['dao.classe']->deleteAllByEleve($id);
+        // Delete the article
+        $app['dao.eleve']->delete($id);
+        $app['session']->getFlashBag()->add('success', 'The article was succesfully removed.');
+        return $app->redirect('/admin');
+    }
+    
+    
     /**
      * Gets the parameters of search and displays the results of search
      * @param Request $request
@@ -102,14 +119,14 @@ class EleveController {
      * @return type
      */
     public function resultsAction(Request $request, Application $app) {
-        if ($request->request->has('dllEleve')) {
+        if ($request->request->has('dllNomEleve')) {
 // Advanced search by nom
-            $eleveId = $request->request->get('dllEleve');
+            $eleveId = $request->request->get('dllNomEleve');
             $eleves = $app['dao.eleve']->findAllByNom($eleveId);
         } else {
-            if ($request->request->has('dllClasse')) {
+            if ($request->request->has('dllClasseEleve')) {
 // Simple search by classe
-                $classeId = $request->request->get('dllClasse');
+                $classeId = $request->request->get('dllClasseEleve');
                 $eleves = $app['dao.eleve']->findAllByClasse($classeId);
             }
         }

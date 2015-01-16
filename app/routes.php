@@ -29,6 +29,8 @@ $app->match('/eleves/add/', 'Planning\Controller\EleveController::addAction');
 // Editing a eleve
 $app->match('/admin/eleve/edit/{id}', 'Planning\Controller\EleveController::editAction');
 
+// Remove an article
+$app->get('/admin/eleve/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
 
 //PROFESSEUR///////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a professeur

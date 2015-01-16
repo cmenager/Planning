@@ -1,33 +1,33 @@
 {% extends "layout.html.twig" %}
 {% set professeurMenu = true %}
 
-{% block title %}Professeurs{% endblock %}
+    {% block title %}Professeurs{% endblock %}
 
-{% block content %}
-<h2 class="text-center">{{ block('title') }}</h2>
-{% if professeurs %}
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed">
-            <thead>
-                <tr>                       
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Role</th>
-                    <th>Login</th>
-                    
-                </tr>
-            </thead>
-            {% for professeur in professeurs %}
-                <tr>
-                    <td><a href="/professeurs/{{ professeur.id }}">{{ professeur.nom }}</a></td>
-                    <td>{{ professeur.prenom }}</td>
-                    <td>{{ professeur.role }}</td>
-                    <td>{{ professeur.username }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-{% else %}
-    <div class="alert alert-warning">Aucun professeur trouvé.</div>
-{% endif %}   
-{% endblock %}
+    {% block content %}
+        <h2 class="text-center">{{ block('title') }}</h2>
+        {% if professeurs %}
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>                       
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Role</th>
+                            <th>Login</th>
+
+                        </tr>
+                    </thead>
+                    {% for professeur in professeurs %}
+                        <tr>
+                            <td><a href="/professeurs/{{ professeur.id }}">{{ professeur.nom }}</a></td>
+                            <td>{{ professeur.prenom }}</td>
+                            <td>{{ professeur.role }}</td>
+                            <td>{{ professeur.username }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">Aucun professeur trouvé.</div>
+        {% endif %}   
+    {% endblock %}

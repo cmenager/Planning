@@ -6,7 +6,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Planning\Domain\Professeur;
-//use Planning\Form\Type\VisitorType;
 use Planning\DAO\ProfesseurDAO;
 
 class ProfesseurController {
@@ -38,8 +37,9 @@ class ProfesseurController {
      * @return type
      */
     public function searchAction(Application $app) {
+        $roles = array('ROLE_USER'=> 'ROLE_USER','ROLE_ADMIN'=>'ROLE_ADMIN');
         $professeurs = $app['dao.professeur']->findAll();
-        return $app['twig']->render('professeurs_search.html.twig', array('professeurs' => $professeurs));
+        return $app['twig']->render('professeurs_search.html.twig', array('roles' => $roles, 'professeurs' => $professeurs));
     }
   
     /**

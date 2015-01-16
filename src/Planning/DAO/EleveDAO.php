@@ -77,13 +77,13 @@ class EleveDAO extends DAO {
     }
 
 // </editor-fold>
-    // // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par nom : findAllByNom()"> 
+    // // <editor-fold defaultstate="collapsed" desc="Trouver les eleve par nom : findAllByNom()"> 
     /*
-     * Returns the list of all eleves for a given nom, sorted by trade name.
+     * Returns the list of all drugs for a given family, sorted by trade name.
      *
-     * @param integer $nomDd The nom id.
+     * @param integer $familyDd The family id.
      *
-     * @return array The list of eleves.
+     * @return array The list of drugs.
      */
     public function findAllByNom($nomId) {
         $sql = "select * from eleve where NOM_ELEVE=? order by ID_ELEVE";
