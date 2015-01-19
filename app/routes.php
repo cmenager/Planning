@@ -24,12 +24,12 @@ $app->get('/eleves/search/', 'Planning\Controller\EleveController::searchAction'
 $app->post('/eleves/results/', 'Planning\Controller\EleveController::resultsAction');
 
 // New eleve
-$app->match('/eleves/add/', 'Planning\Controller\EleveController::addAction');
+$app->match('/admin/eleve/add', 'Planning\Controller\EleveController::addAction');
 
 // Editing a eleve
 $app->match('/admin/eleve/edit/{id}', 'Planning\Controller\EleveController::editAction');
 
-// Remove an article
+// Remove an eleve
 $app->get('/admin/eleve/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
 
 //PROFESSEUR///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,10 +46,13 @@ $app->get('/professeurs/search/', 'Planning\Controller\ProfesseurController::sea
 $app->post('/professeurs/results/', 'Planning\Controller\ProfesseurController::resultsAction');
 
 // New professeurs
-$app->match('/professeurs/add/', 'Planning\Controller\ProfesseurController::addAction');
+$app->match('/admin/professeur/add', 'Planning\Controller\ProfesseurController::addAction');
 
 // Editing a professeurs
-$app->match('/professeurs/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
+$app->match('/admin/professeur/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
+
+// Remove an professeurs
+$app->get('/admin/professeur/delete/{id}', "Planning\Controller\ProfesseurController::deleteProfesseurAction");
 
 //EPREUVE////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a epreuve

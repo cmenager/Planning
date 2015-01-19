@@ -102,9 +102,7 @@ class EleveController {
      * @param Request $request Incoming request
      * @param Application $app Silex application
      */
-    public function deleteEleveAction($id, Request $request, Application $app) {
-        // Delete all associated comments
-        $app['dao.classe']->deleteAllByEleve($id);
+    public function deleteEleveAction($id, Request $request, Application $app) {        
         // Delete the article
         $app['dao.eleve']->delete($id);
         $app['session']->getFlashBag()->add('success', 'The article was succesfully removed.');

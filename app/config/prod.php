@@ -11,6 +11,3 @@ $app['db.options'] = array(
     'password' => 'secret',
 );
 
-// define log parameters
-$app['monolog.logfile'] = __DIR__.'/../../var/logs/silex.log';
-$app['monolog.level'] = 'WARNING';

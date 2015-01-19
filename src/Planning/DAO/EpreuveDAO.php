@@ -71,8 +71,6 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-
-    
     // <editor-fold defaultstate="collapsed" desc="Trouver tous les epreuves par identifiant : findAll()"> 
     /**
      * Returns the list of all eleve, sorted by nom.
@@ -86,15 +84,14 @@ class EpreuveDAO extends DAO {
         // Converts query result to an array of domain objects
         $epreuves = array();
         foreach ($result as $row) {
-            $epreuveId = $row['ID_ELEVE'];
+            $epreuveId = $row['DATE_PASSAGE'];//comment afficher tout 
             $epreuves[$epreuveId] = $this->buildDomainObject($row);
         }
         return $epreuves;
     }
 
 // </editor-fold>
-// 
-// // // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par epreuve : findAllByNom()"> 
+    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par epreuve : findAllByNomEleve()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -102,8 +99,8 @@ class EpreuveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByNom($nomId) {
-        $sql = "select * from epreuve ep join eleve el on ep.ID_ELEVE = el.ID_ELEVE where el.NOM_ELEVE=? ";
+    public function findAllByNomEleve($nomId) {
+        $sql = "select * from epreuve ep join eleve el on ep.ID_ELEVE = el.ID_ELEVE where el.ID_ELEVE=? ";
         $result = $this->getDb()->fetchAll($sql, array($nomId));
 
         // Convert query result to an array of domain objects
@@ -116,8 +113,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="Trouver les professeurs par epreuve : findAllByProfesseur()"> 
+    // <editor-fold defaultstate="collapsed" desc="Trouver les professeurs par epreuve : findAllByNomProfesseur()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -125,8 +121,8 @@ class EpreuveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByProfesseur($profId) {
-        $sql = "select * from epreuve ep join professeur pr on ep.ID_PROFESSEUR = pr.ID_PROFESSEUR where pr.NOM_PROFESSEUR=? ";
+    public function findAllByNomProfesseur($profId) {
+        $sql = "select * from epreuve ep join professeur pr on ep.ID_PROFESSEUR = pr.ID_PROFESSEUR where pr.ID_PROFESSEUR=? ";
         $result = $this->getDb()->fetchAll($sql, array($profId));
 
         // Convert query result to an array of domain objects
@@ -171,7 +167,7 @@ class EpreuveDAO extends DAO {
         $epreuve->setLangue($langue);
         $epreuve->setProfesseur($professeur);
         $epreuve->setSalle($salle);
-        
+
         return $epreuve;
     }
 

@@ -80,7 +80,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
      * @return array The list of drugs.
      */
     public function findAllByNom($nomId) {
-        $sql = "select * from professeur where NOM_PROFESSEUR=? order by ID_PROFESSEUR";
+        $sql = "select * from professeur where ID_PROFESSEUR=? order by ID_PROFESSEUR";
         $result = $this->getDb()->fetchAll($sql, array($nomId));
 
         // Convert query result to an array of domain objects

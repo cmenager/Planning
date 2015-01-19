@@ -19,9 +19,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Eleve</label>
                             <div class="col-sm-5 col-md-4">
-                                <select class="form-control" name="eleve">
-                                    {% for eleve in eleves %}
-                                        <option value="{{ eleve.id }}">{{ eleve.nom }} </option>
+                                <select class="form-control" name="ddlNomEleveEp">
+                                    {% for epreuve in epreuves %}
+                                        <option value="{{ epreuve.eleve.id }}">{{ epreuve.eleve.nom }} {{epreuve.eleve.prenom}} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -39,9 +39,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Professeur</label>
                             <div class="col-sm-5 col-md-4">
-                                <select class="form-control" name="professeur">
-                                    {% for professeur in professeurs %}
-                                        <option value="{{ professeur.id }}">{{ professeur.nom }} </option>
+                                <select class="form-control" name="ddlNomProfesseurEp">
+                                    {% for epreuve in epreuves %}
+                                        <option value="{{ epreuve.professeur.id }}">{{ epreuve.professeur.nom }} {{epreuve.professeur.prenom}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

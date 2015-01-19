@@ -50,14 +50,16 @@ class EpreuveController {
      */
     public function resultsAction(Request $request, Application $app) {
 
-        if ($request->request->has('nom')) {
+        if ($request->request->has('ddlNomEleveEp')) {
 // Advanced search by nom
-            $nom = $request->request->get('nom');
-            $epreuves = $app['dao.epreuve']->findAllByNom($nom);
+            $nom = $request->request->get('ddlNomEleveEp');
+            $epreuves = $app['dao.epreuve']->findAllByNomEleve($nom);
         } else {
+            if ($request->request->has('ddlNomProfesseurEp')) {
 // Simple search by classe
-            $professeurId = $request->request->get('professeur');
-            $epreuves = $app['dao.epreuve']->findAllByProfesseur($professeurId);
+                $professeurId = $request->request->get('ddlNomProfesseurEp');
+                $epreuves = $app['dao.epreuve']->findAllByNomProfesseur($professeurId);
+            }
         }
         return $app['twig']->render('epreuves_results.html.twig', array('epreuves' => $epreuves));
     }

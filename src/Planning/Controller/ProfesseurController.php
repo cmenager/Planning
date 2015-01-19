@@ -37,20 +37,20 @@ class ProfesseurController {
      * @return type
      */
     public function searchAction(Application $app) {
-        $roles = array('ROLE_USER'=> 'ROLE_USER','ROLE_ADMIN'=>'ROLE_ADMIN');
+        $roles = array('ROLE_USER' => 'ROLE_USER', 'ROLE_ADMIN' => 'ROLE_ADMIN');
         $professeurs = $app['dao.professeur']->findAll();
         return $app['twig']->render('professeurs_search.html.twig', array('roles' => $roles, 'professeurs' => $professeurs));
     }
-  
+
     /**
      * Adds a professeur
      * @param Request $request
      * @param Application $app
      * @return type
      */
-    public function addAction(Request $request, Application $app) {       
+    public function addAction(Request $request, Application $app) {
         $professeurFormView = NULL;
-        $professeur = new Professeur();        
+        $professeur = new Professeur();
         $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur);
         $professeurForm->handleRequest($request);
         if ($professeurForm->isValid()) {
@@ -71,9 +71,9 @@ class ProfesseurController {
      */
     public function editAction(Request $request, Application $app, $id) {
         $professeurFormView = NULL;
-        $professeur = $app['dao.professeur']->find($id);;
+        $professeur = $app['dao.professeur']->find($id);
         // When editing we need to assign the good classe in the dropdown list
-        $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur );
+        $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur);
         $professeurForm->handleRequest($request);
         if ($professeurForm->isValid()) {
             // Manually affect classe to the new visit report
@@ -81,11 +81,23 @@ class ProfesseurController {
             $app['session']->getFlashBag()->add('success', 'Un professeur a été modifié avec succès .');
         }
         $professeurFormView = $professeurForm->createView();
-        return $app['twig']->render('professeurs.html.twig', array('professeurForm' => $professeurFormView));
+        return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView));
     }
-    
-    
-    
+
+    /**
+     * Delete article controller.
+     *
+     * @param integer $id Article id
+     * @param Request $request Incoming request
+     * @param Application $app Silex application
+     */
+    public function deleteProfesseurAction($id, Request $request, Application $app) {
+        // Delete the article
+        $app['dao.professeur']->delete($id);
+        $app['session']->getFlashBag()->add('success', 'The article was succesfully removed.');
+        return $app->redirect('/admin');
+    }
+
     
     /**
      * Gets the parameters of search and displays the results of search

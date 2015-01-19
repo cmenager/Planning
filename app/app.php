@@ -64,10 +64,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });
 
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-            $twig->addExtension(new Twig_Extensions_Extension_Text());
-            return $twig;
-        }));
+
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
 // Register JSON data decoder for JSON requests
@@ -130,15 +127,3 @@ $app['dao.enseigne'] = $app->share(function ($app) {
     return $enseigneDAO;
 });
 
-
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => $app['monolog.logfile'],
-    'monolog.name' => 'Planning',
-    'monolog.level' => $app['monolog.level']
-));
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-if (isset($app['debug']) and $app['debug']) {
-    $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
-        'profiler.cache_dir' => __DIR__.'/../var/cache/profiler'
-    ));
-}

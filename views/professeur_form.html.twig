@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+{% set adminMenu = true %}
+    {% block title %}{{ title }}{% endblock %}
+    {% block content %}
+        <h2 class="text-center">{{ block('title') }}</h2>
+
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        <div class="well">
+            {{ form_start(professeurForm, { 'attr': {'class': 'form-horizontal'} }) }}
+
+            <div class="form-group">
+                {{ form_label(professeurForm.nom, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'}}) }}
+                <div class="col-sm-6 col-md-3">
+                    {{ form_errors(professeurForm.nom) }}
+                    {{ form_widget(professeurForm.nom, { 'attr': 'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(professeurForm.prenom, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'}}) }}
+                <div class="col-sm-6 col-md-3">
+                    {{ form_errors(professeurForm.prenom) }}
+                    {{ form_widget(professeurForm.prenom, { 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(professeurForm.login, NULL, { 'label_attr':  {'class': 'col-sm-4 col-md-5 control-label'
+                }}) }}
+                <div class="col-sm-6 col-md-3">
+                    {{ form_errors(professeurForm.login) }}
+                    {{ form_widget(professeurForm.login, { 'attr':  {'class': 'form-control'}}) }}
+                </div>
+            </div>     
+            <div class="form-group">
+                {{ form_label(professeurForm.role, NULL, { 'label_attr':  {'class': 'col-sm-4 col-md-5 control-label'
+                }}) }}
+                <div class="col-sm-6 col-md-3">
+                    {{ form_errors(professeurForm.role) }}
+                    {{ form_widget(professeurForm.role, { 'attr':  {'class': 'form-control'}}) }}
+                </div>
+            </div>   
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-md-offset-5 col-sm-3">
+                    {{ form_row(professeurForm.save, { 'attr':  {'class': 'btn btn-primary' }}) }}
+                </div>
+            </div>
+
+            {{ form_end(professeurForm) }}
+        </div>
+
+    {% endblock %}

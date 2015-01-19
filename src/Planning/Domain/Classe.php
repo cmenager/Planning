@@ -36,5 +36,9 @@ class Classe
         $this->libelle = $libelle;
     }
 
+    
+    public function _toString(){
+        return $this->getLibelle();
+    }
 
 }

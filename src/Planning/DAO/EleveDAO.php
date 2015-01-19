@@ -86,7 +86,7 @@ class EleveDAO extends DAO {
      * @return array The list of drugs.
      */
     public function findAllByNom($nomId) {
-        $sql = "select * from eleve where NOM_ELEVE=? order by ID_ELEVE";
+        $sql = "select * from eleve where ID_ELEVE=? order by ID_ELEVE";
         $result = $this->getDb()->fetchAll($sql, array($nomId));
 
         // Convert query result to an array of domain objects
@@ -152,8 +152,9 @@ class EleveDAO extends DAO {
      */
     public function delete($id) {
         // Delete the eleve
-        $this->getDb()->delete('eleves', array('ID_ELEVE' => $id));
+        $this->getDb()->delete('eleve', array('ID_ELEVE' => $id));
     }
 
 // </editor-fold>
+
 }
