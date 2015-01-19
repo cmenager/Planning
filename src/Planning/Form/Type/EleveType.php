@@ -5,20 +5,7 @@ namespace Planning\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EleveType extends AbstractType {
-
-    private $classes;
-    private $classeId;
-
-    /**
-     * Constructor.
-     *
-     * @param array $classes, $classeID
-     */
-    public function __construct($classes, $classeId) {
-        $this->classes = $classes;
-        $this->classeId = $classeId;
-    }
+class ProfesseurType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('nom', 'text', array(
@@ -27,16 +14,11 @@ class EleveType extends AbstractType {
                 ->add('prenom', 'text', array(
                     'label' => "Prenom",
                 ))
-                ->add('tierstemps', 'text', array(
-                    'label' => "Tiers temps",
+                ->add('login', 'text', array(
+                    'label' => "Login",
                 ))
-                ->add('classe', 'choice', array(
-                    'label' => "Secteur",
-                    'choices' => $this->classes,
-                    'expanded' => false,
-                    'multiple' => false,
-                    'mapped' => false, // this field is not mapped to an object property
-                    'preferred_choices' => array($this->classeId),
+                ->add('role', 'text', array(
+                    'label' => "Role",
                 ))
                 ->add('save', 'submit', array(
                     'label' => 'Valider',
@@ -44,7 +26,8 @@ class EleveType extends AbstractType {
     }
 
     public function getName() {
-        return 'eleve';
+        return 'professeur';
     }
 
 }
+

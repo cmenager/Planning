@@ -120,4 +120,36 @@ class ProfesseurController {
         return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
     }
 
+    
+    
+    /**
+     *  Edits the profil of a Visitor
+     * @param Request $request
+     * @param Application $app
+     * @return type
+     */
+    public function profilAction(Request $request, Application $app) {
+        $profil = $app['security']->getToken()->getUser();
+        $profilFormView = NULL;
+        $profilForm = $app['form.factory']->create(new VisitorType, $profil);
+        $profilForm->handleRequest($request);
+        if ($profilForm->isValid()) {
+            // Gets the password not yet encoded from the form
+            $plainPassword = $profil->getPassword();
+            // Gets the encodage
+            $encoder = $app['security.encoder_factory']->getEncoder($profil);
+            // Encode the password with the salt
+            $password = $encoder->encodePassword($plainPassword, $profil->getSalt());
+            // Populates the encoded password to the property
+            $profil->setPassword($password);
+            // Saves the profil in the DB
+            $app['dao.professeur']->save($profil);
+            // Initializes the success message
+            $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
+        }
+        // Creates the form
+        $profilFormView = $profilForm->createView();
+        // And injects it in the view
+        return $app['twig']->render('profil.html.twig', array('profilForm' => $profilFormView));
+    }
 }

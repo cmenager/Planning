@@ -81,8 +81,30 @@ $app->get('/login', function(Request $request) use ($app) {
 $app->get('/admin', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
     $professeurs = $app['dao.professeur']->findAll();
+    $epreuves = $app['dao.epreuve']->findAll();
     return $app['twig']->render('admin.html.twig', array(
                 'eleves' => $eleves,
-                'professeurs' => $professeurs));
+                'professeurs' => $professeurs,
+                'epreuves' => $epreuves));
 });
 
+// Personal info
+$app->match('/me', function(Request $request) use ($app) {
+    $professeur = $app['security']->getToken()->getUser();
+    $professeurFormView = NULL;
+    $professeurForm = $app['form.factory']->create(new ProfesseurType(), $professeur);
+    $professeurForm->handleRequest($request);
+    if ($professeurForm->isValid()) {
+        $plainPassword = $professeur->getPassword();
+        // find the encoder for a UserInterface instance
+        $encoder = $app['security.encoder_factory']->getEncoder($professeur);
+        // compute the encoded password
+        $password = $encoder->encodePassword($plainPassword, $professeur->getSalt());
+        $professeur->setPassword($password); 
+        $app['dao.professeur']->save($professeur);
+        $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
+    }
+    $professeurFormView = $professeurForm->createView();
+     $genres = $app['dao.movieGenre']->findAll();
+    return $app['twig']->render('professeur.html.twig', array('professeurForm' => $professeurFormView,));
+});

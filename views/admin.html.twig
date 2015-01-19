@@ -9,28 +9,24 @@
             <div class="alert alert-success">
                 {{ flashMessage }}
             </div>
-        {% endfor %} 
-        <!-- Tableau pour acceder les outils dans l'administration -->
+        {% endfor %}
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <ul class="nav nav-tabs nav-justified">
                     <li class="active"><a href="#eleves" data-toggle="tab">Eleves</a></li>
-
-                    <li><a href="#professeurs" data-toggle="tab">Professeurs</a></li>
+                    <li><a href="#professeurs" data-toggle="tab">Professeur</a></li>
+                    <li><a href="#epreuves" data-toggle="tab">Epreuves</a></li>
                 </ul>
             </div>
         </div>
-        <!-- Fin tableau pour acceder les outils dans l'administration -->
-
         <div class="tab-content">
             <div class="tab-pane fade in active adminTable" id="eleves">
-                <!--Table où il y a tous les eleves a modifier ou a supprimer ou a ajouter-->
                 {% if eleves %}
                     <div class="table-responsive">
                         <table class="table table-hover table-condensed">
                             <thead>
-                                <tr>                              
-                                    <th>Nom </th>
+                                <tr>
+                                    <th>Nom</th>
                                     <th>Prenom</th>
                                     <th>Classe</th>
                                     <th></th>  <!-- Actions column -->
@@ -38,9 +34,9 @@
                             </thead>
                             {% for eleve in eleves %}
                                 <tr>
-                                    <td><a class="eleveTitle" href="/eleves/{{ eleve.id }}">{{ eleve.nom }} </a></td>
-                                    <td>{{eleve.prenom}}</td>
-                                    <td>{{ eleve.classe.libelle }}</td>
+                                    <td><a class="eleveTitle" href="/eleve/{{ eleve.id }}">{{ eleve.nom }}</a></td>
+                                    <td>{{ eleve.prenom }}</td>
+                                    <td>{{eleve.classe.libelle }}</td>
                                     <td>
                                         <a href="/admin/eleve/edit/{{ eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
@@ -50,14 +46,14 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Voulez-vous vraiment supprimer ce eleve ?
+                                                        Do you really want to delete this eleve ?
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                        <a href="/admin/eleve/delete/{{ eleve.id }}" class="btn btn-danger">Confirmer</a>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <a href="/admin/eleve/delete/{{ eleve.id }}" class="btn btn-danger">Confirm</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -66,24 +62,19 @@
                                 </tr>
                             {% endfor %}
                         </table>
-
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">Aucun eleve trouvé.</div>
-                {% endif %}     
-                <a href="/admin/eleve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un eleve</button></a>
-                <!--Fin table où il y a tous les films a modifier ou a supprimer ou a ajouter-->
+                    <div class="alert alert-warning">No eleves found.</div>
+                {% endif %}
+                <a href="/admin/eleve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add eleve</button></a>
             </div>
-
-
-            <div class="tab-pane fade  adminTable" id="professeurs">
-                <!--Table où il y a tous les professeurs a modifier ou a supprimer ou a ajouter-->
+            <div class="tab-pane fade adminTable" id="professeurs">
                 {% if professeurs %}
                     <div class="table-responsive">
                         <table class="table table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Nom </th>
+                                    <th>Nom</th>
                                     <th>Prenom</th>
                                     <th>Login</th>
                                     <th>Role</th>
@@ -92,27 +83,27 @@
                             </thead>
                             {% for professeur in professeurs %}
                                 <tr>
-                                    <td><a class="eleveTitle" href="/professeur/{{ professeur.id }}">{{ professeur.nom }} </a></td>
-                                    <td>{{professeur.prenom}}</td>
-                                    <td>{{professeur.username}} </td>
-                                    <td>{{professeur.role }}</td>
+                                    <td><a class="eleveTitle" href="/professeurs/{{ professeur.id }}">{{ professeur.nom }}</a></td>
+                                    <td>{{ professeur.prenom }}</td>
+                                    <td>{{ professeur.username }}</td>
+                                     <td>{{ professeur.role }}</td>
                                     <td>
                                         <a href="/admin/professeur/edit/{{ professeur.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                                        <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#professeurDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <div class="modal fade" id="professeurDialog{{ professeur.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Voulez-vous vraiment supprimer ce professeur ?
+                                                        Do you really want to delete this professeur ?
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                        <a href="/admin/professeur/delete/{{ eleve.id }}" class="btn btn-danger">Confirmer</a>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <a href="/admin/professeur/delete/{{ professeur.id }}" class="btn btn-danger">Confirm</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -123,11 +114,68 @@
                         </table>
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">Aucun professeur trouvé.</div>
+                    <div class="alert alert-warning">No professeurs found.</div>
                 {% endif %}
-                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
-                <!--Fin table où il y a tous les professeurs a modifier ou a supprimer ou a ajouter-->
             </div>
-
+            <div class="tab-pane fade adminTable" id="epreuves">
+                {% if epreuves %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Nom d'un eleve</th>
+                                    <th>Prenom d'un eleve</th>
+                                    <th>Date de passage</th>
+                                    <th>Heure de passage de debut</th>
+                                    <th>Heure de passage de fin</th>
+                                    <th>Nom d'un professeur</th>
+                                    <th>Prenom d'un professeur</th>
+                                    <th>Langue</th>
+                                    <th>Salle</th>
+                                    <th></th>  <!-- Actions column -->
+                                </tr>
+                            </thead>
+                            {% for epreuve in epreuves %}
+                                <tr>
+                                    <td><a class="eleveTitle" href="/epreuves/{{ epreuve.eleve.id }}">{{ epreuve.eleve.nom }}</a></td>
+                                    <td>{{ epreuve.eleve.prenom }}</td>
+                                    <td>{{ epreuve.datepassage }}</td>
+                                     <td>{{ epreuve.heurepassage.heuredeb }}</td>
+                                     <td>{{ epreuve.heurepassage.heurefin }}</td>
+                                     <td>{{ epreuve.professeur.nom }}</td>
+                                     <td>{{ epreuve.professeur.prenom }}</td>
+                                     <td>{{ epreuve.langue.libelle }}</td>
+                                     <td>{{ epreuve.salle.libelle }}</td>
+                                    <td>
+                                        <a href="/admin/epreuve/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#epreuveDialog{{ epreuve.eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                        <div class="modal fade" id="epreuveDialog{{ epreuve.eleve.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Do you really want to delete this epreuve ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <a href="/admin/epreuve/delete/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirm</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">No epreuve found.</div>
+                {% endif %}
+                <a href="/admin/epreuve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add epreuve</button></a>
+            </div>
         </div>
     {% endblock %}

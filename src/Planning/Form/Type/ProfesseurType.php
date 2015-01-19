@@ -9,19 +9,19 @@ class ProfesseurType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('nom', 'text', array(
-                    'label' => "Nom",
+                    'label' => 'Nom',
                 ))
                 ->add('prenom', 'text', array(
-                    'label' => "Prenom",
+                    'label' => 'Prenom',
                 ))
+                ->add('role', 'text', array(
+                    'label' => 'Role',
+                ))               
                 ->add('login', 'text', array(
                     'label' => "Login",
                 ))
-                ->add('role', 'text', array(
-                    'label' => "Role",
-                ))
-                ->add('save', 'submit', array(
-                    'label' => 'Valider',
+                ->add('password', 'password', array(
+                    'label' => 'Mot de passe',
         ));
     }
 
