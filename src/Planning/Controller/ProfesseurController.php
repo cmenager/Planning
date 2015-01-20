@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Planning\Domain\Professeur;
 use Planning\DAO\ProfesseurDAO;
+use Planning\Form\Type\ProfesseurType;
 
 class ProfesseurController {
 

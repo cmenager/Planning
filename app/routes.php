@@ -67,6 +67,15 @@ $app->get('/epreuves/search/', 'Planning\Controller\EpreuveController::searchAct
 // Results page for epreuves
 $app->post('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
+// New epreuves
+$app->match('/admin/epreuve/add', 'Planning\Controller\EpreuveController::addAction');
+
+// Editing a epreuves
+$app->match('/admin/epreuve/edit/{id}', 'Planning\Controller\EpreuveController::editAction');
+
+// Remove an epreuves
+$app->get('/admin/epreuve/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
+
 
 // Login form
 $app->get('/login', function(Request $request) use ($app) {
@@ -90,7 +99,6 @@ $app->get('/admin', function() use ($app) {
 
 // Personal info
 $app->match('/me', function(Request $request) use ($app) {
-    $professeur = $app['security']->getToken()->getUser();
     $professeurFormView = NULL;
     $professeurForm = $app['form.factory']->create(new ProfesseurType(), $professeur);
     $professeurForm->handleRequest($request);
@@ -105,6 +113,5 @@ $app->match('/me', function(Request $request) use ($app) {
         $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
     }
     $professeurFormView = $professeurForm->createView();
-     $genres = $app['dao.movieGenre']->findAll();
-    return $app['twig']->render('professeur.html.twig', array('professeurForm' => $professeurFormView,));
+    return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView,));
 });

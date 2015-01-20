@@ -94,7 +94,7 @@ class EleveController {
         $eleveFormView = $eleveForm->createView();
         return $app['twig']->render('eleve.html.twig', array('eleveForm' => $eleveFormView));
     }
-/////////////////////////////////////////////////////////////A TESTER///////////////////////////////////////////////
+
     /**
      * Delete article controller.
      *

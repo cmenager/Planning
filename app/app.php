@@ -23,7 +23,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'anonymous' => true
         ),
         'secured' => array(
-            'pattern' => '^/',           
+            'pattern' => '^/',
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => $app->share(function () use ($app) {
@@ -39,17 +39,10 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     ),
 ));
 
-// Admin zone
-$app->get('/admin', function() use ($app) {
-    $eleves = $app['dao.eleve']->findAll();
-    $professeurs = $app['dao.professeur']->findAll();
-    return $app['twig']->render('admin.html.twig', array(
-                'eleves' => $eleves,
-                'professeurs' => $professeurs));
-});
 
 // Register error handler
 use Symfony\Component\HttpFoundation\Response;
+
 $app->error(function (\Exception $e, $code) use ($app) {
     switch ($code) {
         case 403:

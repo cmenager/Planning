@@ -172,4 +172,16 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Supprimer un epreuve : delete($id)">
+    /**
+     * Removes a eleve from the database.
+     *
+     * @param \Planning\Domain\Eleve $eleve The eleve to remove
+     */
+    public function delete($id) {
+        // Delete the eleve
+        $this->getDb()->delete('epreuve', array('ID_ELEVE' => $id));
+    }
+
+// </editor-fold>
 }
