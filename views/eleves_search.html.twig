@@ -7,21 +7,22 @@
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#simple" data-toggle="tab">Par Classe</a></li>
-                        <li><a href="#advanced" data-toggle="tab">Par Nom</a></li>
+                        <li class="active"><a href="#simple" data-toggle="tab">Par Nom</a></li>
+                        <li><a href="#advanced" data-toggle="tab">Par Classe</a></li>
                     </ul>
                 </div>
             </div>
             <div class="tab-content">
+
                 <div class="tab-pane fade in active" id="simple">
                     <br>
                     <form class="form-horizontal" role="form" action="/eleves/results/" method="post">
                         <div class="form-group">
-                            <label class="col-sm-3 col-sm-offset-2 control-label">Classe</label>
+                            <label class="col-sm-3 col-sm-offset-2 control-label">Nom</label>
                             <div class="col-sm-5 col-md-4">
-                                <select class="form-control" name="dllClasseEleve">
-                                    {% for classe in classes %}
-                                        <option value="{{ classe.id }}">{{ classe.libelle }}</option>
+                                <select class="form-control" name="dllNomEleve">
+                                    {% for eleve in eleves %}
+                                        <option value="{{ eleve.id }}">{{ eleve.nom }} {{eleve.prenom}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -37,11 +38,11 @@
                     <br>
                     <form class="form-horizontal" role="form" action="/eleves/results/" method="post">
                         <div class="form-group">
-                            <label class="col-sm-3 col-sm-offset-2 control-label">Nom</label>
+                            <label class="col-sm-3 col-sm-offset-2 control-label">Classe</label>
                             <div class="col-sm-5 col-md-4">
-                                <select class="form-control" name="dllNomEleve">
-                                    {% for eleve in eleves %}
-                                        <option value="{{ eleve.id }}">{{ eleve.nom }} {{eleve.prenom}}</option>
+                                <select class="form-control" name="dllClasseEleve">
+                                    {% for classe in classes %}
+                                        <option value="{{ classe.id }}">{{ classe.libelle }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

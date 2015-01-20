@@ -95,7 +95,7 @@ class ProfesseurController {
     public function deleteProfesseurAction($id, Request $request, Application $app) {
         // Delete the article
         $app['dao.professeur']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'The article was succesfully removed.');
+        $app['session']->getFlashBag()->add('success', 'Le professeur a été supprimé.');
         return $app->redirect('/admin');
     }
 

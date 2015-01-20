@@ -192,7 +192,7 @@ class EpreuveController {
     public function deleteEpreuveAction($id, Request $request, Application $app) {        
         // Delete the article
         $app['dao.epreuve']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'The epreuve was succesfully removed.');
+        $app['session']->getFlashBag()->add('success', 'Un epreuve a été supprimé.');
         return $app->redirect('/admin');
     }
     

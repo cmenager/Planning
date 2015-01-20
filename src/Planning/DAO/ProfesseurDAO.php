@@ -183,7 +183,7 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
      */
     public function delete($id) {
         // Delete the professeur
-        $this->getDb()->delete('professeurs', array('ID_PROFESSEUR' => $id));
+        $this->getDb()->delete('professeur', array('ID_PROFESSEUR' => $id));
     }
 
 // </editor-fold>

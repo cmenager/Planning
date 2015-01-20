@@ -34,7 +34,7 @@
                             </thead>
                             {% for eleve in eleves %}
                                 <tr>
-                                    <td><a class="eleveTitle" href="/eleve/{{ eleve.id }}">{{ eleve.nom }}</a></td>
+                                    <td><a class="eleveTitle" href="/eleves/{{ eleve.id }}">{{ eleve.nom }}</a></td>
                                     <td>{{ eleve.prenom }}</td>
                                     <td>{{eleve.classe.libelle }}</td>
                                     <td>
@@ -48,7 +48,7 @@
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
                                                     </div>
-                                                    <div class="modal-body">
+                                                   <div class="modal-body">
                                                         Do you really want to delete this eleve ?
                                                     </div>
                                                     <div class="modal-footer">
@@ -66,7 +66,7 @@
                 {% else %}
                     <div class="alert alert-warning">No eleves found.</div>
                 {% endif %}
-                <a href="/admin/eleve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add eleve</button></a>
+                <a href="/admin/eleve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un  eleve</button></a>
             </div>
             <div class="tab-pane fade adminTable" id="professeurs">
                 {% if professeurs %}
@@ -116,7 +116,7 @@
                 {% else %}
                     <div class="alert alert-warning">No professeurs found.</div>
                 {% endif %}
-                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add professeur</button></a>
+                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
             </div>
             <div class="tab-pane fade adminTable" id="epreuves">
                 {% if epreuves %}
@@ -176,7 +176,7 @@
                 {% else %}
                     <div class="alert alert-warning">No epreuve found.</div>
                 {% endif %}
-                <a href="/admin/epreuve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add epreuve</button></a>
+                <a href="/admin/epreuve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un epreuve</button></a>
             </div>
         </div>
     {% endblock %}

@@ -107,7 +107,7 @@ class EpreuveDAO extends DAO {
         $epreuves = array();
         foreach ($result as $row) {
             $epreuveId = $row['ID_ELEVE'];
-            $eleves[$epreuveId] = $this->buildDomainObject($row);
+            $epreuves[$epreuveId] = $this->buildDomainObject($row);
         }
         return $epreuves;
     }
@@ -129,7 +129,7 @@ class EpreuveDAO extends DAO {
         $epreuves = array();
         foreach ($result as $row) {
             $epreuveId = $row['ID_PROFESSEUR'];
-            $eleves[$epreuveId] = $this->buildDomainObject($row);
+            $epreuves[$epreuveId] = $this->buildDomainObject($row);
         }
         return $epreuves;
     }
