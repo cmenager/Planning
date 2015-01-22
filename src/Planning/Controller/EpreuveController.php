@@ -94,7 +94,7 @@ class EpreuveController {
         $langue = current($langues);
         $langueId = $langue->getId();
 
-        $epreuveForm = $app['form.factory']->create(new VisitReportType($eleves, $eleveId, $heures, $heureId, $professeurs, $professeurId, $salles, $salleId, $langues, $langueId), $epreuve);
+        $epreuveForm = $app['form.factory']->create(new EpreuveType($eleves, $eleveId, $heures, $heureId, $professeurs, $professeurId, $salles, $salleId, $langues, $langueId), $epreuve);
         $epreuveForm->handleRequest($request);
         if ($epreuveForm->isValid()) {
             // Manually affect practitioner to the new visit report
@@ -144,7 +144,7 @@ class EpreuveController {
         $langues = $app['dao.langue']->findAll();
 
         // When editing we need to assign the good practitioner in the dropdown list
-        $epreuveForm = $app['form.factory']->create(new VisitReportType($eleves,$heures, $professeurs, $salles, $langues,
+        $epreuveForm = $app['form.factory']->create(new EpreuveType($eleves,$heures, $professeurs, $salles, $langues,
                 $epreuve->getEleve()->getId(), 
                 $epreuve->getHeurepassage()->getId(), 
                 $epreuve->getProfesseur()->getId(), 
@@ -179,7 +179,7 @@ class EpreuveController {
             $app['session']->getFlashBag()->add('success', 'Votre epreuve a été modifié.');
         }
         $epreuveFormView = $epreuveForm->createView();
-        return $app['twig']->render('epreuve.html.twig', array('epreuveForm' => $epreuveFormView));
+        return $app['twig']->render('epreuve_form.html.twig', array('epreuveForm' => $epreuveFormView));
     }
 
      /**
@@ -192,7 +192,7 @@ class EpreuveController {
     public function deleteEpreuveAction($id, Request $request, Application $app) {        
         // Delete the article
         $app['dao.epreuve']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'Un epreuve a été supprimé.');
+        $app['session']->getFlashBag()->add('success', 'Votre epreuve a été supprimé.');
         return $app->redirect('/admin');
     }
     

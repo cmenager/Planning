@@ -24,13 +24,13 @@ $app->get('/eleves/search/', 'Planning\Controller\EleveController::searchAction'
 $app->post('/eleves/results/', 'Planning\Controller\EleveController::resultsAction');
 
 // New eleve
-$app->match('/admin/eleve/add', 'Planning\Controller\EleveController::addAction');
+$app->match('/admin/eleves/add', 'Planning\Controller\EleveController::addAction');
 
 // Editing a eleve
-$app->match('/admin/eleve/edit/{id}', 'Planning\Controller\EleveController::editAction');
+$app->match('/admin/eleves/edit/{id}', 'Planning\Controller\EleveController::editAction');
 
 // Remove an eleve
-$app->get('/admin/eleve/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
+$app->get('/admin/eleves/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
 
 //PROFESSEUR///////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a professeur
@@ -46,13 +46,13 @@ $app->get('/professeurs/search/', 'Planning\Controller\ProfesseurController::sea
 $app->post('/professeurs/results/', 'Planning\Controller\ProfesseurController::resultsAction');
 
 // New professeurs
-$app->match('/admin/professeur/add', 'Planning\Controller\ProfesseurController::addAction');
+$app->match('/admin/professeurs/add', 'Planning\Controller\ProfesseurController::addAction');
 
 // Editing a professeurs
-$app->match('/admin/professeur/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
+$app->match('/admin/professeurs/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
 
 // Remove an professeurs
-$app->get('/admin/professeur/delete/{id}', "Planning\Controller\ProfesseurController::deleteProfesseurAction");
+$app->get('/admin/professeurs/delete/{id}', "Planning\Controller\ProfesseurController::deleteProfesseurAction");
 
 //EPREUVE////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a epreuve
@@ -68,13 +68,13 @@ $app->get('/epreuves/search/', 'Planning\Controller\EpreuveController::searchAct
 $app->post('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
 // New epreuves
-$app->match('/admin/epreuve/add', 'Planning\Controller\EpreuveController::addAction');
+$app->match('/admin/epreuves/add', 'Planning\Controller\EpreuveController::addAction');
 
 // Editing a epreuves
-$app->match('/admin/epreuve/edit/{id}', 'Planning\Controller\EpreuveController::editAction');
+$app->match('/admin/epreuves/edit/{id}', 'Planning\Controller\EpreuveController::editAction');
 
 // Remove an epreuves
-$app->get('/admin/epreuve/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
+$app->get('/admin/epreuves/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
 
 
 // Login form
@@ -84,8 +84,6 @@ $app->get('/login', function(Request $request) use ($app) {
                 'last_username' => $app['session']->get('_security.last_username'),
     ));
 })->bind('login');  // named route so that path('login') works in Twig templates 
-
-
 // Admin zone
 $app->get('/admin', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
@@ -98,7 +96,8 @@ $app->get('/admin', function() use ($app) {
 });
 
 // Personal info
-$app->match('/me', function(Request $request) use ($app) {
+$app->match('/profil', function(Request $request) use ($app) {
+    $professeur = $app['security']->getToken()->getUser();
     $professeurFormView = NULL;
     $professeurForm = $app['form.factory']->create(new ProfesseurType(), $professeur);
     $professeurForm->handleRequest($request);
@@ -108,10 +107,12 @@ $app->match('/me', function(Request $request) use ($app) {
         $encoder = $app['security.encoder_factory']->getEncoder($professeur);
         // compute the encoded password
         $password = $encoder->encodePassword($plainPassword, $professeur->getSalt());
-        $professeur->setPassword($password); 
+        $professeur->setPassword($password);
         $app['dao.professeur']->save($professeur);
         $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
     }
     $professeurFormView = $professeurForm->createView();
-    return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView,));
+    return $app['twig']->render('professeur.html.twig', array('professeurForm' => $professeurFormView,));
 });
+
+

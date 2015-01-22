@@ -14,7 +14,7 @@
             <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <ul class="nav nav-tabs nav-justified">
                     <li class="active"><a href="#eleves" data-toggle="tab">Eleves</a></li>
-                    <li><a href="#professeurs" data-toggle="tab">Professeur</a></li>
+                    <li><a href="#professeurs" data-toggle="tab">Professeurs</a></li>
                     <li><a href="#epreuves" data-toggle="tab">Epreuves</a></li>
                 </ul>
             </div>
@@ -38,7 +38,7 @@
                                     <td>{{ eleve.prenom }}</td>
                                     <td>{{eleve.classe.libelle }}</td>
                                     <td>
-                                        <a href="/admin/eleve/edit/{{ eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <a href="/admin/eleves/edit/{{ eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#eleveDialog{{ eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <div class="modal fade" id="eleveDialog{{ eleve.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -46,14 +46,14 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                     </div>
                                                    <div class="modal-body">
-                                                        Do you really want to delete this eleve ?
+                                                        Voulez-vous vraiment supprimer ce élève ?
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                        <a href="/admin/eleve/delete/{{ eleve.id }}" class="btn btn-danger">Confirm</a>
+                                                        <a href="/admin/eleves/delete/{{ eleve.id }}" class="btn btn-danger">Confirm</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -64,9 +64,9 @@
                         </table>
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">No eleves found.</div>
+                    <div class="alert alert-warning">Aucun élève trouvé.</div>
                 {% endif %}
-                <a href="/admin/eleve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un  eleve</button></a>
+                <a href="/admin/eleves/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un  eleve</button></a>
             </div>
             <div class="tab-pane fade adminTable" id="professeurs">
                 {% if professeurs %}
@@ -88,7 +88,7 @@
                                     <td>{{ professeur.username }}</td>
                                      <td>{{ professeur.role }}</td>
                                     <td>
-                                        <a href="/admin/professeur/edit/{{ professeur.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <a href="/admin/professeurs/edit/{{ professeur.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#professeurDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <div class="modal fade" id="professeurDialog{{ professeur.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -96,14 +96,14 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Do you really want to delete this professeur ?
+                                                       Voulez-vous vraiment supprimer ce professeur ?
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                        <a href="/admin/professeur/delete/{{ professeur.id }}" class="btn btn-danger">Confirm</a>
+                                                        <a href="/admin/professeurs/delete/{{ professeur.id }}" class="btn btn-danger">Confirm</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -114,9 +114,9 @@
                         </table>
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">No professeurs found.</div>
+                    <div class="alert alert-warning">Aucun professeur trouvé.</div>
                 {% endif %}
-                <a href="/admin/professeur/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
+                <a href="/admin/professeurs/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
             </div>
             <div class="tab-pane fade adminTable" id="epreuves">
                 {% if epreuves %}
@@ -124,12 +124,12 @@
                         <table class="table table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Nom d'un eleve</th>
+                                    <th>Nom</th>
                                     <th>Prenom d'un eleve</th>
                                     <th>Date de passage</th>
-                                    <th>Heure de passage de debut</th>
-                                    <th>Heure de passage de fin</th>
-                                    <th>Nom d'un professeur</th>
+                                    <th>Heure de debut</th>
+                                    <th>Heure de fin</th>
+                                    <th>Nom</th>
                                     <th>Prenom d'un professeur</th>
                                     <th>Langue</th>
                                     <th>Salle</th>
@@ -148,7 +148,7 @@
                                      <td>{{ epreuve.langue.libelle }}</td>
                                      <td>{{ epreuve.salle.libelle }}</td>
                                     <td>
-                                        <a href="/admin/epreuve/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <a href="/admin/epreuves/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#epreuveDialog{{ epreuve.eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <div class="modal fade" id="epreuveDialog{{ epreuve.eleve.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -156,14 +156,14 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Do you really want to delete this epreuve ?
+                                                        Voulez-vous vraiment supprimer ce épreuve ?
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                        <a href="/admin/epreuve/delete/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirm</a>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                        <a href="/admin/epreuves/delete/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirmer</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
@@ -174,9 +174,9 @@
                         </table>
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">No epreuve found.</div>
+                    <div class="alert alert-warning">Aucun épreuve trouvé.</div>
                 {% endif %}
-                <a href="/admin/epreuve/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un epreuve</button></a>
+                <a href="/admin/epreuves/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un epreuve</button></a>
             </div>
         </div>
     {% endblock %}

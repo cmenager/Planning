@@ -1,60 +1,40 @@
 {% extends "layout.html.twig" %}
-
+{% set eleveMenu = true %}
+    {% block title %}{{ eleve.nom }} {{ eleve.prenom }}{% endblock %}
     {% block content %}
         <h2 class="text-center">{{ block('title') }}</h2>
         <div class="well">
-            {{ form_start(eleveForm, { 'attr': {'class': 'form-horizontal'} }) }}
+            <form class="form-horizontal" role="form">
                 <div class="form-group">
-                    {{ form_label(eleveForm.nom, NULL, { 'label_attr':  {
-                    'class': 'col-sm-4 col-md-5 control-label'
-                    }}) }}
-                    <div class="col-sm-5 col-md-3">
-                        {{ form_errors(eleveForm.nom) }}
-                        {{ form_widget(eleveForm.nom, { 'attr':  {
-                        'class': 'form-control'
-                        }}) }}
-                    </div>
-                </div>            
-                <div class="form-group">
-                    {{ form_label(eleveForm.prenom, NULL, { 'label_attr':  {
-                    'class': 'col-sm-4 col-md-5 control-label'
-                    }}) }}
-                    <div class="col-sm-5 col-md-3">
-                        {{ form_errors(eleveForm.prenom) }}
-                        {{ form_widget(eleveForm.prenom, { 'attr':  {
-                        'class': 'form-control'
-                        }}) }}
-                    </div>
-                </div>  
-                <div class="form-group">
-                    {{ form_label(eleveForm.classe, NULL, { 'label_attr':  {
-                    'class': 'col-sm-4 col-md-5 control-label'
-                    }}) }}
-                    <div class="col-sm-6 col-md-4">
-                        {{ form_errors(eleveForm.classe) }}
-                        {{ form_widget(eleveForm.classe, { 'attr':  {
-                        'class': 'form-control'
-                        }}) }}
-                    </div>
-                </div>                      
-                <div class="form-group">
-                    {{ form_label(eleveForm.tierstemps, NULL, { 'label_attr':  {
-                    'class': 'col-sm-4 col-md-5 control-label'
-                    }}) }}
-                    <div class="col-sm-5 col-md-3">
-                        {{ form_errors(eleveForm.tierstemps) }}
-                        {{ form_widget(eleveForm.tierstemps, { 'attr':  {
-                        'class': 'form-control'
-                        }}) }}
+                    <label class="col-sm-5 control-label">Identifiant</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.id }}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-4 col-md-offset-5 col-sm-3">
-                        {{ form_row(eleveForm.save, { 'attr':  {
-                        'class': 'btn btn-primary'
-                        }}) }}
+                    <label class="col-sm-5 control-label">Nom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.nom }}</p>
                     </div>
-                </div>                    
-            {{ form_end(eleveForm) }}
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Prénom</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.prenom }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Classe</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.classe.libelle }}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Tiers temps</label>
+                    <div class="col-sm-7">
+                        <p class="form-control-static">{{ eleve.tierstemps }}</p>
+                    </div>
+                </div>
+            </form>
         </div>
     {% endblock %}

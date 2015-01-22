@@ -57,9 +57,6 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });
 
-
-$app->register(new Silex\Provider\ValidatorServiceProvider());
-
 // Register JSON data decoder for JSON requests
 use Symfony\Component\HttpFoundation\Request;
 

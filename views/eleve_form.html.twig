@@ -17,7 +17,7 @@
                 {{ form_label(eleveForm.nom, NULL, { 'label_attr': {'class': 'col-sm-4 col-md-5 control-label'}}) }}
                 <div class="col-sm-6 col-md-3">
                     {{ form_errors(eleveForm.nom) }}
-                    {{ form_widget(eleveForm.nom, { 'attr': 'class': 'form-control'}}) }}
+                    {{ form_widget(eleveForm.nom, { 'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
 
@@ -36,7 +36,16 @@
                     {{ form_errors(eleveForm.classe) }}
                     {{ form_widget(eleveForm.classe, { 'attr':  {'class': 'form-control'}}) }}
                 </div>
-            </div>           
+            </div>    
+            <div class="form-group">
+                {{ form_label(eleveForm.tierstemps, NULL, { 'label_attr':  {'class': 'col-sm-4 col-md-5 control-label'
+                }}) }}
+                <div class="col-sm-6 col-md-3">
+                    {{ form_errors(eleveForm.tierstemps) }}
+                    {{ form_widget(eleveForm.tierstemps, { 'attr':  {'class': 'form-control'}}) }}
+                </div>
+            </div>   
+
             <div class="form-group">
                 <div class="col-sm-offset-4 col-md-offset-5 col-sm-3">
                     {{ form_row(eleveForm.save, { 'attr':  {'class': 'btn btn-primary' }}) }}

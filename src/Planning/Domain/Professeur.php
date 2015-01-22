@@ -35,7 +35,7 @@ class Professeur implements UserInterface {
     private $prenom;
 
     /**
-     * login.
+     * utilisateur .
      *
      * @var string
      */

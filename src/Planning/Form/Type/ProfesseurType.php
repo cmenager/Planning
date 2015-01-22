@@ -17,11 +17,14 @@ class ProfesseurType extends AbstractType {
                 ->add('role', 'text', array(
                     'label' => 'Role',
                 ))               
-                ->add('login', 'text', array(
+                ->add('username', 'text', array(
                     'label' => "Login",
                 ))
                 ->add('password', 'password', array(
                     'label' => 'Mot de passe',
+                ))
+                ->add('save', 'submit', array(
+                    'label' => 'Valider',
         ));
     }
 

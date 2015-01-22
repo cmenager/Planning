@@ -55,7 +55,7 @@ class EleveController {
         $classes = $app['dao.classe']->findAll();
         $classe = current($classes);
         $classeId = $classe->getId();
-        $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleveF);
+        $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleve);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
             // Manually affect classe to the new eleve
@@ -92,7 +92,7 @@ class EleveController {
             $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié avec succès .');
         }
         $eleveFormView = $eleveForm->createView();
-        return $app['twig']->render('eleve.html.twig', array('eleveForm' => $eleveFormView));
+        return $app['twig']->render('eleve_form.html.twig', array('eleveForm' => $eleveFormView));
     }
 
     /**
