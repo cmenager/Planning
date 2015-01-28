@@ -84,7 +84,7 @@ class EpreuveDAO extends DAO {
         // Converts query result to an array of domain objects
         $epreuves = array();
         foreach ($result as $row) {
-            $epreuveId = $row['DATE_PASSAGE'];//comment afficher tout 
+            $epreuveId = $row['DATE_PASSAGE']; //comment afficher tout 
             $epreuves[$epreuveId] = $this->buildDomainObject($row);
         }
         return $epreuves;
@@ -121,20 +121,119 @@ class EpreuveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByNomProfesseur($profId) {
+    public function findAllByNomProfesseur($professeurId) {
         $sql = "select * from epreuve ep join professeur pr on ep.ID_PROFESSEUR = pr.ID_PROFESSEUR where pr.ID_PROFESSEUR=? ";
-        $result = $this->getDb()->fetchAll($sql, array($profId));
+        $result = $this->getDb()->fetchAll($sql, array($professeurId));
 
         // Convert query result to an array of domain objects
         $epreuves = array();
         foreach ($result as $row) {
-            $epreuveId = $row['ID_PROFESSEUR'];
-            $epreuves[$epreuveId] = $this->buildDomainObject($row);
+            $profId = $row['ID_PROFESSEUR'];
+            $epreuves[$profId] = $this->buildDomainObject($row);
         }
         return $epreuves;
     }
 
 // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByClasseEpreuve()"> 
+    /*
+     * Returns the list of all eleves for a given nom, sorted by trade name.
+     *
+     * @param integer $nomDd The nom id.
+     *
+     * @return array The list of eleves.
+     */
+    public function findAllByClasseEpreuve($classeId) {
+        $sql = "select * from epreuve ep join eleve el "
+                . "on ep.ID_ELEVE = el.ID_ELEVE join classe cl "
+                . "on el.ID_CLASSE = cl.ID_CLASSE"
+                . "where cl.ID_CLASSE=?";
+
+        $result = $this->getDb()->fetchAll($sql, array($classeId));
+
+        // Convert query result to an array of domain objects
+        $epreuves = array();
+        foreach ($result as $row) {
+            $classId = $row['ID_CLASSE'];
+            $epreuves[$classId] = $this->buildDomainObject($row);
+        }
+        return $epreuves;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllBySalle()"> 
+    /*
+     * Returns the list of all eleves for a given nom, sorted by trade name.
+     *
+     * @param integer $nomDd The nom id.
+     *
+     * @return array The list of eleves.
+     */
+    public function findAllBySalle($salleId) {
+        $sql = "select * from epreuve ep join salle sl "
+                . "on ep.ID_SALLE = sl.ID_SALLE"
+                . "where sl.ID_SALLE=?";
+
+        $result = $this->getDb()->fetchAll($sql, array($salleId));
+
+        // Convert query result to an array of domain objects
+        $salles = array();
+        foreach ($result as $row) {
+            $sallId = $row['ID_SALLE'];
+            $salles[$sallId] = $this->buildDomainObject($row);
+        }
+        return $salles;
+    }
+
+    // </editor-fold>   
+    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByDate()"> 
+    /*
+     * Returns the list of all eleves for a given nom, sorted by trade name.
+     *
+     * @param integer $nomDd The nom id.
+     *
+     * @return array The list of eleves.
+     */
+    public function findAllByDate($date) {
+        $sql = "select * from epreuve where DATE_PASSAGE=?";
+
+        $result = $this->getDb()->fetchAll($sql, array($date));
+
+        // Convert query result to an array of domain objects
+        $dates = array();
+        foreach ($result as $row) {
+            $date = $row['DATE_PASSAGE'];
+            $dates[$date] = $this->buildDomainObject($row);
+        }
+        return $dates;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByHeure()"> 
+    /*
+     * Returns the list of all eleves for a given nom, sorted by trade name.
+     *
+     * @param integer $nomDd The nom id.
+     *
+     * @return array The list of eleves.
+     */
+    public function findAllByHeure($heureId) {
+        $sql = "select * from epreuve ep join heurepassage hp "
+                . "on ep.ID_HEURE_PASSAGE = hp.ID_HEURE_PASSAGE"
+                . "where hp.ID_HEURE_PASSAGE=?";
+
+        $result = $this->getDb()->fetchAll($sql, array($heureId));
+
+        // Convert query result to an array of domain objects
+        $heures = array();
+        foreach ($result as $row) {
+            $heurId = $row['ID_HEURE_PASSAGE'];
+            $heures[$heurId] = $this->buildDomainObject($row);
+        }
+        return $heures;
+    }
+
+    // </editor-fold>  
     // <editor-fold defaultstate="collapsed" desc="Cree un epreuve : buildDomainObject($row) ">
     /**
      * Creates a Eleve instance from a DB query result row.
@@ -172,7 +271,31 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Supprimer un epreuve : delete($id)">
+//  // <editor-fold defaultstate="collapsed" desc="Sauvegarder un epreuve : save($epreuve)">
+    public function save(Epreuve $epreuve) {
+        $epreuveData = array(
+            'ID_ELEVE' => $epreuve->getEleve()->getId(),
+            'ID_PROFESSEUR' => $epreuve->getProfesseur()->getId(),
+            'DATE_PASSAGE' => $epreuve->getDatepassage(),
+            'ID_HEURE_PASSAGE' => $epreuve->getHeurepassage()->getId(),
+            'ID_LANGUE' => $epreuve->getLangue()->getId(),
+            'ID_SALLE' => $epreuve->getSalle()->getId()
+        );
+
+        if ($epreuve->getEleve()->getId()) {
+            // The visit report has already been saved : update it
+            $this->getDb()->update('epreuve', $epreuveData, array('ID_ELEVE' => $epreuve->getEleve()->getId()));
+        } else {
+            // The epreuve has never been saved : insert it
+            $this->getDb()->insert('epreuve', $epreuveData);
+            // Get the id of the newly created visit report and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $epreuve->setEleve()->getId($id);
+        }
+    }
+
+// </editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Supprimer un epreuve : delete($id)">
     /**
      * Removes a eleve from the database.
      *

@@ -40,7 +40,28 @@ class EleveController {
     public function searchAction(Application $app) {
         $classes = $app['dao.classe']->findAll();
         $eleves = $app['dao.eleve']->findAll();
-        return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes,'eleves' => $eleves ));
+        return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes, 'eleves' => $eleves));
+    }
+
+    /**
+     * Gets the parameters of search and displays the results of search
+     * @param Request $request
+     * @param Application $app
+     * @return type
+     */
+    public function resultsAction(Request $request, Application $app) {
+        if ($request->request->has('dllNomEleve')) {
+// Advanced search by nom
+            $eleveId = $request->request->get('dllNomEleve');
+            $eleves = $app['dao.eleve']->findAllByNom($eleveId);
+        } else {
+            if ($request->request->has('dllClasseEleve')) {
+// Simple search by classe
+                $classeId = $request->request->get('dllClasseEleve');
+                $eleves = $app['dao.eleve']->findAllByClasse($classeId);
+            }
+        }
+        return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
     }
 
     /**
@@ -49,12 +70,14 @@ class EleveController {
      * @param Application $app
      * @return type
      */
-    public function addAction(Request $request, Application $app) {       
+    public function addAction(Request $request, Application $app) {
         $eleveFormView = NULL;
-        $eleve = new Eleve();        
+        $eleve = new Eleve();
+        
         $classes = $app['dao.classe']->findAll();
         $classe = current($classes);
         $classeId = $classe->getId();
+        
         $eleveForm = $app['form.factory']->create(new EleveType($classes, $classeId), $eleve);
         $eleveForm->handleRequest($request);
         if ($eleveForm->isValid()) {
@@ -102,33 +125,11 @@ class EleveController {
      * @param Request $request Incoming request
      * @param Application $app Silex application
      */
-    public function deleteEleveAction($id, Request $request, Application $app) {        
+    public function deleteEleveAction($id, Request $request, Application $app) {
         // Delete the eleve
         $app['dao.eleve']->delete($id);
         $app['session']->getFlashBag()->add('success', 'Un eleve a été supprimé.');
         return $app->redirect('/admin');
-    }
-    
-    
-    /**
-     * Gets the parameters of search and displays the results of search
-     * @param Request $request
-     * @param Application $app
-     * @return type
-     */
-    public function resultsAction(Request $request, Application $app) {
-        if ($request->request->has('dllNomEleve')) {
-// Advanced search by nom
-            $eleveId = $request->request->get('dllNomEleve');
-            $eleves = $app['dao.eleve']->findAllByNom($eleveId);
-        } else {
-            if ($request->request->has('dllClasseEleve')) {
-// Simple search by classe
-                $classeId = $request->request->get('dllClasseEleve');
-                $eleves = $app['dao.eleve']->findAllByClasse($classeId);
-            }
-        }
-        return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
     }
 
 }

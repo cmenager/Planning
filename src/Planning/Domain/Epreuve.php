@@ -25,13 +25,13 @@ class Epreuve {
      */
     private $heurepassage;
 
-   /**
+    /**
      * Langue id.
      *
      * @var \planning\Domaine\Langue
      */
     private $langue;
-   
+
     /**
      * Professeur id.
      *
@@ -39,17 +39,13 @@ class Epreuve {
      */
     private $professeur;
 
-
- /**
+    /**
      * Salle id.
      *
      * @var \planning\Domaine\Salle
      */
     private $salle;
-    
-    
-    
-    
+
     public function getEleve() {
         return $this->eleve;
     }
@@ -96,6 +92,15 @@ class Epreuve {
 
     public function setSalle($salle) {
         $this->salle = $salle;
+    }
+
+    public function __toString() {
+        $string = $this->getSalle();
+        $string = $this->getEleve();
+        $string = $this->getLangue();
+        $string = $this->getProfesseur();
+        $string = $this->getHeurepassage();
+        return $string;
     }
 
 

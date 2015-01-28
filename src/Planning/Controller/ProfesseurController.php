@@ -52,7 +52,7 @@ class ProfesseurController {
     public function addAction(Request $request, Application $app) {
         $professeurFormView = NULL;
         $professeur = new Professeur();
-        $professeurForm = $app['form.factory']->create(new ProfesseurType, $professeur);
+        $professeurForm = $app['form.factory']->create(new ProfesseurType(), $professeur);
         $professeurForm->handleRequest($request);
         if ($professeurForm->isValid()) {
             // Manually affect classe to the new visit report

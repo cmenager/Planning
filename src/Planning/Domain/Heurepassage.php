@@ -49,7 +49,8 @@ class Heurepassage
     public function setHeurefin($heurefin) {
         $this->heurefin = $heurefin;
     }
-
-
+public function __toString(){
+        return $this->getHeuredeb() . "-". $this->getHeurefin();
+    }
     
 }

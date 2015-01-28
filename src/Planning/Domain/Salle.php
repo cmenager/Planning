@@ -36,5 +36,8 @@ class Salle
         $this->libelle = $libelle;
     }
 
-
+ 
+    public function __toString(){
+        return $this->getLibelle();
+    }
 }

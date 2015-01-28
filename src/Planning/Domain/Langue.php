@@ -2,15 +2,14 @@
 
 namespace Planning\Domain;
 
-class Langue 
-{
+class Langue {
+
     /**
      * Eleve id.
      *
      * @var integer
      */
     private $id;
-    
 
     /**
      * nom.
@@ -18,8 +17,7 @@ class Langue
      * @var string
      */
     private $libelle;
-    
-    
+
     public function getId() {
         return $this->id;
     }
@@ -36,5 +34,8 @@ class Langue
         $this->libelle = $libelle;
     }
 
+    public function __toString() {
+        return $this->getLibelle();
+    }
 
 }

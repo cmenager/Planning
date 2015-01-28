@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ProfesseurType extends AbstractType {
 
+    public function __construct() {
+    }
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('nom', 'text', array(
                     'label' => 'Nom',

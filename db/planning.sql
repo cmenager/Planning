@@ -1,21 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.2.11
--- http://www.phpmyadmin.net
---
--- Client :  127.0.0.1
--- Généré le :  Ven 16 Janvier 2015 à 09:58
--- Version du serveur :  5.6.21
--- Version de PHP :  5.6.3
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
 -- Base de données :  `planning`
 --
@@ -29,8 +11,9 @@ grant all privileges on planning.* to 'planning_user'@'localhost' identified by 
 --
 
 CREATE TABLE IF NOT EXISTS `classe` (
-  `ID_CLASSE` int(11) NOT NULL,
-  `LIBELLE_CLASSE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ID_CLASSE` int(11) NOT NULL auto_increment,
+  `LIBELLE_CLASSE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  constraint pk_classe primary key (ID_CLASSE)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -52,11 +35,12 @@ INSERT INTO `classe` (`ID_CLASSE`, `LIBELLE_CLASSE`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `eleve` (
-  `ID_ELEVE` int(11) NOT NULL,
+  `ID_ELEVE` int(11) auto_increment NOT NULL ,
   `ID_CLASSE` int(11) NOT NULL,
   `NOM_ELEVE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `PRENOM_ELEVE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `TIERS_TEMPS` smallint(6) DEFAULT NULL
+  `TIERS_TEMPS` set('Oui','Non') COLLATE utf8_unicode_ci DEFAULT NULL
+  constraint pk_eleve primary key (ID_ELEVE)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -125,9 +109,10 @@ INSERT INTO `epreuve` (`ID_ELEVE`, `DATE_PASSAGE`, `ID_HEURE_PASSAGE`, `ID_LANGU
 --
 
 CREATE TABLE IF NOT EXISTS `heurepassage` (
-  `ID_HEURE_PASSAGE` int(11) NOT NULL,
+  `ID_HEURE_PASSAGE` int(11) NOT NULL auto_increment,
   `HEURE_DEBUT` time DEFAULT NULL,
-  `HEURE_FIN` time DEFAULT NULL
+  `HEURE_FIN` time DEFAULT NULL,
+constraint pk_heurepassage primary key (ID_HEURE_PASSAGE)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -147,8 +132,9 @@ INSERT INTO `heurepassage` (`ID_HEURE_PASSAGE`, `HEURE_DEBUT`, `HEURE_FIN`) VALU
 --
 
 CREATE TABLE IF NOT EXISTS `langue` (
-  `ID_LANGUE` int(11) NOT NULL,
-  `LIBELLE_LANGUE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ID_LANGUE` int(11) NOT NULL auto_increment,
+  `LIBELLE_LANGUE` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+constraint pk_langue primary key (ID_LANGUE)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -173,13 +159,14 @@ INSERT INTO `langue` (`ID_LANGUE`, `LIBELLE_LANGUE`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `professeur` (
-  `ID_PROFESSEUR` int(11) NOT NULL,
+  `ID_PROFESSEUR` int(11) NOT NULL auto_increment,
   `ROLE` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `NOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `PRENOM_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `LOGIN_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `PWD_PROFESSEUR` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SALT_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL
+  `SALT_PROFESSEUR` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+constraint pk_professeur primary key (ID_PROFESSEUR)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -200,8 +187,9 @@ INSERT INTO `professeur` (`ID_PROFESSEUR`, `ROLE`, `NOM_PROFESSEUR`, `PRENOM_PRO
 --
 
 CREATE TABLE IF NOT EXISTS `salle` (
-  `ID_SALLE` int(11) NOT NULL,
-  `LIBELLE_SALLE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ID_SALLE` int(11) NOT NULL auto_increment,
+  `LIBELLE_SALLE` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+constraint pk_salle primary key (ID_SALLE)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -219,18 +207,6 @@ INSERT INTO `salle` (`ID_SALLE`, `LIBELLE_SALLE`) VALUES
 --
 
 --
--- Index pour la table `classe`
---
-ALTER TABLE `classe`
- ADD PRIMARY KEY (`ID_CLASSE`);
-
---
--- Index pour la table `eleve`
---
-ALTER TABLE `eleve`
- ADD PRIMARY KEY (`ID_ELEVE`), ADD KEY `FK_ELEVE_CLASSE` (`ID_CLASSE`);
-
---
 -- Index pour la table `enseigne`
 --
 ALTER TABLE `enseigne`
@@ -242,31 +218,7 @@ ALTER TABLE `enseigne`
 ALTER TABLE `epreuve`
  ADD PRIMARY KEY (`ID_ELEVE`,`ID_HEURE_PASSAGE`,`DATE_PASSAGE`), ADD KEY `FK_EPREUVE_LANGUE` (`ID_LANGUE`), ADD KEY `FK_EPREUVE_HEUREPASSAGE` (`ID_HEURE_PASSAGE`), ADD KEY `FK_EPREUVE_PROFESSEUR` (`ID_PROFESSEUR`), ADD KEY `FK_EPREUVE_SALLE` (`ID_SALLE`);
 
---
--- Index pour la table `heurepassage`
---
-ALTER TABLE `heurepassage`
- ADD PRIMARY KEY (`ID_HEURE_PASSAGE`);
 
---
--- Index pour la table `langue`
---
-ALTER TABLE `langue`
- ADD PRIMARY KEY (`ID_LANGUE`);
-
---
--- Index pour la table `professeur`
---
-ALTER TABLE `professeur`
- ADD PRIMARY KEY (`ID_PROFESSEUR`);
-
---
--- Index pour la table `salle`
---
-ALTER TABLE `salle`
- ADD PRIMARY KEY (`ID_SALLE`);
-
---
 -- Contraintes pour les tables exportées
 --
 
@@ -294,6 +246,4 @@ ADD CONSTRAINT `FK_EPREUVE_LANGUE` FOREIGN KEY (`ID_LANGUE`) REFERENCES `langue`
 ADD CONSTRAINT `FK_EPREUVE_PROFESSEUR` FOREIGN KEY (`ID_PROFESSEUR`) REFERENCES `professeur` (`ID_PROFESSEUR`),
 ADD CONSTRAINT `FK_EPREUVE_SALLE` FOREIGN KEY (`ID_SALLE`) REFERENCES `salle` (`ID_SALLE`);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -131,4 +131,8 @@ class Professeur implements UserInterface {
         // Nothing to do here
     }
 
+    public function __toString(){
+        return $this->getPrenom() . " " .$this->getNom();
+    }
+    
 }

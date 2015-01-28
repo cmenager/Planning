@@ -12,7 +12,7 @@ class HeurepassageDAO extends DAO {
      *
      * @param integer $id The heure de passage id.
      *
-     * @return \Planning\Domain\Heurepassage|throws an exception if no Salle is found.
+     * @return \Planning\Domain\Heurepassage|throws an exception if no heurepassage is found.
      */
     public function find($id) {
         $sql = "select * from heurepassage where ID_HEURE_PASSAGE=?";
@@ -21,7 +21,7 @@ class HeurepassageDAO extends DAO {
         if ($row)
             return $this->buildDomainObject($row);
         else
-            throw new \Exception("No heure de passage found for id " . $id);
+            throw new \Exception("Aucune identifiant trouvé de Heure de passage " . $id);
     }
 
 // </editor-fold>

@@ -15,7 +15,15 @@
                 <ul class="nav nav-tabs nav-justified">
                     <li class="active"><a href="#eleves" data-toggle="tab">Eleves</a></li>
                     <li><a href="#professeurs" data-toggle="tab">Professeurs</a></li>
-                    <li><a href="#epreuves" data-toggle="tab">Epreuves</a></li>
+                    <li class="dropdown {% if epreuveMenu is defined %}active{% endif %}">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Epreuves <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin/epreuves/add_chxclasse_search/">Ajouter</a></li>
+                            <li><a href="/admin/epreuves/edit_ttchx_search/">Editer</a></li>
+                            <li><a href="/#">Supprimer</a></li>
+
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -48,7 +56,7 @@
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                     </div>
-                                                   <div class="modal-body">
+                                                    <div class="modal-body">
                                                         Voulez-vous vraiment supprimer ce élève ?
                                                     </div>
                                                     <div class="modal-footer">
@@ -86,7 +94,7 @@
                                     <td><a class="eleveTitle" href="/professeurs/{{ professeur.id }}">{{ professeur.nom }}</a></td>
                                     <td>{{ professeur.prenom }}</td>
                                     <td>{{ professeur.username }}</td>
-                                     <td>{{ professeur.role }}</td>
+                                    <td>{{ professeur.role }}</td>
                                     <td>
                                         <a href="/admin/professeurs/edit/{{ professeur.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#professeurDialog{{ professeur.id }}"><span class="glyphicon glyphicon-remove"></span>
@@ -99,7 +107,7 @@
                                                         <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                       Voulez-vous vraiment supprimer ce professeur ?
+                                                        Voulez-vous vraiment supprimer ce professeur ?
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -141,12 +149,12 @@
                                     <td><a class="eleveTitle" href="/epreuves/{{ epreuve.eleve.id }}">{{ epreuve.eleve.nom }}</a></td>
                                     <td>{{ epreuve.eleve.prenom }}</td>
                                     <td>{{ epreuve.datepassage }}</td>
-                                     <td>{{ epreuve.heurepassage.heuredeb }}</td>
-                                     <td>{{ epreuve.heurepassage.heurefin }}</td>
-                                     <td>{{ epreuve.professeur.nom }}</td>
-                                     <td>{{ epreuve.professeur.prenom }}</td>
-                                     <td>{{ epreuve.langue.libelle }}</td>
-                                     <td>{{ epreuve.salle.libelle }}</td>
+                                    <td>{{ epreuve.heurepassage.heuredeb }}</td>
+                                    <td>{{ epreuve.heurepassage.heurefin }}</td>
+                                    <td>{{ epreuve.professeur.nom }}</td>
+                                    <td>{{ epreuve.professeur.prenom }}</td>
+                                    <td>{{ epreuve.langue.libelle }}</td>
+                                    <td>{{ epreuve.salle.libelle }}</td>
                                     <td>
                                         <a href="/admin/epreuves/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                         <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#epreuveDialog{{ epreuve.eleve.id }}"><span class="glyphicon glyphicon-remove"></span>

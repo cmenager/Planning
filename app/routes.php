@@ -1,27 +1,27 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Planning\Form\Type\EleveType;
+use Planning\Form\Type\ProfesseurType;
 use Planning\Domain\Eleve;
-use PLanning\Domain\professeur;
+use Planning\Domain\Professeur;
 
 // Home page
-$app->get('/', function () use ($app) {
+$app->match('/', function () use ($app) {
     return $app['twig']->render('index.html.twig');
 });
 
 //ELEVE///////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a eleve
-$app->get('/eleves/{id}', 'Planning\Controller\EleveController::detailAction');
+$app->match('/eleves/{id}', 'Planning\Controller\EleveController::detailAction');
 
 // List of all eleves
-$app->get('/eleves/', 'Planning\Controller\EleveController::listAction');
+$app->match('/eleves/', 'Planning\Controller\EleveController::listAction');
 
 // Search form for eleves
-$app->get('/eleves/search/', 'Planning\Controller\EleveController::searchAction');
+$app->match('/eleves/search/', 'Planning\Controller\EleveController::searchAction');
 
 // Results page for eleves
-$app->post('/eleves/results/', 'Planning\Controller\EleveController::resultsAction');
+$app->match('/eleves/results/', 'Planning\Controller\EleveController::resultsAction');
 
 // New eleve
 $app->match('/admin/eleves/add', 'Planning\Controller\EleveController::addAction');
@@ -30,20 +30,27 @@ $app->match('/admin/eleves/add', 'Planning\Controller\EleveController::addAction
 $app->match('/admin/eleves/edit/{id}', 'Planning\Controller\EleveController::editAction');
 
 // Remove an eleve
-$app->get('/admin/eleves/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
+$app->match('/admin/eleves/delete/{id}', "Planning\Controller\EleveController::deleteEleveAction");
+
+
+
+
+
+
+
 
 //PROFESSEUR///////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a professeur
-$app->get('/professeurs/{id}', 'Planning\Controller\ProfesseurController::detailAction');
+$app->match('/professeurs/{id}', 'Planning\Controller\ProfesseurController::detailAction');
 
 // List of all professeurs
-$app->get('/professeurs/', 'Planning\Controller\ProfesseurController::listAction');
+$app->match('/professeurs/', 'Planning\Controller\ProfesseurController::listAction');
 
 // Search form for professeurs
-$app->get('/professeurs/search/', 'Planning\Controller\ProfesseurController::searchAction');
+$app->match('/professeurs/search/', 'Planning\Controller\ProfesseurController::searchAction');
 
 // Results page for professeurs
-$app->post('/professeurs/results/', 'Planning\Controller\ProfesseurController::resultsAction');
+$app->match('/professeurs/results/', 'Planning\Controller\ProfesseurController::resultsAction');
 
 // New professeurs
 $app->match('/admin/professeurs/add', 'Planning\Controller\ProfesseurController::addAction');
@@ -52,29 +59,32 @@ $app->match('/admin/professeurs/add', 'Planning\Controller\ProfesseurController:
 $app->match('/admin/professeurs/edit/{id}', 'Planning\Controller\ProfesseurController::editAction');
 
 // Remove an professeurs
-$app->get('/admin/professeurs/delete/{id}', "Planning\Controller\ProfesseurController::deleteProfesseurAction");
+$app->match('/admin/professeurs/delete/{id}', "Planning\Controller\ProfesseurController::deleteProfesseurAction");
+
+
+
+
+
 
 //EPREUVE////////////////////////////////////////////////////////////////////////////////////////////////////
 // Details for a epreuve
-$app->get('/epreuves/{id}', 'Planning\Controller\EpreuveController::detailAction');
+$app->match('/epreuves/{id}', 'Planning\Controller\EpreuveController::detailAction');
 
 // List of all epreuves
-$app->get('/epreuves/', 'Planning\Controller\EpreuveController::listAction');
+$app->match('/epreuves/', 'Planning\Controller\EpreuveController::listAction');
 
 // Search form for epreuves
-$app->get('/epreuves/search/', 'Planning\Controller\EpreuveController::searchAction');
+$app->match('/epreuves/search/', 'Planning\Controller\EpreuveController::searchAction');
 
 // Results page for epreuves
-$app->post('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
+$app->match('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
-// New epreuves
-$app->match('/admin/epreuves/add', 'Planning\Controller\EpreuveController::addAction');
+// New epreuves // chxclasse 
+$app->match('/admin/epreuves/add_chxclasse_search/', 'Planning\Controller\EpreuveController::searchEpreuveClasseAction');
+//$app->match('/admin/epreuves/add_chxclasse_results/', 'Planning\Controller\EpreuveController::resultsEpreuveClasseAction');
+$app->match('/admin/epreuves/add_chxeleve_results/{id}', 'Planning\Controller\EpreuveController::addAction');
 
-// Editing a epreuves
-$app->match('/admin/epreuves/edit/{id}', 'Planning\Controller\EpreuveController::editAction');
 
-// Remove an epreuves
-$app->get('/admin/epreuves/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
 
 
 // Login form
@@ -112,7 +122,7 @@ $app->match('/profil', function(Request $request) use ($app) {
         $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
     }
     $professeurFormView = $professeurForm->createView();
-    return $app['twig']->render('professeur.html.twig', array('professeurForm' => $professeurFormView,));
+    return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView,));
 });
 
 

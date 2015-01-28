@@ -128,7 +128,8 @@ class EleveDAO extends DAO {
         $eleveData = array(
             'NOM_ELEVE' => $eleve->getNom(),
             'PRENOM_ELEVE' => $eleve->getPrenom(),
-            'ID_CLASSE' => $eleve->getClasse()->getId()
+            'ID_CLASSE' => $eleve->getClasse()->getId(),
+            'TIERS_TEMPS'=> $eleve->getTierstemps()
         );
 
         if ($eleve->getId()) {
