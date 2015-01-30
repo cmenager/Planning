@@ -9,6 +9,7 @@
                     <ul class="nav nav-tabs nav-justified">
                         <li class="active"><a href="#simple" data-toggle="tab">Par Eleve</a></li>
                         <li><a href="#advanced" data-toggle="tab">Par Professeur</a></li>
+                        <li><a href="#advanced" data-toggle="tab">Par Date</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,6 +38,24 @@
                     <br>
                     <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
                         <div class="form-group">
+                            <label class="col-sm-3 col-sm-offset-2 control-label">Date passage</label>
+                            <div class="col-sm-5 col-md-4">
+                                <div class="col-sm-5 col-md-4">
+                                    <input name="date_passage" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>     
+                        <div class="form-group">
+                            <div class="col-sm-3 col-sm-offset-5">
+                                <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Rechercher</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>                                      
+                <div class="tab-pane fade" id="advanced">
+                    <br>
+                    <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
+                        <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Professeur</label>
                             <div class="col-sm-5 col-md-4">
                                 <select class="form-control" name="ddlNomProfesseurEp">
@@ -53,6 +72,8 @@
                         </div>
                     </form>
                 </div>
+                                
+                          
             </div>
         </div>
     {% endblock %}

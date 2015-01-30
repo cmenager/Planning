@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 {% set epreuveMenu = true %}
-    {% block title %}{{title}}{% endblock %}
+    {% block title %}Resultat de la recherche{% endblock %}
     {% block content %}
         <h2 class="text-center">{{ block('title') }}</h2>
 
@@ -9,7 +9,7 @@
                 {{ flashMessage }}
             </div>
         {% endfor %}
-        <h2 class="text-center">{{ block('title') }}</h2>
+        
         <div class="well">
             <div class="tab-content">
                 <form class="form-horizontal" role="form">

@@ -43,19 +43,19 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 // Register error handler
 use Symfony\Component\HttpFoundation\Response;
 
-//$app->error(function (\Exception $e, $code) use ($app) {
-//    switch ($code) {
-//        case 403:
-//            $message = 'Access denied.';
-//            break;
-//        case 404:
-//            $message = 'The requested resource could not be found.';
-//            break;
-//        default:
-//            $message = "Something went wrong.";
-//    }
-//    return $app['twig']->render('error.html.twig', array('message' => $message));
-//});
+$app->error(function (\Exception $e, $code) use ($app) {
+    switch ($code) {
+        case 403:
+            $message = 'Access denied.';
+            break;
+        case 404:
+            $message = 'The requested resource could not be found.';
+            break;
+        default:
+            $message = $e->getMessage();
+    }
+    return $app['twig']->render('error.html.twig', array('message' => $message));
+});
 
 // Register JSON data decoder for JSON requests
 use Symfony\Component\HttpFoundation\Request;

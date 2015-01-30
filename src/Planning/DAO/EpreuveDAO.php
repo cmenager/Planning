@@ -51,7 +51,7 @@ class EpreuveDAO extends DAO {
         $this->salleDAO = $salleDAO;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Trouver un epreuve par identifiant : (find($id))"> 
+    // <editor-fold defaultstate="collapsed" desc="find($id)"> 
     /**
      * Returns the eleve matching a given id.
      *
@@ -71,7 +71,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver tous les epreuves par identifiant : findAll()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAll()"> 
     /**
      * Returns the list of all eleve, sorted by nom.
      *
@@ -91,7 +91,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par epreuve : findAllByNomEleve()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByNomEleve()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -113,7 +113,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver les professeurs par epreuve : findAllByNomProfesseur()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByNomProfesseur()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -135,7 +135,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByClasseEpreuve()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByClasseEpreuve()"> 
     /*
      * Returns the list of all eleves for a given nom, sorted by trade name.
      *
@@ -144,10 +144,10 @@ class EpreuveDAO extends DAO {
      * @return array The list of eleves.
      */
     public function findAllByClasseEpreuve($classeId) {
-        $sql = "select * from epreuve ep join eleve el "
-                . "on ep.ID_ELEVE = el.ID_ELEVE join classe cl "
-                . "on el.ID_CLASSE = cl.ID_CLASSE"
-                . "where cl.ID_CLASSE=?";
+        $sql = "select * from epreuve join eleve "
+                . "on epreuve.ID_ELEVE = eleve.ID_ELEVE join classe "
+                . "on eleve.ID_CLASSE = classe.ID_CLASSE"
+                . "where ID_CLASSE=?";
 
         $result = $this->getDb()->fetchAll($sql, array($classeId));
 
@@ -161,7 +161,7 @@ class EpreuveDAO extends DAO {
     }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllBySalle()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllBySalle()"> 
     /*
      * Returns the list of all eleves for a given nom, sorted by trade name.
      *
@@ -186,7 +186,7 @@ class EpreuveDAO extends DAO {
     }
 
     // </editor-fold>   
-    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByDate()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByDate()"> 
     /*
      * Returns the list of all eleves for a given nom, sorted by trade name.
      *
@@ -207,9 +207,24 @@ class EpreuveDAO extends DAO {
         }
         return $dates;
     }
+// </editor-fold>   
+    // <editor-fold defaultstate="collapsed" desc="findPlanningByDate()"> 
+    public function findPlanningByDate($date) {
+        $sql = "SELECT e.* , h.ID_HEURE_PASSAGE, ? as DATE_PASSAGE FROM heurepassage h LEFT JOIN epreuve e ON e.id_heure_passage = h.id_heure_passage AND e.DATE_PASSAGE=?";
+
+        $result = $this->getDb()->fetchAll($sql, array($date, $date));
+
+        // Convert query result to an array of domain objects
+        $dates = array();
+        foreach ($result as $row) {
+            $date = $row['ID_HEURE_PASSAGE'];
+            $dates[$date] = $this->buildDomainObject($row);
+        }
+        return $dates;
+    }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Trouver les eleves par classe : findAllByHeure()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByHeure()"> 
     /*
      * Returns the list of all eleves for a given nom, sorted by trade name.
      *
@@ -234,7 +249,7 @@ class EpreuveDAO extends DAO {
     }
 
     // </editor-fold>  
-    // <editor-fold defaultstate="collapsed" desc="Cree un epreuve : buildDomainObject($row) ">
+    // <editor-fold defaultstate="collapsed" desc="buildDomainObject($row) ">
     /**
      * Creates a Eleve instance from a DB query result row.
      *
@@ -243,20 +258,44 @@ class EpreuveDAO extends DAO {
      * @return \Planning\Domain\Eleve
      */
     protected function buildDomainObject($row) {
+        $eleve = null;
+        $heurepassage = null;
+        $langue = null;
+        $professeur = null;
+        $salle = null;
         $eleveId = $row['ID_ELEVE'];
-        $eleve = $this->eleveDAO->find($eleveId);
+        if ($eleveId != NULL)
+            $eleve = $this->eleveDAO->find($eleveId);
+        else {
+            $eleve = new \Planning\Domain\Eleve();
+        }
 
         $heurepassageId = $row['ID_HEURE_PASSAGE'];
-        $heurepassage = $this->heurepassageDAO->find($heurepassageId);
+        if ($heurepassageId != NULL)
+            $heurepassage = $this->heurepassageDAO->find($heurepassageId);
+        else {
+            $heurepassage = new \Planning\Domain\Heurepassage();
+        }
 
         $langueId = $row['ID_LANGUE'];
-        $langue = $this->langueDAO->find($langueId);
+        if ($langueId != NULL)
+            $langue = $this->langueDAO->find($langueId);
+        else {
+            $langue = new \Planning\Domain\Langue();
+        }
 
         $professeurId = $row['ID_PROFESSEUR'];
-        $professeur = $this->professeurDAO->find($professeurId);
-
+        if ($professeurId != NULL)
+            $professeur = $this->professeurDAO->find($professeurId);
+        else {
+            $professeur = new \Planning\Domain\Professeur();
+        }
         $salleId = $row['ID_SALLE'];
-        $salle = $this->salleDAO->find($salleId);
+        if ($salleId != NULL)
+            $salle = $this->salleDAO->find($salleId);
+        else {
+            $salle = new \Planning\Domain\Salle();
+        }
 
         $epreuve = new Epreuve();
         $epreuve->setDatepassage($row['DATE_PASSAGE']);
@@ -271,8 +310,26 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-//  // <editor-fold defaultstate="collapsed" desc="Sauvegarder un epreuve : save($epreuve)">
-    public function save(Epreuve $epreuve) {
+    //  // <editor-fold defaultstate="collapsed" desc="insert($epreuve)">
+    public function insert(Epreuve $epreuve) {
+        $epreuveData = array(
+            'ID_ELEVE' => $epreuve->getEleve()->getId(),
+            'ID_PROFESSEUR' => $epreuve->getProfesseur()->getId(),
+            'DATE_PASSAGE' => $epreuve->getDatepassage(),
+            'ID_HEURE_PASSAGE' => $epreuve->getHeurepassage()->getId(),
+            'ID_LANGUE' => $epreuve->getLangue()->getId(),
+            'ID_SALLE' => $epreuve->getSalle()->getId()
+        );
+
+        if ($epreuve->getEleve()->getId()) {
+            // The epreuve has never been saved : insert it
+            $this->getDb()->insert('epreuve', $epreuveData);
+            
+        }
+    }
+// </editor-fold>
+    //  // <editor-fold defaultstate="collapsed" desc="update($epreuve)">
+    public function update(Epreuve $epreuve) {
         $epreuveData = array(
             'ID_ELEVE' => $epreuve->getEleve()->getId(),
             'ID_PROFESSEUR' => $epreuve->getProfesseur()->getId(),
@@ -285,17 +342,11 @@ class EpreuveDAO extends DAO {
         if ($epreuve->getEleve()->getId()) {
             // The visit report has already been saved : update it
             $this->getDb()->update('epreuve', $epreuveData, array('ID_ELEVE' => $epreuve->getEleve()->getId()));
-        } else {
-            // The epreuve has never been saved : insert it
-            $this->getDb()->insert('epreuve', $epreuveData);
-            // Get the id of the newly created visit report and set it on the entity.
-            $id = $this->getDb()->lastInsertId();
-            $epreuve->setEleve()->getId($id);
         }
     }
 
 // </editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Supprimer un epreuve : delete($id)">
+    //<editor-fold defaultstate="collapsed" desc="delete($id)">
     /**
      * Removes a eleve from the database.
      *

@@ -7,11 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class EpreuveType extends AbstractType {
 
-    private $eleve;
+    private $eleves;
+    private $eleveId;
     private $professeurs;
     private $professeurId;
-    private $heures;
-    private $heureId;
     private $langues;
     private $langueId;
     private $salles;
@@ -22,13 +21,12 @@ class EpreuveType extends AbstractType {
      * 
      * @param arrays $professeurs, $eleves, $professeurId, $eleveId
      */
-    public function __construct($eleve ,$professeurs, $professeurId, $heures, $heureId, $langues, $langueId, $salles, $salleId) {
+    public function __construct($eleves, $eleveId ,$professeurs, $professeurId, $langues, $langueId, $salles, $salleId) {
 
-        $this->eleve = $eleve;
+        $this->eleves = $eleves;
+        $this->eleveId = $eleveId;
         $this->professeurs = $professeurs;
         $this->professeurId = $professeurId;
-        $this->heures = $heures;
-        $this->heureId = $heureId;
         $this->langues = $langues;
         $this->langueId = $langueId;
         $this->salles = $salles;
@@ -36,17 +34,14 @@ class EpreuveType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                ->add('datepassage', 'text', array(
-                    'label' => "Date de passage :",
-                ))
-                ->add('heurepassage', 'choice', array(
-                    'label' => "Heure de passage :",
-                    'choices' => $this->heures,
+        $builder              
+                ->add('eleve', 'choice', array(
+                    'label' => "Eleve :",
+                    'choices' => $this->eleves,
                     'expanded' => false,
                     'multiple' => false,
                     'mapped' => false, // this field is not mapped to an object property
-                    'preferred_choices' => array($this->heureId),
+                    'preferred_choices' => array($this->eleveId),
                 ))
                 ->add('professeur', 'choice', array(
                     'label' => "Professeur :",

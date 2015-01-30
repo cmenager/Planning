@@ -80,11 +80,17 @@ $app->match('/epreuves/search/', 'Planning\Controller\EpreuveController::searchA
 $app->match('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
 // New epreuves // chxclasse 
-$app->match('/admin/epreuves/add_chxclasse_search/', 'Planning\Controller\EpreuveController::searchEpreuveClasseAction');
-//$app->match('/admin/epreuves/add_chxclasse_results/', 'Planning\Controller\EpreuveController::resultsEpreuveClasseAction');
+$app->match('/admin/epreuves/add_chxclasse_search/', 'Planning\Controller\EpreuveController::searchEpreuveAddAction');
 $app->match('/admin/epreuves/add_chxeleve_results/{id}', 'Planning\Controller\EpreuveController::addAction');
 
+// Edit epreuves 
+$app->match('/admin/epreuves/edit_ttchx_search/', 'Planning\Controller\EpreuveController::searchEpreuveEditAction');
+$app->match('/admin/epreuves/edit_ttchx_results/{id}', 'Planning\Controller\EpreuveController::editAction');
 
+
+//Remove a epreuves
+$app->match('/admin/epreuves/delete_ttchx_search/', 'Planning\Controller\EpreuveController::searchEpreuveDeleteAction');
+$app->match('/admin/epreuves/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
 
 
 // Login form

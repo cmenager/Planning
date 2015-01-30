@@ -20,7 +20,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/admin/epreuves/add_chxclasse_search/">Ajouter</a></li>
                             <li><a href="/admin/epreuves/edit_ttchx_search/">Editer</a></li>
-                            <li><a href="/#">Supprimer</a></li>
+                            <li><a href="/admin/epreuves/delete_ttchx_search/">Supprimer</a></li>
 
                         </ul>
                     </li>
@@ -126,65 +126,6 @@
                 {% endif %}
                 <a href="/admin/professeurs/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un professeur</button></a>
             </div>
-            <div class="tab-pane fade adminTable" id="epreuves">
-                {% if epreuves %}
-                    <div class="table-responsive">
-                        <table class="table table-hover table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Prenom d'un eleve</th>
-                                    <th>Date de passage</th>
-                                    <th>Heure de debut</th>
-                                    <th>Heure de fin</th>
-                                    <th>Nom</th>
-                                    <th>Prenom d'un professeur</th>
-                                    <th>Langue</th>
-                                    <th>Salle</th>
-                                    <th></th>  <!-- Actions column -->
-                                </tr>
-                            </thead>
-                            {% for epreuve in epreuves %}
-                                <tr>
-                                    <td><a class="eleveTitle" href="/epreuves/{{ epreuve.eleve.id }}">{{ epreuve.eleve.nom }}</a></td>
-                                    <td>{{ epreuve.eleve.prenom }}</td>
-                                    <td>{{ epreuve.datepassage }}</td>
-                                    <td>{{ epreuve.heurepassage.heuredeb }}</td>
-                                    <td>{{ epreuve.heurepassage.heurefin }}</td>
-                                    <td>{{ epreuve.professeur.nom }}</td>
-                                    <td>{{ epreuve.professeur.prenom }}</td>
-                                    <td>{{ epreuve.langue.libelle }}</td>
-                                    <td>{{ epreuve.salle.libelle }}</td>
-                                    <td>
-                                        <a href="/admin/epreuves/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                                        <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#epreuveDialog{{ epreuve.eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
-                                        </button>
-                                        <div class="modal fade" id="epreuveDialog{{ epreuve.eleve.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Voulez-vous vraiment supprimer ce épreuve ?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                        <a href="/admin/epreuves/delete/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirmer</a>
-                                                    </div>
-                                                </div><!-- /.modal-content -->
-                                            </div><!-- /.modal-dialog -->
-                                        </div><!-- /.modal -->
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="alert alert-warning">Aucun épreuve trouvé.</div>
-                {% endif %}
-                <a href="/admin/epreuves/add"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter un epreuve</button></a>
-            </div>
+            
         </div>
     {% endblock %}
