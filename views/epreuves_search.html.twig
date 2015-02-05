@@ -1,28 +1,46 @@
 {% extends "layout.html.twig" %}
 {% set epreuveMenu = true %}
-    {% block title %}Recherche {% endblock %}
+   {% block title %}{{ title }}{% endblock %}
     {% block content %}
         <h2 class="text-center">{{ block('title') }}</h2>
         <div class="well">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#simple" data-toggle="tab">Par Eleve</a></li>
-                        <li><a href="#advanced" data-toggle="tab">Par Professeur</a></li>
-                        <li><a href="#advanced" data-toggle="tab">Par Date</a></li>
+                        <li class="active"><a href="#date" data-toggle="tab">Par date</a></li>
+                        <li><a href="#prof" data-toggle="tab">Par Professeur</a></li>
+                        <li><a href="#eleve" data-toggle="tab">Par Eleve</a></li>
                     </ul>
                 </div>
             </div>
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="simple">
+                <div class="tab-pane fade in active" id="date">
+                    <br>
+                    <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-3 col-sm-offset-2 control-label">Date passage</label>
+                            <div class="col-sm-5 col-md-4">
+                                <div class="col-sm-5 col-md-5">
+                                    <input value='2015-05-22' name="date_passage" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>     
+                        <div class="form-group">
+                            <div class="col-sm-3 col-sm-offset-5">
+                                <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Rechercher</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>                 
+                <div class="tab-pane fade" id="eleve">
                     <br>
                     <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
                         <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Eleve</label>
                             <div class="col-sm-5 col-md-4">
                                 <select class="form-control" name="ddlNomEleveEp">
-                                    {% for epreuve in epreuves %}
-                                        <option value="{{ epreuve.eleve.id }}">{{ epreuve.eleve.nom }} {{epreuve.eleve.prenom}} </option>
+                                    {% for eleve in eleves %}
+                                        <option value="{{ eleve.id }}">{{ eleve.nom }} {{eleve.prenom}} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -33,34 +51,16 @@
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="tab-pane fade" id="advanced">
-                    <br>
-                    <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
-                        <div class="form-group">
-                            <label class="col-sm-3 col-sm-offset-2 control-label">Date passage</label>
-                            <div class="col-sm-5 col-md-4">
-                                <div class="col-sm-5 col-md-4">
-                                    <input name="date_passage" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>     
-                        <div class="form-group">
-                            <div class="col-sm-3 col-sm-offset-5">
-                                <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Rechercher</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>                                      
-                <div class="tab-pane fade" id="advanced">
+                </div>                                     
+                <div class="tab-pane fade " id="prof">
                     <br>
                     <form class="form-horizontal" role="form" action="/epreuves/results/" method="post">
                         <div class="form-group">
                             <label class="col-sm-3 col-sm-offset-2 control-label">Professeur</label>
                             <div class="col-sm-5 col-md-4">
                                 <select class="form-control" name="ddlNomProfesseurEp">
-                                    {% for epreuve in epreuves %}
-                                        <option value="{{ epreuve.professeur.id }}">{{ epreuve.professeur.nom }} {{epreuve.professeur.prenom}}</option>
+                                    {% for professeur in professeurs %}
+                                        <option value="{{ professeur.id }}">{{ professeur.nom }} {{professeur.prenom}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

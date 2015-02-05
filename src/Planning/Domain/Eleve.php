@@ -2,15 +2,15 @@
 
 namespace Planning\Domain;
 
-class Eleve 
-{
+class Eleve {
+
     /**
      * Eleve id.
      *
      * @var integer
      */
     private $id;
-    
+
     /**
      * classe id.
      *
@@ -38,7 +38,7 @@ class Eleve
      * @var string
      */
     private $tierstemps;
-    
+
     public function getId() {
         return $this->id;
     }
@@ -79,5 +79,8 @@ class Eleve
         $this->classe = $classe;
     }
 
+    public function __toString() {
+        return $this->getPrenom() . " " . $this->getNom();
+    }
 
 }

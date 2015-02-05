@@ -91,7 +91,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="findAllByNomEleve()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByIdEleve()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -99,9 +99,9 @@ class EpreuveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByNomEleve($nomId) {
+    public function findAllByIdEleve($eleveId) {
         $sql = "select * from epreuve ep join eleve el on ep.ID_ELEVE = el.ID_ELEVE where el.ID_ELEVE=? ";
-        $result = $this->getDb()->fetchAll($sql, array($nomId));
+        $result = $this->getDb()->fetchAll($sql, array($eleveId));
 
         // Convert query result to an array of domain objects
         $epreuves = array();
@@ -113,7 +113,7 @@ class EpreuveDAO extends DAO {
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="findAllByNomProfesseur()"> 
+    // <editor-fold defaultstate="collapsed" desc="findAllByIdProfesseur()"> 
     /*
      * Returns the list of all drugs for a given family, sorted by trade name.
      *
@@ -121,7 +121,7 @@ class EpreuveDAO extends DAO {
      *
      * @return array The list of drugs.
      */
-    public function findAllByNomProfesseur($professeurId) {
+    public function findAllByIdProfesseur($professeurId) {
         $sql = "select * from epreuve ep join professeur pr on ep.ID_PROFESSEUR = pr.ID_PROFESSEUR where pr.ID_PROFESSEUR=? ";
         $result = $this->getDb()->fetchAll($sql, array($professeurId));
 
@@ -207,10 +207,28 @@ class EpreuveDAO extends DAO {
         }
         return $dates;
     }
+
+    public function findByDateHeurePassage($datePassage, $idHeurePassage) {
+        $sql = "select * from epreuve where DATE_PASSAGE=? and ID_HEURE_PASSAGE=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($datePassage, $idHeurePassage));
+        $epreuve = $this->buildDomainObject($row);
+        return $epreuve;
+    }
+
+    public function findByEleveDateHeurePassage($datePassage, $idHeurePassage, $idEleve) {
+        $sql = "select * from epreuve where DATE_PASSAGE=? and ID_HEURE_PASSAGE=? and ID_ELEVE=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($datePassage, $idHeurePassage, $idEleve));
+        $epreuve = $this->buildDomainObject($row);
+        return $epreuve;
+    }
+
 // </editor-fold>   
     // <editor-fold defaultstate="collapsed" desc="findPlanningByDate()"> 
     public function findPlanningByDate($date) {
-        $sql = "SELECT e.* , h.ID_HEURE_PASSAGE, ? as DATE_PASSAGE FROM heurepassage h LEFT JOIN epreuve e ON e.id_heure_passage = h.id_heure_passage AND e.DATE_PASSAGE=?";
+        $sql = "SELECT e.* , h.ID_HEURE_PASSAGE, ? as DATE_PASSAGE "
+                . "FROM heurepassage h LEFT JOIN epreuve e "
+                . "ON e.id_heure_passage = h.id_heure_passage "
+                . "AND e.DATE_PASSAGE=? ";
 
         $result = $this->getDb()->fetchAll($sql, array($date, $date));
 
@@ -324,9 +342,9 @@ class EpreuveDAO extends DAO {
         if ($epreuve->getEleve()->getId()) {
             // The epreuve has never been saved : insert it
             $this->getDb()->insert('epreuve', $epreuveData);
-            
         }
     }
+
 // </editor-fold>
     //  // <editor-fold defaultstate="collapsed" desc="update($epreuve)">
     public function update(Epreuve $epreuve) {
@@ -341,7 +359,10 @@ class EpreuveDAO extends DAO {
 
         if ($epreuve->getEleve()->getId()) {
             // The visit report has already been saved : update it
-            $this->getDb()->update('epreuve', $epreuveData, array('ID_ELEVE' => $epreuve->getEleve()->getId()));
+            $elevId = $epreuve->getEleve()->getId();
+            $datePassage = $epreuve->getDatepassage();
+            $heurePassageId = $epreuve->getHeurepassage()->getId();
+            $this->getDb()->update('epreuve', $epreuveData, array('ID_ELEVE' => $elevId, 'DATE_PASSAGE' => $datePassage, 'ID_HEURE_PASSAGE' => $heurePassageId));
         }
     }
 
@@ -352,9 +373,8 @@ class EpreuveDAO extends DAO {
      *
      * @param \Planning\Domain\Eleve $eleve The eleve to remove
      */
-    public function delete($id) {
-        // Delete the eleve
-        $this->getDb()->delete('epreuve', array('ID_ELEVE' => $id));
+    public function delete($datePassage, $heurePassageId, $eleveId) {
+        $this->getDb()->delete('epreuve', array('ID_ELEVE' => $eleveId, 'DATE_PASSAGE' => $datePassage, 'ID_HEURE_PASSAGE' => $heurePassageId));
     }
 
 // </editor-fold>

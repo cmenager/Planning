@@ -63,4 +63,23 @@ class SalleDAO extends DAO {
     }
 
 // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Trouver tous les professeurs non inscrits à une épreuve : findSalleNonUtilisees()"> 
+    /**
+     * Returns the list of all eleve, sorted by nom.
+     *
+     * @return array The list of all eleves.
+     */
+    public function findSalleNonUtilisees($datePassage, $heurePassageId) {
+        $sql = "select * from salle where ID_SALLE not in (select ID_SALLE from epreuve where DATE_PASSAGE=? and ID_HEURE_PASSAGE = ?) order by ID_SALLE";
+        $result = $this->getDb()->fetchAll($sql, array($datePassage, $heurePassageId));
+
+        // Converts query result to an array of domain objects
+        $eleves = array();
+        foreach ($result as $row) {
+            $eleveId = $row['ID_SALLE'];
+            $eleves[$eleveId] = $this->buildDomainObject($row);
+        }
+        return $eleves;
+    }     
 }

@@ -158,4 +158,41 @@ class EleveDAO extends DAO {
 
 // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Trouver tous les eleves inscrits à une épreuve : findElevesInscrits()"> 
+    /**
+     * Returns the list of all eleve, sorted by nom.
+     *
+     * @return array The list of all eleves.
+     */
+    public function findElevesInscrits() {
+        $sql = "select * from eleve where ID_ELEVE in (select ID_ELEVE from epreuve) order by NOM_ELEVE ";
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Converts query result to an array of domain objects
+        $eleves = array();
+        foreach ($result as $row) {
+            $eleveId = $row['ID_ELEVE'];
+            $eleves[$eleveId] = $this->buildDomainObject($row);
+        }
+        return $eleves;
+    }  
+    
+    // <editor-fold defaultstate="collapsed" desc="Trouver tous les eleves non inscrits à une épreuve : findElevesNonInscrits()"> 
+    /**
+     * Returns the list of all eleve, sorted by nom.
+     *
+     * @return array The list of all eleves.
+     */
+    public function findElevesNonInscrits($datePassage, $heurePassageId) {
+        $sql = "select * from eleve where ID_ELEVE not in (select ID_ELEVE from epreuve where DATE_PASSAGE=? and ID_HEURE_PASSAGE = ?) order by NOM_ELEVE ";
+        $result = $this->getDb()->fetchAll($sql, array($datePassage, $heurePassageId));
+
+        // Converts query result to an array of domain objects
+        $eleves = array();
+        foreach ($result as $row) {
+            $eleveId = $row['ID_ELEVE'];
+            $eleves[$eleveId] = $this->buildDomainObject($row);
+        }
+        return $eleves;
+    }      
 }

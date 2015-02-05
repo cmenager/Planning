@@ -19,7 +19,7 @@ class EleveController {
      */
     public function detailAction(Application $app, $id) {
         $eleve = $app['dao.eleve']->find($id);
-        return $app['twig']->render('eleve.html.twig', array('eleve' => $eleve));
+        return $app['twig']->render('eleve.html.twig', array('title' => 'Détails sur un élève','eleve' => $eleve));
     }
 
     /**
@@ -29,7 +29,7 @@ class EleveController {
      */
     public function listAction(Application $app) {
         $eleves = $app['dao.eleve']->findAll();
-        return $app['twig']->render('eleves.html.twig', array('eleves' => $eleves));
+        return $app['twig']->render('eleves.html.twig', array('title' => 'Liste des élèves','eleves' => $eleves));
     }
 
     /**
@@ -40,7 +40,7 @@ class EleveController {
     public function searchAction(Application $app) {
         $classes = $app['dao.classe']->findAll();
         $eleves = $app['dao.eleve']->findAll();
-        return $app['twig']->render('eleves_search.html.twig', array('classes' => $classes, 'eleves' => $eleves));
+        return $app['twig']->render('eleves_search.html.twig', array('title' => 'Recherche un élève','classes' => $classes, 'eleves' => $eleves));
     }
 
     /**
@@ -61,7 +61,8 @@ class EleveController {
                 $eleves = $app['dao.eleve']->findAllByClasse($classeId);
             }
         }
-        return $app['twig']->render('eleves_results.html.twig', array('eleves' => $eleves));
+        return $app['twig']->render('eleves_results.html.twig', array('title' => 'Resultat de la recherche',
+            'eleves' => $eleves));
     }
 
     /**
@@ -89,7 +90,7 @@ class EleveController {
             $app['session']->getFlashBag()->add('success', 'Un eleve a été ajouté.');
         }
         $eleveFormView = $eleveForm->createView();
-        return $app['twig']->render('eleve_form.html.twig', array('eleveForm' => $eleveFormView));
+        return $app['twig']->render('eleve_form.html.twig', array('title' => 'Ajouter un élève','eleveForm' => $eleveFormView));
     }
 
     /**
@@ -101,8 +102,10 @@ class EleveController {
      */
     public function editAction(Request $request, Application $app, $id) {
         $eleveFormView = NULL;
+        
         $eleve = $app['dao.eleve']->find($id);
         $classes = $app['dao.classe']->findAll();
+        
         // When editing we need to assign the good classe in the dropdown list
         $eleveForm = $app['form.factory']->create(new EleveType($classes, $eleve->getClasse()->getId()), $eleve);
         $eleveForm->handleRequest($request);
@@ -115,7 +118,7 @@ class EleveController {
             $app['session']->getFlashBag()->add('success', 'Un eleve a été modifié avec succès .');
         }
         $eleveFormView = $eleveForm->createView();
-        return $app['twig']->render('eleve_form.html.twig', array('eleveForm' => $eleveFormView));
+        return $app['twig']->render('eleve_form.html.twig', array('title' => 'Modifier un élève','eleveForm' => $eleveFormView));
     }
 
     /**

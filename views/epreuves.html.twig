@@ -1,7 +1,7 @@
 {% extends "layout.html.twig" %}
 {% set epreuveMenu = true %}
 
-    {% block title %}Epreuves{% endblock %}
+    {% block title %}{{ title }}{% endblock %}
 
     {% block content %}
         <h2 class="text-center">{{ block('title') }}</h2>
@@ -29,8 +29,8 @@
                             <td>{{ epreuve.professeur.nom }} {{ epreuve.professeur.prenom }}</td>
                             <td>{{ epreuve.salle.libelle }}</td>
                             <td>
-                                <a href="/admin/epreuves/add"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span></button></a>
-                                <a href="/admin/epreuves/edit/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="/epreuves/results/add_chxclasse/{{ epreuve.datepassage }}/{{epreuve.heurepassage.id }}"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span></button></a>
+                                <a href="/epreuves/edit/{{ epreuve.datepassage }}/{{epreuve.heurepassage.id }}/{{ epreuve.eleve.id }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                                 <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#epreuveDialog{{ epreuve.eleve.id }}"><span class="glyphicon glyphicon-remove"></span>
                                 </button>
                                 <div class="modal fade" id="epreuveDialog{{ epreuve.eleve.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                <a href="/admin/epreuves/delete/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirm</a>
+                                                <a href="/epreuves/delete/{{ epreuve.datepassage }}/{{epreuve.heurepassage.id }}/{{ epreuve.eleve.id }}" class="btn btn-danger">Confirm</a>
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
@@ -61,5 +61,4 @@
             </div>
         {% else %}
             <div class="alert alert-warning">Aucun epreuve trouvé.</div>
-        {% endif %}   
-    {% endblock %}
+        {% endif %}       {% endblock %}

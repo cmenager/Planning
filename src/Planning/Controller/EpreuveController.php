@@ -20,7 +20,7 @@ class EpreuveController {
      */
     public function detailAction(Application $app, $id) {
         $epreuve = $app['dao.epreuve']->find($id);
-        return $app['twig']->render('epreuve.html.twig', array('epreuve' => $epreuve));
+        return $app['twig']->render('epreuve.html.twig', array('title' => 'Détails sur un épreuve', 'epreuve' => $epreuve));
     }
 
 // </editor-fold>
@@ -32,7 +32,7 @@ class EpreuveController {
      */
     public function listAction(Application $app) {
         $epreuves = $app['dao.epreuve']->findAll();
-        return $app['twig']->render('epreuves.html.twig', array('epreuves' => $epreuves));
+        return $app['twig']->render('epreuves.html.twig', array('title' => 'Liste des épreuves', 'epreuves' => $epreuves));
     }
 
 // </editor-fold>
@@ -44,9 +44,10 @@ class EpreuveController {
      * @return type
      */
     public function searchAction(Application $app) {
-        $epreuves = $app['dao.epreuve']->findAll();
-        $professeurs = $app['dao.professeur']->findAll();
-        return $app['twig']->render('epreuves_search.html.twig', array('epreuves' => $epreuves, 'professeurs' => $professeurs));
+        $eleves = $app['dao.eleve']->findElevesInscrits();
+        $professeurs = $app['dao.professeur']->findProfsInscrits();
+        return $app['twig']->render('epreuves_search.html.twig', array('title' => 'Recherche un épreuve',
+                    'eleves' => $eleves, 'professeurs' => $professeurs));
     }
 
 // </editor-fold>
@@ -58,64 +59,77 @@ class EpreuveController {
      * @return type
      */
     public function resultsAction(Request $request, Application $app) {
-
+        // On stocke dans la session le moyen utilisé pour obtenir la liste
+        $app['session']->set('acces', array('datePassage' => "null", 'professeurId' => "null", 'eleveId' => "null"));
         if ($request->request->has('ddlNomEleveEp')) {
-// Advanced search by nom
-            $nom = $request->request->get('ddlNomEleveEp');
-            $epreuves = $app['dao.epreuve']->findAllByNomEleve($nom);
+            $eleveId = $request->request->get('ddlNomEleveEp');
+            $epreuves = $app['dao.epreuve']->findAllByIdEleve($eleveId);
+            $app['session']->set('acces', array('datePassage' => "null", 'professeurId' => "null", 'eleveId' => $eleveId));
         } else {
             if ($request->request->has('ddlNomProfesseurEp')) {
-// Simple search by classe
                 $professeurId = $request->request->get('ddlNomProfesseurEp');
-                $epreuves = $app['dao.epreuve']->findAllByNomProfesseur($professeurId);
+                $epreuves = $app['dao.epreuve']->findAllByIdProfesseur($professeurId);
+                $app['session']->set('acces', array('professeurId' => $professeurId, 'datePassage' => "null", 'eleveId' => "null"));
             } else {
                 if ($request->request->has('date_passage')) {
-                    // Simple search by date
-                    $date_passage = $request->request->get('date_passage');
-                    $epreuves = $app['dao.epreuve']->findPlanningByDate($date_passage);
+                    $datePassage = $request->request->get('date_passage');
+                    $epreuves = $app['dao.epreuve']->findPlanningByDate($datePassage);
+                    $app['session']->set('acces', array('datePassage' => $datePassage, 'professeurId' => "null", 'eleveId' => "null"));
                 }
             }
         }
-        return $app['twig']->render('epreuves_results.html.twig', array('epreuves' => $epreuves));
+        return $app['twig']->render('epreuves_results.html.twig', array('title' => 'Resultat de la recherche',
+                    'epreuves' => $epreuves));
     }
 
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" public function searchEpreuveAddAction(Application $app, $id)"> 
-    /**
-     * Displays the form for typeing parameters of searching
-     * @param Application $app
-     * @return type
-     */
-    public function searchEpreuveAddAction(Request $request, Application $app) {
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc=" public function listeEpreuves(Application $app, $id)"> 
+    public function listeEpreuves(Application $app) {
+        $epreuves = null;
+        // On récupère le moyen qui avait été utilisé pour fournir la liste
+        // cela permettra de relancer la génération de cette liste
+        $acces = $app['session']->get('acces');
+        if ($acces['eleveId'] != "null") {
+            $epreuves = $app['dao.epreuve']->findAllByIdEleve($acces['eleveId']);
+        } else {
+            if ($acces['professeurId'] != "null") {
+                $epreuves = $app['dao.epreuve']->findAllByIdProfesseur($acces['professeurId']);
+            } else {
+                if ($acces['datePassage'] != "null") {
+                    $epreuves = $app['dao.epreuve']->findPlanningByDate($acces['datePassage']);
+                }
+            }
+        }
+        $app['session']->remove('acces');
+        return $app['twig']->render('epreuves_results.html.twig', array('title' => 'Resultat de la recherche',
+                    'epreuves' => $epreuves));
+    }
+
+// </editor-fold> 
+    // <editor-fold defaultstate="collapsed" desc=" public function searchEpreuveClasseAction(Application $app, $id)"> 
+    public function searchEpreuveClasseAction(Request $request, Application $app, $datePassage, $heurePassageId) {
         $eleves = null;
         $classes = null;
+        $epreuve = $app['dao.epreuve']->findByDateHeurePassage($datePassage, $heurePassageId);
+        $heurepassage = $app['dao.heurepassage']->find($heurePassageId);
+
+
         if ($request->request->has('dllClasseEpreuve')) {
             $classeId = $request->request->get('dllClasseEpreuve');
             $eleves = $app['dao.eleve']->findAllByClasse($classeId);
+            $epreuve->setDatepassage($datePassage);
+            $epreuve->setHeurepassage($heurepassage);
         } else {
             $classes = $app['dao.classe']->findAll();
+            $epreuve->setDatepassage($datePassage);
+            $epreuve->setHeurepassage($heurepassage);
         }
-        return $app['twig']->render('epreuve_chxclasse_search.html.twig', array('classes' => $classes, 'eleves' => $eleves));
+        return $app['twig']->render('epreuve_chxclasse_search.html.twig', array('epreuve' => $epreuve,
+                    'classes' => $classes, 'eleves' => $eleves, 'heurepassage' => $heurepassage));
     }
 
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" public function searchEpreuveSalleAction(Application $app, $id)"> 
-    /**
-     * Displays the form for typeing parameters of searching
-     * @param Application $app
-     * @return type
-     */
-    public function searchEpreuveSalleAction(Application $app, $id) {
-        $eleve = $app['dao.eleve']->find($id);
-        $salles = $app['dao.salle']->findAll();
-        $professeurs = $app['dao.professeur']->findAll();
-        $langues = $app['dao.langue']->findAll();
-        $heures = $app['dao.heurepassage']->findAll();
-        return $app['twig']->render('epreuve_chxsalle_search.html.twig', array('salles' => $salles,
-                    'eleve' => $eleve, 'langues' => $langues, 'heures' => $heures, 'professeurs' => $professeurs));
-    }
-
-// </editor-fold>
+// 
+// // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="public function addAction(Request $request, Application $app, $id)"> 
     /**
      * Adds a Report
@@ -123,21 +137,20 @@ class EpreuveController {
      * @param Application $app
      * @return type
      */
-    public function addAction(Request $request, Application $app, $id) {
+    public function addAction(Request $request, Application $app, $datePassage, $heurePassageId, $eleveId) {
         $epreuveFormView = NULL;
         $epreuve = new Epreuve();
 
-        $eleve = $app['dao.eleve']->find($id);
+        $epreuve->setDatepassage($datePassage);
+        $heurepassage = $app['dao.heurepassage']->find($heurePassageId);
 
-        $heures = $app['dao.heurepassage']->findAll();
-        $heure = current($heures);
-        $heureId = $heure->getId();
+        $eleve = $app['dao.eleve']->find($eleveId);
 
-        $professeurs = $app['dao.professeur']->findAll();
+        $professeurs = $app['dao.professeur']->findProfsNonInscrits($datePassage, $heurePassageId, null);
         $professeur = current($professeurs);
         $professeurId = $professeur->getId();
 
-        $salles = $app['dao.salle']->findAll();
+        $salles = $app['dao.salle']->findSalleNonUtilisees($datePassage, $heurePassageId);
         $salle = current($salles);
         $salleId = $salle->getId();
 
@@ -145,17 +158,17 @@ class EpreuveController {
         $langue = current($langues);
         $langueId = $langue->getId();
 
-        $epreuveForm = $app['form.factory']->create(new EpreuveType($eleve, $professeurs, $professeurId, 
-                $heures, $heureId, $langues, $langueId, $salles, $salleId), $epreuve);
+        $epreuveForm = $app['form.factory']->create(new EpreuveType($heurepassage, $eleve, $professeurs, $professeurId, $langues, $langueId, $salles, $salleId), $epreuve);
         $epreuveForm->handleRequest($request);
         if ($epreuveForm->isValid()) {
 
-            $eleve = $app['dao.eleve']->find($id);
-            $epreuve->setEleve($eleve);
+            $epreuve->setDatepassage($datePassage);
 
-            $heureId = $epreuveForm->get('heurepassage')->getData();
-            $heure = $app['dao.heurepassage']->find($heureId);
+            $heure = $app['dao.heurepassage']->find($heurePassageId);
             $epreuve->setHeurepassage($heure);
+
+            $eleve = $app['dao.eleve']->find($eleveId);
+            $epreuve->setEleve($eleve);
 
             $professeurId = $epreuveForm->get('professeur')->getData();
             $professeur = $app['dao.professeur']->find($professeurId);
@@ -168,47 +181,14 @@ class EpreuveController {
             $salleId = $epreuveForm->get('salle')->getData();
             $salle = $app['dao.salle']->find($salleId);
             $epreuve->setSalle($salle);
+
             $app['dao.epreuve']->insert($epreuve);
-            $app['session']->getFlashBag()->add('success', 'Votre epreuve a été ajouté.');
+            // Retour à la recherche des épreuves
+            return $this->listeEpreuves($app);
         }
         $epreuveFormView = $epreuveForm->createView();
-        return $app['twig']->render('epreuve_chxeleve_results.html.twig', array('epreuveForm' => $epreuveFormView, 'eleve' => $eleve));
-    }
-
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" public function searchEpreuveEditAction(Application $app, $id)"> 
-    /**
-     * Displays the form for typeing parameters of searching
-     * @param Application $app
-     * @return type
-     */
-    public function searchEpreuveEditAction(Request $request, Application $app) {
-        $eleves = null;
-        $classes = null;
-        $professeurs = null;
-        $epreuves = null;
-
-        if ($request->request->has('dllClasseEpreuve')) {
-            $classeId = $request->request->get('dllClasseEpreuve');
-            $epreuves = $app['dao.eleve']->findAllByClasse($classeId);
-        } else {
-            $classes = $app['dao.classe']->findAll();
-        }
-
-        if ($request->request->has('dllProfesseurEpreuve')) {
-            $professeurId = $request->request->get('dllProfesseurEpreuve');
-            $epreuves = $app['dao.epreuve']->findAllByNomProfesseur($professeurId);
-        } else {
-            $professeurs = $app['dao.professeur']->findAll();
-        }
-
-        if ($request->request->has('ddlDateEpreuve')) {
-            $date = $request->request->get('ddlDateEpreuve');
-            $eleves = $app['dao.epreuve']->findAllByDate($date);
-        }
-
-        return $app['twig']->render('epreuve_ttchx_edit_search.html.twig', array('classes' => $classes,
-                    'eleves' => $eleves, 'professeurs' => $professeurs, 'epreuves' => $epreuves));
+        return $app['twig']->render('epreuve_form.html.twig', array('title' => 'Ajouter un épreuve', 'epreuveForm' => $epreuveFormView,
+                    'epreuve' => $epreuve, 'heurepassage' => $heurepassage, 'eleve'=>$eleve));
     }
 
 // </editor-fold>
@@ -217,33 +197,34 @@ class EpreuveController {
      * Updates a Report
      * @param Request $request
      * @param Application $app
-     * @param type $id
+     * @param type $eleveId
      * @return type
      */
-    public function editAction(Request $request, Application $app, $id) {
+    public function editAction(Request $request, Application $app, $datePassage, $heurePassageId, $eleveId) {
         $epreuveFormView = NULL;
 
-        $eleve = $app['dao.eleve']->find($id);
-        $epreuve = $app['dao.epreuve']->find($id);
-        $heures = $app['dao.heurepassage']->findAll();
-        $professeurs = $app['dao.professeur']->findAll();
+        $epreuve = $app['dao.epreuve']->findByEleveDateHeurePassage($datePassage, $heurePassageId, $eleveId);
+        $heurepassage = $app['dao.heurepassage']->find($heurePassageId);
+
+        $eleve = $app['dao.eleve']->find($eleveId);
+        
+        $professeurs = $app['dao.professeur']->findProfsNonInscrits($datePassage, $heurePassageId, $epreuve->getProfesseur()->getId());
         $salles = $app['dao.salle']->findAll();
         $langues = $app['dao.langue']->findAll();
 
-        // When editing we need to assign the good practitioner in the dropdown list
-        $epreuveForm = $app['form.factory']->create(new EpreuveType($eleve, $professeurs, $heures, $langues, $salles,
-                $epreuve->getProfesseur()->getId(), $epreuve->getHeurepassage()->getId(), $epreuve->getSalle()->getId(),
-                $epreuve->getLangue()->getId()), $epreuve);
+        $epreuveForm = $app['form.factory']->create(new EpreuveType($heurepassage, $eleve, $professeurs, $epreuve->getProfesseur()->getId(), $langues, $epreuve->getLangue()->getId(), $salles, $epreuve->getSalle()->getId()), $epreuve);
 
         $epreuveForm->handleRequest($request);
         if ($epreuveForm->isValid()) {
 
-            $eleve = $app['dao.eleve']->find($id);
-            $epreuve->setEleve($eleve);
+            $epreuve->setDatepassage($datePassage);
 
-            $heureId = $epreuveForm->get('heurepassage')->getData();
-            $heure = $app['dao.heurepassage']->find($heureId);
+            $heure = $app['dao.heurepassage']->find($heurePassageId);
             $epreuve->setHeurepassage($heure);
+
+           
+            $eleve = $app['dao.eleve']->find($eleveId);
+            $epreuve->setEleve($eleve);
 
             $professeurId = $epreuveForm->get('professeur')->getData();
             $professeur = $app['dao.professeur']->find($professeurId);
@@ -257,29 +238,18 @@ class EpreuveController {
             $salle = $app['dao.salle']->find($salleId);
             $epreuve->setSalle($salle);
 
+            $app['dao.epreuve']->update($epreuve);
 
-            $app['dao.epreuve']->save($epreuve);
-            $app['session']->getFlashBag()->add('success', 'Votre epreuve a été modifié.');
+            // Retour à la recherche des épreuves
+            return $this->listeEpreuves($app);
         }
         $epreuveFormView = $epreuveForm->createView();
-        return $app['twig']->render('epreuve_ttchx_edit_results.html.twig', array('epreuveForm' => $epreuveFormView, 'eleve' => $eleve));
+        return $app['twig']->render('epreuve_form.html.twig', array('title' => 'Modifier un épreuve', 'epreuveForm' => $epreuveFormView,
+                    'epreuve' => $epreuve, 'heurepassage' => $heurepassage,'eleve' => $eleve ));
     }
 
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" public function searchEpreuveDeleteAction(Application $app, $id)"> 
-    /**
-     * Displays the form for typeing parameters of searching
-     * @param Application $app
-     * @return type
-     */
-    public function searchEpreuveDeleteAction(Application $app) {
-
-        $epreuves = $app['dao.epreuve']->findAll();
-        return $app['twig']->render('epreuve_delete.html.twig', array('epreuves' => $epreuves));
-    }
-
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="public function deleteEpreuveAction(Request $request, Application $app, $id)">
+    // <editor-fold defaultstate="collapsed" desc="public function deleteAction(Request $request, Application $app, $id)">
     /**
      * Delete article controller.
      *
@@ -287,11 +257,11 @@ class EpreuveController {
      * @param Request $request Incoming request
      * @param Application $app Silex application
      */
-    public function deleteEpreuveAction($id, Request $request, Application $app) {
-        // Delete the article
-        $app['dao.epreuve']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'Votre epreuve a été supprimé.');
-        return $app->redirect('/admin');
+    public function deleteAction(Application $app, $datePassage, $heurePassageId, $eleveId) {
+        $app['dao.epreuve']->delete($datePassage, $heurePassageId, $eleveId);
+        // Retour à la recherche des épreuves
+        return $this->listeEpreuves($app);
+//        return $this->searchAction($app);
     }
 
 // </editor-fold>

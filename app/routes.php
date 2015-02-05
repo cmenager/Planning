@@ -79,18 +79,15 @@ $app->match('/epreuves/search/', 'Planning\Controller\EpreuveController::searchA
 // Results page for epreuves
 $app->match('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
-// New epreuves // chxclasse 
-$app->match('/admin/epreuves/add_chxclasse_search/', 'Planning\Controller\EpreuveController::searchEpreuveAddAction');
-$app->match('/admin/epreuves/add_chxeleve_results/{id}', 'Planning\Controller\EpreuveController::addAction');
+// New epreuves 
+$app->match('/epreuves/results/add_chxclasse/{datePassage}/{heurePassageId}', 'Planning\Controller\EpreuveController::searchEpreuveClasseAction');
+$app->match('/epreuves/results/add_chxclasse/add/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::addAction');
 
-// Edit epreuves 
-$app->match('/admin/epreuves/edit_ttchx_search/', 'Planning\Controller\EpreuveController::searchEpreuveEditAction');
-$app->match('/admin/epreuves/edit_ttchx_results/{id}', 'Planning\Controller\EpreuveController::editAction');
+// Editing a épreuve
+$app->match('/epreuves/edit/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::editAction');
 
-
-//Remove a epreuves
-$app->match('/admin/epreuves/delete_ttchx_search/', 'Planning\Controller\EpreuveController::searchEpreuveDeleteAction');
-$app->match('/admin/epreuves/delete/{id}', "Planning\Controller\EpreuveController::deleteEpreuveAction");
+//Remove a épreuve
+$app->match('/epreuves/delete/{datePassage}/{heurePassageId}/{eleveId}', "Planning\Controller\EpreuveController::deleteAction");
 
 
 // Login form
@@ -104,11 +101,9 @@ $app->get('/login', function(Request $request) use ($app) {
 $app->get('/admin', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
     $professeurs = $app['dao.professeur']->findAll();
-    $epreuves = $app['dao.epreuve']->findAll();
     return $app['twig']->render('admin.html.twig', array(
                 'eleves' => $eleves,
-                'professeurs' => $professeurs,
-                'epreuves' => $epreuves));
+                'professeurs' => $professeurs));
 });
 
 // Personal info

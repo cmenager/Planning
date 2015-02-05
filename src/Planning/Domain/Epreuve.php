@@ -16,7 +16,7 @@ class Epreuve {
      *
      * @var date
      */
-    private $datepassage;
+    private $datePassage;
 
     /**
      * Heurepasse id.
@@ -74,8 +74,8 @@ class Epreuve {
         $this->eleve = $eleve;
     }
 
-    public function setDatepassage($datepassage) {
-        $this->datepassage = $datepassage;
+    public function setDatepassage($datePassage) {
+        $this->datepassage = $datePassage;
     }
 
     public function setHeurepassage($heurepassage) {

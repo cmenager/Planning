@@ -187,4 +187,48 @@ class ProfesseurDAO extends DAO implements UserProviderInterface {
     }
 
 // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Trouver tous les eleves inscrits à une épreuve : findElevesInscrits()"> 
+    /**
+     * Returns the list of all eleve, sorted by nom.
+     *
+     * @return array The list of all eleves.
+     */
+    public function findProfsInscrits() {
+        $sql = "select * from professeur where ID_PROFESSEUR in (select ID_PROFESSEUR from epreuve) order by NOM_PROFESSEUR";
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Converts query result to an array of domain objects
+        $eleves = array();
+        foreach ($result as $row) {
+            $eleveId = $row['ID_PROFESSEUR'];
+            $eleves[$eleveId] = $this->buildDomainObject($row);
+        }
+        return $eleves;
+    } 
+    
+    // <editor-fold defaultstate="collapsed" desc="Trouver tous les professeurs non inscrits à une épreuve : findProfsNonInscrits()"> 
+    /**
+     * Returns the list of all eleve, sorted by nom.
+     *
+     * @return array The list of all eleves.
+     */
+    public function findProfsNonInscrits($datePassage, $heurePassageId, $professeurId=null) {
+        $sql = "select * from professeur where ID_PROFESSEUR not in (select ID_PROFESSEUR from epreuve where DATE_PASSAGE=? and ID_HEURE_PASSAGE = ?";
+        if (!is_null($professeurId)){
+            $sql = $sql . " and ID_PROFESSEUR != ?) order by NOM_PROFESSEUR";             
+            $result = $this->getDb()->fetchAll($sql, array($datePassage, $heurePassageId, $professeurId));
+        }
+        else{
+            $sql = $sql . ") order by NOM_PROFESSEUR";
+            $result = $this->getDb()->fetchAll($sql, array($datePassage, $heurePassageId));
+        }
+        // Converts query result to an array of domain objects
+        $eleves = array();
+        foreach ($result as $row) {
+            $eleveId = $row['ID_PROFESSEUR'];
+            $eleves[$eleveId] = $this->buildDomainObject($row);
+        }
+        return $eleves;
+    }      
 }

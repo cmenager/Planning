@@ -7,8 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class EpreuveType extends AbstractType {
 
-    private $eleves;
-    private $eleveId;
+    
+    private $heurepassage;
+    private $eleve;
     private $professeurs;
     private $professeurId;
     private $langues;
@@ -21,10 +22,12 @@ class EpreuveType extends AbstractType {
      * 
      * @param arrays $professeurs, $eleves, $professeurId, $eleveId
      */
-    public function __construct($eleves, $eleveId ,$professeurs, $professeurId, $langues, $langueId, $salles, $salleId) {
+    public function __construct($heurepassage, $eleve,$professeurs, $professeurId, $langues, $langueId, $salles, $salleId) {
 
-        $this->eleves = $eleves;
-        $this->eleveId = $eleveId;
+        $this->heurepassage = $heurepassage;
+      
+        $this->eleve = $eleve;
+
         $this->professeurs = $professeurs;
         $this->professeurId = $professeurId;
         $this->langues = $langues;
@@ -34,15 +37,7 @@ class EpreuveType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder              
-                ->add('eleve', 'choice', array(
-                    'label' => "Eleve :",
-                    'choices' => $this->eleves,
-                    'expanded' => false,
-                    'multiple' => false,
-                    'mapped' => false, // this field is not mapped to an object property
-                    'preferred_choices' => array($this->eleveId),
-                ))
+        $builder
                 ->add('professeur', 'choice', array(
                     'label' => "Professeur :",
                     'choices' => $this->professeurs,

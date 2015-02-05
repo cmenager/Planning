@@ -19,7 +19,7 @@ class ProfesseurController {
      */
     public function detailAction(Application $app, $id) {
         $professeur = $app['dao.professeur']->find($id);
-        return $app['twig']->render('professeur.html.twig', array('professeur' => $professeur));
+        return $app['twig']->render('professeur.html.twig', array('title' => 'Détail sur un professeur','professeur' => $professeur));
     }
 
     /**
@@ -29,7 +29,7 @@ class ProfesseurController {
      */
     public function listAction(Application $app) {
         $professeurs = $app['dao.professeur']->findAll();
-        return $app['twig']->render('professeurs.html.twig', array('professeurs' => $professeurs));
+        return $app['twig']->render('professeurs.html.twig', array('title' => 'Liste des professeurs','professeurs' => $professeurs));
     }
 
     /**
@@ -40,7 +40,7 @@ class ProfesseurController {
     public function searchAction(Application $app) {
         $roles = array('ROLE_USER' => 'ROLE_USER', 'ROLE_ADMIN' => 'ROLE_ADMIN');
         $professeurs = $app['dao.professeur']->findAll();
-        return $app['twig']->render('professeurs_search.html.twig', array('roles' => $roles, 'professeurs' => $professeurs));
+        return $app['twig']->render('professeurs_search.html.twig', array('title' => 'Recherche un professeur','roles' => $roles, 'professeurs' => $professeurs));
     }
 
     /**
@@ -60,7 +60,7 @@ class ProfesseurController {
             $app['session']->getFlashBag()->add('success', 'Un professeur a été ajouté.');
         }
         $professeurFormView = $professeurForm->createView();
-        return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView));
+        return $app['twig']->render('professeur_form.html.twig', array('title' => 'Ajouter un professeur','professeurForm' => $professeurFormView));
     }
 
     /**
@@ -82,7 +82,7 @@ class ProfesseurController {
             $app['session']->getFlashBag()->add('success', 'Un professeur a été modifié avec succès .');
         }
         $professeurFormView = $professeurForm->createView();
-        return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView));
+        return $app['twig']->render('professeur_form.html.twig', array('title' => 'Modifier un professeur','professeurForm' => $professeurFormView));
     }
 
     /**
@@ -118,7 +118,7 @@ class ProfesseurController {
                 $professeurs = $app['dao.professeur']->findAllByRole($ddlRoles);
             }
         }
-        return $app['twig']->render('professeurs_results.html.twig', array('professeurs' => $professeurs));
+        return $app['twig']->render('professeurs_results.html.twig', array('title' => 'Resultat de la recherche','professeurs' => $professeurs));
     }
 
     
@@ -151,6 +151,6 @@ class ProfesseurController {
         // Creates the form
         $profilFormView = $profilForm->createView();
         // And injects it in the view
-        return $app['twig']->render('profil.html.twig', array('profilForm' => $profilFormView));
+        return $app['twig']->render('profil.html.twig', array('title' => 'Profil','profilForm' => $profilFormView));
     }
 }
