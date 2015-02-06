@@ -205,8 +205,6 @@ INSERT INTO `salle` (`ID_SALLE`, `LIBELLE_SALLE`) VALUES
 --
 -- Index pour les tables exportées
 --
-
---
 -- Index pour la table `enseigne`
 --
 ALTER TABLE `enseigne`
@@ -220,8 +218,6 @@ ALTER TABLE `epreuve`
 
 
 -- Contraintes pour les tables exportées
---
-
 --
 -- Contraintes pour la table `eleve`
 --

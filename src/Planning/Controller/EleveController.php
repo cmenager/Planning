@@ -12,7 +12,8 @@ use Planning\Form\Type\EleveType;
 class EleveController {
 
     /**
-     * Displays the detail of the eleve with the given id
+     * Afficher le détail sur une élève par l'identifiant
+     * 
      * @param Application $app
      * @param type $id
      * @return type
@@ -23,7 +24,8 @@ class EleveController {
     }
 
     /**
-     * Lists all the eleves
+     * Lister tous les élèves
+     * 
      * @param Application $app
      * @return type
      */
@@ -33,7 +35,9 @@ class EleveController {
     }
 
     /**
-     * Displays the form for typeing parameters of searching
+     * Afficher le formulaire pour saisir les paramètres de la recherche
+     * Rechercher l'un des élèves ou l'une des classes
+     * 
      * @param Application $app
      * @return type
      */
@@ -44,19 +48,18 @@ class EleveController {
     }
 
     /**
-     * Gets the parameters of search and displays the results of search
+     * Obtenir le resultat de la recherche effectué par le nom d'un élève ou la classe
+     * 
      * @param Request $request
      * @param Application $app
      * @return type
      */
     public function resultsAction(Request $request, Application $app) {
         if ($request->request->has('dllNomEleve')) {
-// Advanced search by nom
             $eleveId = $request->request->get('dllNomEleve');
             $eleves = $app['dao.eleve']->findAllByNom($eleveId);
         } else {
             if ($request->request->has('dllClasseEleve')) {
-// Simple search by classe
                 $classeId = $request->request->get('dllClasseEleve');
                 $eleves = $app['dao.eleve']->findAllByClasse($classeId);
             }
@@ -66,7 +69,8 @@ class EleveController {
     }
 
     /**
-     * Adds a eleve
+     * Ajouter un élève
+     * 
      * @param Request $request
      * @param Application $app
      * @return type
@@ -94,7 +98,8 @@ class EleveController {
     }
 
     /**
-     * Updates a eleve
+     * Éditer un élève par l'identifiant
+     * 
      * @param Request $request
      * @param Application $app
      * @param type $id
@@ -122,9 +127,9 @@ class EleveController {
     }
 
     /**
-     * Delete article controller.
+     * Supprimer un élève par l'identifiant
      *
-     * @param integer $id Article id
+     * @param integer $id Eleve id
      * @param Request $request Incoming request
      * @param Application $app Silex application
      */

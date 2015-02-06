@@ -80,11 +80,13 @@ $app->match('/epreuves/search/', 'Planning\Controller\EpreuveController::searchA
 $app->match('/epreuves/results/', 'Planning\Controller\EpreuveController::resultsAction');
 
 // New epreuves 
-$app->match('/epreuves/results/add_chxclasse/{datePassage}/{heurePassageId}', 'Planning\Controller\EpreuveController::searchEpreuveClasseAction');
+$app->match('/epreuves/results/add_chxclasse/{datePassage}/{heurePassageId}', 'Planning\Controller\EpreuveController::searchEpreuveClasseAddAction');
 $app->match('/epreuves/results/add_chxclasse/add/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::addAction');
 
 // Editing a épreuve
-$app->match('/epreuves/edit/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::editAction');
+$app->match('/epreuves/results/edit_chxclasse/{datePassage}/{heurePassageId}', 'Planning\Controller\EpreuveController::searchEpreuveClasseEditAction');
+$app->match('/epreuves/results/edit_chxMajclasse/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::resultEpreuveClasseEditAction');
+$app->match('/epreuves/results/edit_chxclasse/edit/{datePassage}/{heurePassageId}/{eleveId}', 'Planning\Controller\EpreuveController::editAction');
 
 //Remove a épreuve
 $app->match('/epreuves/delete/{datePassage}/{heurePassageId}/{eleveId}', "Planning\Controller\EpreuveController::deleteAction");
@@ -97,6 +99,7 @@ $app->get('/login', function(Request $request) use ($app) {
                 'last_username' => $app['session']->get('_security.last_username'),
     ));
 })->bind('login');  // named route so that path('login') works in Twig templates 
+
 // Admin zone
 $app->get('/admin', function() use ($app) {
     $eleves = $app['dao.eleve']->findAll();
@@ -106,24 +109,8 @@ $app->get('/admin', function() use ($app) {
                 'professeurs' => $professeurs));
 });
 
-// Personal info
-$app->match('/profil', function(Request $request) use ($app) {
-    $professeur = $app['security']->getToken()->getUser();
-    $professeurFormView = NULL;
-    $professeurForm = $app['form.factory']->create(new ProfesseurType(), $professeur);
-    $professeurForm->handleRequest($request);
-    if ($professeurForm->isValid()) {
-        $plainPassword = $professeur->getPassword();
-        // find the encoder for a UserInterface instance
-        $encoder = $app['security.encoder_factory']->getEncoder($professeur);
-        // compute the encoded password
-        $password = $encoder->encodePassword($plainPassword, $professeur->getSalt());
-        $professeur->setPassword($password);
-        $app['dao.professeur']->save($professeur);
-        $app['session']->getFlashBag()->add('success', 'Vos informations personnelles ont été mises à jour.');
-    }
-    $professeurFormView = $professeurForm->createView();
-    return $app['twig']->render('professeur_form.html.twig', array('professeurForm' => $professeurFormView,));
-});
+$app->match('/profil', 'Planning\Controller\ProfesseurController::profilAction');
+
+
 
 
